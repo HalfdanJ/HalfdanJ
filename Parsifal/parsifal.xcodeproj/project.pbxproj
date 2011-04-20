@@ -430,7 +430,7 @@
 		DD9ABC991341E13E0059D4EC /* GraphIcoMarked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GraphIcoMarked.png; sourceTree = "<group>"; };
 		DD9ABC9A1341E13E0059D4EC /* GraphIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GraphIcon.png; sourceTree = "<group>"; };
 		DD9ABC9B1341E13E0059D4EC /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
-		DD9ABC9C1341E13E0059D4EC /* SendToQlab.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.scpt; path = SendToQlab.scpt; sourceTree = "<group>"; };
+		DD9ABC9C1341E13E0059D4EC /* SendToQlab.scpt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file; path = SendToQlab.scpt; sourceTree = "<group>"; };
 		DD9ABC9E1341E13E0059D4EC /* LoadProgressIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadProgressIndicator.h; sourceTree = "<group>"; };
 		DD9ABC9F1341E13E0059D4EC /* LoadProgressIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadProgressIndicator.m; sourceTree = "<group>"; };
 		DD9ABCA01341E13E0059D4EC /* OutputViewStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OutputViewStats.h; sourceTree = "<group>"; };
@@ -2064,7 +2064,7 @@
 					../../../libs/freetype/include/,
 					../../../libs/freetype/include/freetype2,
 					../../../libs/poco/include,
-					"../../../addons//**",
+					"../../../addons/**",
 				);
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";

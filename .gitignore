@@ -3,8 +3,10 @@
 *~.nib
 
 build/
-
+bin/
 *.pbxuser
 *.perspective
 *.perspectivev3
 /Parsifal/bin/parsifalDebug.app
+
+xcuserdata
