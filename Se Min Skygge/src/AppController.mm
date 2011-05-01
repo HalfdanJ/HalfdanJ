@@ -33,7 +33,7 @@ extern ofAppBaseWindow * window;
 	//[pluginManagerController addPlugin:[[Parsifal alloc] init]];
 	//[pluginManagerController addPlugin:[[VideoPlayer alloc] init]];
 	[pluginManagerController addPlugin:[[Keystoner alloc] initWithSurfaces:[NSArray arrayWithObjects:@"Screen", nil]]];
-
+	[pluginManagerController addPlugin:[[RenderEngine alloc] init]];
 }
 
 @end

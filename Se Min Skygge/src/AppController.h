@@ -11,7 +11,7 @@
 #include "ofAppBaseWindow.h"
 
 
-@interface AppController : NSObject/* Specify a superclass (eg: NSObject or NSView) */ {
+@interface AppController : NSObject{
 	IBOutlet NSView * mainView;
 	IBOutlet PluginManagerController * pluginManagerController;
 	

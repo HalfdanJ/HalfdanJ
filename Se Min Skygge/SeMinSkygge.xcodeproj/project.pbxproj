@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DD42F5FE1366BC9E0022FD52 /* RenderObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = DD42F5FD1366BC9E0022FD52 /* RenderObject.mm */; };
 		DD62F864135F40A500465B2E /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD62F863135F40A500465B2E /* MainMenu.xib */; };
 		DD7B14AE11A3CF38000D9775 /* osc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7B146211A3CF38000D9775 /* osc.a */; };
 		DD7B14AF11A3CF38000D9775 /* ofxOscBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD7B146611A3CF38000D9775 /* ofxOscBundle.cpp */; };
@@ -26,9 +27,18 @@
 		DD7B14BF11A3CF38000D9775 /* ofxQuaternion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD7B14A811A3CF38000D9775 /* ofxQuaternion.cpp */; };
 		DD7B158611A3CFD7000D9775 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7B158511A3CFD7000D9775 /* QTKit.framework */; };
 		DD7B158811A3CFDE000D9775 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7B158711A3CFDE000D9775 /* CoreMIDI.framework */; };
+		DD947746135F6B2D0027F1CC /* RenderEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = DD947744135F6B2D0027F1CC /* RenderEngine.mm */; };
+		DD947747135F6B2D0027F1CC /* RenderEngine.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD947745135F6B2D0027F1CC /* RenderEngine.xib */; };
 		DD9ABFAD1341E1F20059D4EC /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD9ABFAC1341E1F20059D4EC /* ScriptingBridge.framework */; };
 		DD9AC4CB13421D790059D4EC /* VideoPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = DD9AC4C913421D790059D4EC /* VideoPlayer.mm */; };
 		DD9AC4CC13421D790059D4EC /* VideoPlayer.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD9AC4CA13421D790059D4EC /* VideoPlayer.xib */; };
+		DDAD0A71136D6595006562A3 /* ofxFBOTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDAD0A6D136D6595006562A3 /* ofxFBOTexture.cpp */; };
+		DDAD0A72136D6595006562A3 /* ofxShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDAD0A6F136D6595006562A3 /* ofxShader.cpp */; };
+		DDAD0A86136DC1B1006562A3 /* simpleBlurHorizontal.frag in Copy Files to Resources */ = {isa = PBXBuildFile; fileRef = DDAD0A75136DC0D9006562A3 /* simpleBlurHorizontal.frag */; };
+		DDAD0A87136DC1B3006562A3 /* simpleBlurHorizontal.vert in Copy Files to Resources */ = {isa = PBXBuildFile; fileRef = DDAD0A76136DC0D9006562A3 /* simpleBlurHorizontal.vert */; };
+		DDAD0A88136DC1B5006562A3 /* simpleBlurVertical.frag in Copy Files to Resources */ = {isa = PBXBuildFile; fileRef = DDAD0A77136DC0D9006562A3 /* simpleBlurVertical.frag */; };
+		DDAD0A89136DC1B6006562A3 /* simpleBlurVertical.vert in Copy Files to Resources */ = {isa = PBXBuildFile; fileRef = DDAD0A78136DC0D9006562A3 /* simpleBlurVertical.vert */; };
+		DDAD0A8F136DD682006562A3 /* gaussianBlurShader.frag in Copy Files to Resources */ = {isa = PBXBuildFile; fileRef = DDAD0A8D136DD67C006562A3 /* gaussianBlurShader.frag */; };
 		DDB3CDC4135DA71C0097B98E /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CDBA135DA71C0097B98E /* AGL.framework */; };
 		DDB3CDC5135DA71C0097B98E /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CDBB135DA71C0097B98E /* ApplicationServices.framework */; };
 		DDB3CDC6135DA71C0097B98E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CDBC135DA71C0097B98E /* AudioToolbox.framework */; };
@@ -130,36 +140,36 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		DDC8E85B1137351C00574926 /* CopyFiles */ = {
+		DDC8E85B1137351C00574926 /* Copy Files to Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
 			);
+			name = "Copy Files to Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E4C2427710CC5ABF004149E2 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E4C2444710CC769B004149E2 /* CopyFiles */ = {
+		E4C2444710CC769B004149E2 /* Copy Files to Resources */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				DDAD0A8F136DD682006562A3 /* gaussianBlurShader.frag in Copy Files to Resources */,
+				DDAD0A89136DC1B6006562A3 /* simpleBlurVertical.vert in Copy Files to Resources */,
+				DDAD0A88136DC1B5006562A3 /* simpleBlurVertical.frag in Copy Files to Resources */,
+				DDAD0A87136DC1B3006562A3 /* simpleBlurHorizontal.vert in Copy Files to Resources */,
+				DDAD0A86136DC1B1006562A3 /* simpleBlurHorizontal.frag in Copy Files to Resources */,
 			);
+			name = "Copy Files to Resources";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		DD42F5FC1366BC9E0022FD52 /* RenderObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderObject.h; sourceTree = "<group>"; };
+		DD42F5FD1366BC9E0022FD52 /* RenderObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RenderObject.mm; sourceTree = "<group>"; };
 		DD62F863135F40A500465B2E /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		DD7B145211A3CF38000D9775 /* IpEndpointName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IpEndpointName.h; sourceTree = "<group>"; };
 		DD7B145311A3CF38000D9775 /* NetworkingUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkingUtils.h; sourceTree = "<group>"; };
@@ -233,10 +243,22 @@
 		DD7B14AD11A3CF38000D9775 /* ofxVectorMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVectorMath.h; sourceTree = "<group>"; };
 		DD7B158511A3CFD7000D9775 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		DD7B158711A3CFDE000D9775 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = /System/Library/Frameworks/CoreMIDI.framework; sourceTree = "<absolute>"; };
+		DD947743135F6B2D0027F1CC /* RenderEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderEngine.h; sourceTree = "<group>"; };
+		DD947744135F6B2D0027F1CC /* RenderEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RenderEngine.mm; sourceTree = "<group>"; };
+		DD947745135F6B2D0027F1CC /* RenderEngine.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RenderEngine.xib; sourceTree = "<group>"; };
 		DD9ABFAC1341E1F20059D4EC /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		DD9AC4C813421D790059D4EC /* VideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayer.h; sourceTree = "<group>"; };
 		DD9AC4C913421D790059D4EC /* VideoPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = VideoPlayer.mm; sourceTree = "<group>"; };
 		DD9AC4CA13421D790059D4EC /* VideoPlayer.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VideoPlayer.xib; sourceTree = "<group>"; };
+		DDAD0A6D136D6595006562A3 /* ofxFBOTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxFBOTexture.cpp; sourceTree = "<group>"; };
+		DDAD0A6E136D6595006562A3 /* ofxFBOTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxFBOTexture.h; sourceTree = "<group>"; };
+		DDAD0A6F136D6595006562A3 /* ofxShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxShader.cpp; sourceTree = "<group>"; };
+		DDAD0A70136D6595006562A3 /* ofxShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxShader.h; sourceTree = "<group>"; };
+		DDAD0A75136DC0D9006562A3 /* simpleBlurHorizontal.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = simpleBlurHorizontal.frag; sourceTree = "<group>"; };
+		DDAD0A76136DC0D9006562A3 /* simpleBlurHorizontal.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = simpleBlurHorizontal.vert; sourceTree = "<group>"; };
+		DDAD0A77136DC0D9006562A3 /* simpleBlurVertical.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = simpleBlurVertical.frag; sourceTree = "<group>"; };
+		DDAD0A78136DC0D9006562A3 /* simpleBlurVertical.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = simpleBlurVertical.vert; sourceTree = "<group>"; };
+		DDAD0A8D136DD67C006562A3 /* gaussianBlurShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = gaussianBlurShader.frag; sourceTree = "<group>"; };
 		DDB3CD97135DA3BC0097B98E /* SeMinSkyggeDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeMinSkyggeDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDB3CDAB135DA71C0097B98E /* fmod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fmod.h; sourceTree = "<group>"; };
 		DDB3CDAC135DA71C0097B98E /* fmod.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = fmod.hpp; sourceTree = "<group>"; };
@@ -686,6 +708,19 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		DD947742135F6B2D0027F1CC /* RenderEngine */ = {
+			isa = PBXGroup;
+			children = (
+				DDAD0A73136D6599006562A3 /* ofxShader */,
+				DD947743135F6B2D0027F1CC /* RenderEngine.h */,
+				DD947744135F6B2D0027F1CC /* RenderEngine.mm */,
+				DD947745135F6B2D0027F1CC /* RenderEngine.xib */,
+				DD42F5FC1366BC9E0022FD52 /* RenderObject.h */,
+				DD42F5FD1366BC9E0022FD52 /* RenderObject.mm */,
+			);
+			path = RenderEngine;
+			sourceTree = "<group>";
+		};
 		DD9AC4C713421D790059D4EC /* VideoPlayer */ = {
 			isa = PBXGroup;
 			children = (
@@ -695,6 +730,30 @@
 			);
 			path = VideoPlayer;
 			sourceTree = "<group>";
+		};
+		DDAD0A73136D6599006562A3 /* ofxShader */ = {
+			isa = PBXGroup;
+			children = (
+				DDAD0A6D136D6595006562A3 /* ofxFBOTexture.cpp */,
+				DDAD0A6E136D6595006562A3 /* ofxFBOTexture.h */,
+				DDAD0A6F136D6595006562A3 /* ofxShader.cpp */,
+				DDAD0A70136D6595006562A3 /* ofxShader.h */,
+			);
+			name = ofxShader;
+			sourceTree = "<group>";
+		};
+		DDAD0A74136DC0D9006562A3 /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				DDAD0A8D136DD67C006562A3 /* gaussianBlurShader.frag */,
+				DDAD0A75136DC0D9006562A3 /* simpleBlurHorizontal.frag */,
+				DDAD0A76136DC0D9006562A3 /* simpleBlurHorizontal.vert */,
+				DDAD0A77136DC0D9006562A3 /* simpleBlurVertical.frag */,
+				DDAD0A78136DC0D9006562A3 /* simpleBlurVertical.vert */,
+			);
+			name = shaders;
+			path = src/shaders;
+			sourceTree = SOURCE_ROOT;
 		};
 		DDB3CDA2135DA71C0097B98E /* libs */ = {
 			isa = PBXGroup;
@@ -1312,6 +1371,7 @@
 		DDC8EA5D113809B100574926 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				DD947742135F6B2D0027F1CC /* RenderEngine */,
 				DD9AC4C713421D790059D4EC /* VideoPlayer */,
 				DDC8EA5E113809B100574926 /* PluginIncludes.h */,
 			);
@@ -1321,6 +1381,7 @@
 		DDF87490114AB2D0004B2FE2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DDAD0A74136DC0D9006562A3 /* shaders */,
 			);
 			lineEnding = 0;
 			name = Resources;
@@ -1379,23 +1440,22 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E4B69B5A0A3A1756003C02F2 /* parsifals */ = {
+		E4B69B5A0A3A1756003C02F2 /* SeMinSkygge */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "parsifals" */;
+			buildConfigurationList = E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "SeMinSkygge" */;
 			buildPhases = (
 				E4B69B580A3A1756003C02F2 /* Sources */,
 				E4B69B590A3A1756003C02F2 /* Frameworks */,
 				E4B6FFFD0C3F9AB9008CF71C /* ShellScript */,
-				E4C2427710CC5ABF004149E2 /* CopyFiles */,
-				E4C2444710CC769B004149E2 /* CopyFiles */,
-				DDC8E85B1137351C00574926 /* CopyFiles */,
+				E4C2444710CC769B004149E2 /* Copy Files to Resources */,
+				DDC8E85B1137351C00574926 /* Copy Files to Frameworks */,
 				DDC8E96311373C0000574926 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = parsifals;
+			name = SeMinSkygge;
 			productName = myOFApp;
 			productReference = DDB3CD97135DA3BC0097B98E /* SeMinSkyggeDebug.app */;
 			productType = "com.apple.product-type.application";
@@ -1426,7 +1486,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				E4B69B5A0A3A1756003C02F2 /* parsifals */,
+				E4B69B5A0A3A1756003C02F2 /* SeMinSkygge */,
 			);
 		};
 /* End PBXProject section */
@@ -1456,6 +1516,7 @@
 				DDB3D7BA135EDF9A0097B98E /* SendToQlab.scpt in Resources */,
 				DDB3D7BB135EDF9A0097B98E /* Trebuchet MS.ttf in Resources */,
 				DD62F864135F40A500465B2E /* MainMenu.xib in Resources */,
+				DD947747135F6B2D0027F1CC /* RenderEngine.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1550,6 +1611,10 @@
 				DDB3D7BF135EDF9A0097B98E /* PluginEnabledCell.m in Sources */,
 				DDB3D7C0135EDF9A0097B98E /* PluginListMeterCell.m in Sources */,
 				DDB3D7C1135EDF9A0097B98E /* PropertiesValueCell.m in Sources */,
+				DD947746135F6B2D0027F1CC /* RenderEngine.mm in Sources */,
+				DD42F5FE1366BC9E0022FD52 /* RenderObject.mm in Sources */,
+				DDAD0A71136D6595006562A3 /* ofxFBOTexture.cpp in Sources */,
+				DDAD0A72136D6595006562A3 /* ofxShader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1930,7 +1995,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "parsifals" */ = {
+		E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "SeMinSkygge" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4B69B600A3A1757003C02F2 /* Debug */,
