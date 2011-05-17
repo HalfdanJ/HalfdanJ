@@ -23,7 +23,8 @@
     NSString * assetInfo;
     
     NSImage * imageAsset;
-    GLuint imageTexture;
+
+    GLuint assetTexture;
     
     float posX;
     float posY;
@@ -31,12 +32,28 @@
     
     float scale;
     float rotationZ;
+    float opacity;
+    
+    BOOL maskOnBack;
     
     ofxFBOTexture * borderFbo;
-    ofxFBOTexture * tempFbo;
+//    ofxFBOTexture * tempFbo;
     ofxFBOTexture * fbo;
     
+    CIImage * ciImage;
+    CIImage * outputImage;
+    CGRect filteredRect;
 
+    CIFilter * depthBlurFilter;
+    CIFilter * resizeFilter;
+
+    BOOL assetTextureOutdated;
+    BOOL borderedFBOOutdated;
+    BOOL ciImageOutdated;
+    BOOL ciFilterOutdated;
+    BOOL ciFBOOutdated;
+    
+    float depthBlurAmount;
 }
 
 @property (retain) NSString * name;
@@ -53,16 +70,19 @@
 @property (readwrite) float posZ;
 @property (readwrite) float scale;
 @property (readwrite) float rotationZ;
+@property (readwrite) float depthBlurAmount;
+@property (readwrite) float opacity;
+@property (readwrite) BOOL maskOnBack;
 
 -(void) loadAsset;
 
--(void) drawImageAsset;
+-(void) drawTexture:(GLuint)tex size:(NSSize)size;
 
 -(void) drawWithAlpha:(float)alpha;
 -(void) drawControlsWithColor:(NSColor*)color;
 -(void) drawMaskWithAlpha:(float)alpha;
--(void) renderFbo;
--(void) drawFbo;
+
+-(void) update;
 
 -(void) setupAssetOpengl;
 

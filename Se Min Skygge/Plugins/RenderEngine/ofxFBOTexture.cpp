@@ -297,7 +297,7 @@ void ofxFBOTexture::setupScreenForThem(){
 	float halfFov, theTan, aspect;
 	
 //	float eyeX              = (float)w / 2.0;
-	float eyeY              = (float)h / 2.0;
+//	float eyeY              = (float)h / 2.0;
 	halfFov                 = PI * screenFov / 360.0;
 	theTan                  = tanf(halfFov);
 //	float dist              = eyeY / theTan;
