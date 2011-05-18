@@ -21,6 +21,10 @@
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"coreImageMode"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:5] named:@"assetTextureMode"];    
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"borderedRendering"];    
+    
+        [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"levelsMin"];    
+            [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0 maxValue:1] named:@"levelsMax"];    
+                [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.5 minValue:0 maxValue:1] named:@"levelsMiddle"];    
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -64,10 +68,11 @@
         fboBack[i]->clear(0,0,0,0);  
     }
     
-    /*blurShader = new ofxShader();
-     NSString *fragpath = [[NSBundle mainBundle] pathForResource:@"gaussianBlurShader" ofType:@"frag"];
-     NSString *vertpath = [[NSBundle mainBundle] pathForResource:@"simpleBlurHorizontal" ofType:@"vert"];
-     blurShader->loadShader([fragpath cStringUsingEncoding:NSUTF8StringEncoding],[vertpath cStringUsingEncoding:NSUTF8StringEncoding]);  */  
+    colorCorrectShader = new ofxShader();
+     NSString *fragpath = [[NSBundle mainBundle] pathForResource:@"colorCorrectShader" ofType:@"frag"];
+     NSString *vertpath = [[NSBundle mainBundle] pathForResource:@"colorCorrectShader" ofType:@"vert"];
+     colorCorrectShader->loadShader([fragpath cStringUsingEncoding:NSUTF8StringEncoding],[vertpath cStringUsingEncoding:NSUTF8StringEncoding]); 
+    
     
     camCoord = ofxVec3f(0,0,-5);
     eyeCoord = ofxVec3f(0,0,1);
@@ -172,6 +177,13 @@
     glPushMatrix();
     ofDisableAlphaBlending();
     
+    colorCorrectShader->setShaderActive(YES);
+    colorCorrectShader->setUniformVariable1f("min", PropF(@"levelsMin") );
+    colorCorrectShader->setUniformVariable1f("max", PropF(@"levelsMax"));
+    
+    colorCorrectShader->setUniformVariable2f("start", 0.0, 0.0);
+        colorCorrectShader->setUniformVariable2f("middle",0.5, PropF(@"levelsMiddle"));    
+    colorCorrectShader->setUniformVariable2f("end", 1.0, 1.0);    
     
     [GetPlugin(Keystoner)  applySurface:@"Screen" projectorNumber:0 viewNumber:ViewNumber];
     ofSetColor(255,255,255,255);
@@ -183,7 +195,8 @@
     fboBack[pingpong]->draw(0,0,1,1);
     [GetPlugin(Keystoner)  popSurface];    
     glPopMatrix();   
-    
+    colorCorrectShader->setShaderActive(NO);
+
     ofEnableAlphaBlending();
     
 }

@@ -24,6 +24,7 @@ enum UpdateFlags {
     ofxFBOTexture *fboFront[2], *fboBack[2];
     
     ofxShader * blurShader;
+    ofxShader * colorCorrectShader;
     
     CIContext * ciContext;
     

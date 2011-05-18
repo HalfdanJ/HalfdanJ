@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		58A9364B138411D400E534A0 /* BeamSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A9364A138411D400E534A0 /* BeamSync.m */; };
+		58EA46C71384611300CCB078 /* colorCorrectShader.frag in Sources */ = {isa = PBXBuildFile; fileRef = 58EA46C51384611300CCB078 /* colorCorrectShader.frag */; };
+		58EA46C81384611300CCB078 /* colorCorrectShader.vert in Sources */ = {isa = PBXBuildFile; fileRef = 58EA46C61384611300CCB078 /* colorCorrectShader.vert */; };
+		58EA46C91384612400CCB078 /* colorCorrectShader.frag in Copy Files to Resources */ = {isa = PBXBuildFile; fileRef = 58EA46C51384611300CCB078 /* colorCorrectShader.frag */; };
+		58EA46CA1384612700CCB078 /* colorCorrectShader.vert in Copy Files to Resources */ = {isa = PBXBuildFile; fileRef = 58EA46C61384611300CCB078 /* colorCorrectShader.vert */; };
 		DD42F5FE1366BC9E0022FD52 /* RenderObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = DD42F5FD1366BC9E0022FD52 /* RenderObject.mm */; };
 		DD62F864135F40A500465B2E /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD62F863135F40A500465B2E /* MainMenu.xib */; };
 		DD7B14AE11A3CF38000D9775 /* osc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7B146211A3CF38000D9775 /* osc.a */; };
@@ -35,11 +39,6 @@
 		DD9AC4CC13421D790059D4EC /* VideoPlayer.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD9AC4CA13421D790059D4EC /* VideoPlayer.xib */; };
 		DDAD0A71136D6595006562A3 /* ofxFBOTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDAD0A6D136D6595006562A3 /* ofxFBOTexture.cpp */; };
 		DDAD0A72136D6595006562A3 /* ofxShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDAD0A6F136D6595006562A3 /* ofxShader.cpp */; };
-		DDAD0A86136DC1B1006562A3 /* simpleBlurHorizontal.frag in Copy Files to Resources */ = {isa = PBXBuildFile; fileRef = DDAD0A75136DC0D9006562A3 /* simpleBlurHorizontal.frag */; };
-		DDAD0A87136DC1B3006562A3 /* simpleBlurHorizontal.vert in Copy Files to Resources */ = {isa = PBXBuildFile; fileRef = DDAD0A76136DC0D9006562A3 /* simpleBlurHorizontal.vert */; };
-		DDAD0A88136DC1B5006562A3 /* simpleBlurVertical.frag in Copy Files to Resources */ = {isa = PBXBuildFile; fileRef = DDAD0A77136DC0D9006562A3 /* simpleBlurVertical.frag */; };
-		DDAD0A89136DC1B6006562A3 /* simpleBlurVertical.vert in Copy Files to Resources */ = {isa = PBXBuildFile; fileRef = DDAD0A78136DC0D9006562A3 /* simpleBlurVertical.vert */; };
-		DDAD0A8F136DD682006562A3 /* gaussianBlurShader.frag in Copy Files to Resources */ = {isa = PBXBuildFile; fileRef = DDAD0A8D136DD67C006562A3 /* gaussianBlurShader.frag */; };
 		DDB3CDC4135DA71C0097B98E /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CDBA135DA71C0097B98E /* AGL.framework */; };
 		DDB3CDC5135DA71C0097B98E /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CDBB135DA71C0097B98E /* ApplicationServices.framework */; };
 		DDB3CDC6135DA71C0097B98E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CDBC135DA71C0097B98E /* AudioToolbox.framework */; };
@@ -157,11 +156,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-				DDAD0A8F136DD682006562A3 /* gaussianBlurShader.frag in Copy Files to Resources */,
-				DDAD0A89136DC1B6006562A3 /* simpleBlurVertical.vert in Copy Files to Resources */,
-				DDAD0A88136DC1B5006562A3 /* simpleBlurVertical.frag in Copy Files to Resources */,
-				DDAD0A87136DC1B3006562A3 /* simpleBlurHorizontal.vert in Copy Files to Resources */,
-				DDAD0A86136DC1B1006562A3 /* simpleBlurHorizontal.frag in Copy Files to Resources */,
+				58EA46CA1384612700CCB078 /* colorCorrectShader.vert in Copy Files to Resources */,
+				58EA46C91384612400CCB078 /* colorCorrectShader.frag in Copy Files to Resources */,
 			);
 			name = "Copy Files to Resources";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -171,6 +167,8 @@
 /* Begin PBXFileReference section */
 		58A93649138411D400E534A0 /* BeamSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeamSync.h; sourceTree = "<group>"; };
 		58A9364A138411D400E534A0 /* BeamSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeamSync.m; sourceTree = "<group>"; };
+		58EA46C51384611300CCB078 /* colorCorrectShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = colorCorrectShader.frag; sourceTree = "<group>"; };
+		58EA46C61384611300CCB078 /* colorCorrectShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = colorCorrectShader.vert; sourceTree = "<group>"; };
 		DD42F5FC1366BC9E0022FD52 /* RenderObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderObject.h; sourceTree = "<group>"; };
 		DD42F5FD1366BC9E0022FD52 /* RenderObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RenderObject.mm; sourceTree = "<group>"; };
 		DD62F863135F40A500465B2E /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
@@ -753,6 +751,8 @@
 				DDAD0A76136DC0D9006562A3 /* simpleBlurHorizontal.vert */,
 				DDAD0A77136DC0D9006562A3 /* simpleBlurVertical.frag */,
 				DDAD0A78136DC0D9006562A3 /* simpleBlurVertical.vert */,
+				58EA46C51384611300CCB078 /* colorCorrectShader.frag */,
+				58EA46C61384611300CCB078 /* colorCorrectShader.vert */,
 			);
 			name = shaders;
 			path = src/shaders;
@@ -1621,6 +1621,8 @@
 				DDAD0A71136D6595006562A3 /* ofxFBOTexture.cpp in Sources */,
 				DDAD0A72136D6595006562A3 /* ofxShader.cpp in Sources */,
 				58A9364B138411D400E534A0 /* BeamSync.m in Sources */,
+				58EA46C71384611300CCB078 /* colorCorrectShader.frag in Sources */,
+				58EA46C81384611300CCB078 /* colorCorrectShader.vert in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
