@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">10J869</string>
+		<string key="IBDocument.SystemVersion">10J4138</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
 		<string key="IBDocument.AppKitVersion">1038.35</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
@@ -876,7 +876,6 @@
 											<int key="NSvFlags">268</int>
 											<string key="NSFrame">{{17, 226}, {329, 22}}</string>
 											<reference key="NSSuperview" ref="202191121"/>
-											<reference key="NSNextKeyView" ref="148090505"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="883472245">
 												<int key="NSCellFlags">-1804468671</int>
@@ -1992,19 +1991,14 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<reference key="object" ref="1005"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="273520749"/>
 							<reference ref="344173247"/>
 							<reference ref="148090505"/>
 							<reference ref="345747445"/>
 							<reference ref="358513212"/>
 							<reference ref="445902258"/>
+							<reference ref="273520749"/>
 						</object>
 						<reference key="parent" ref="0"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">3</int>
-						<reference key="object" ref="273520749"/>
-						<reference key="parent" ref="1005"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">5</int>
@@ -2704,6 +2698,11 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<int key="objectID">196</int>
 						<reference key="object" ref="352644474"/>
 						<reference key="parent" ref="231866378"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">3</int>
+						<reference key="object" ref="273520749"/>
+						<reference key="parent" ref="1005"/>
 					</object>
 				</object>
 			</object>

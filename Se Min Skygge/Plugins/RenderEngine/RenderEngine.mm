@@ -83,13 +83,15 @@
     
     
     NSLog(@"RenderEngine setup");
-    fboFront = new ofxFBOTexture();
-    fboBack = new ofxFBOTexture();
-    fboFront->allocate(1024, 768, GL_RGBA);
-    fboBack->allocate(1024, 768, GL_RGBA);
+    for(int i=0;i<2;i++){
+    fboFront[i] = new ofxFBOTexture();
+    fboBack[i] = new ofxFBOTexture();
+    fboFront[i]->allocate(1024, 768, GL_RGBA);
+    fboBack[i]->allocate(1024, 768, GL_RGBA);
     
-    fboFront->clear(0,0,0,0);
-    fboBack->clear(0,0,0,0);   
+    fboFront[i]->clear(0,0,0,0);
+    fboBack[i]->clear(0,0,0,0);   
+    }
     
     
     blurShader = new ofxShader();
@@ -99,8 +101,8 @@
 }
 
 -(void) setupFboOpengl{
-    int w = fboBack->texData.width;
-    int h = fboBack->texData.height;	
+    int w = fboBack[0]->texData.width;
+    int h = fboBack[0]->texData.height;	
     
     glViewport(0, 0, w, h);    
     float halfFov, theTan, screenFov, as;
@@ -127,6 +129,9 @@
 }
 
 -(void) renderFbo{    
+    
+    pingpong = !pingpong;
+    
     NSArray * allObjects = [self allObjectsOrderedByDepth];   
     
     int time= ofGetElapsedTimeMillis();
@@ -143,11 +148,16 @@
     }
     time= ofGetElapsedTimeMillis();
     ofEnableAlphaBlending();
-    fboBack->clear(0,0,0,255);
-    fboBack->swapIn();{
-
+    fboBack[pingpong]->clear(0,0,0,255);
+    fboBack[pingpong]->swapIn(); {   
+        
         glPushMatrix();
         [self setupFboOpengl];
+        
+    ofSetColor(255,255,255,255.0*0.99);
+        fboBack[!pingpong]->draw(0,0,1,1);
+        
+        
         [self placeCamera];
    //     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
         glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA, GL_ONE,GL_ONE);
@@ -161,11 +171,11 @@
         }
         glPopMatrix();
         
-	}fboBack->swapOut();
+	}fboBack[pingpong]->swapOut();
     
 
-    fboFront->clear();
-    fboFront->swapIn();{
+    fboFront[pingpong]->clear();
+    fboFront[pingpong]->swapIn();{
         glPushMatrix();
         
         [self setupFboOpengl];
@@ -179,11 +189,11 @@
             }
         }
         glPopMatrix();
-    }fboFront->swapOut();    
+    }fboFront[pingpong]->swapOut();    
     ofEnableAlphaBlending();
     
     if(ofGetElapsedTimeMillis()-time > 2){
-    cout<<"Render time: "<<ofGetElapsedTimeMillis()-time<<endl;
+        cout<<"Render time: "<<ofGetElapsedTimeMillis()-time<<endl;
     }
     
         
@@ -193,7 +203,16 @@
 }
 
 -(void)update:(NSDictionary *)drawingInformation{
-    [Prop(@"camPosX") setFloatValue:sin(ofGetElapsedTimeMillis()/7000.0)];
+   /* CFAbsoluteTime currentTime = CFAbsoluteTimeGetCurrent();
+	[[controller scene] advanceTimeBy:(currentTime - [controller renderTime])];
+	[controller setRenderTime:currentTime];
+*/
+    
+    //cout<<CFAbsoluteTimeGetCurrent()-time<<endl;
+    
+   time = CFAbsoluteTimeGetCurrent();
+    
+    [Prop(@"camPosX") setFloatValue:sin(CFAbsoluteTimeGetCurrent()/7.0)];
     
 
 }
@@ -237,12 +256,12 @@
     
     [GetPlugin(Keystoner)  applySurface:@"Screen" projectorNumber:0 viewNumber:ViewNumber];
     ofSetColor(255,255,255,255);
-    fboFront->draw(0,0,1,1);
+    fboFront[pingpong]->draw(0,0,1,1);
     [GetPlugin(Keystoner)  popSurface];
     
     [GetPlugin(Keystoner)  applySurface:@"Screen" projectorNumber:1 viewNumber:ViewNumber];
     ofSetColor(255,255,255,255);
-    fboBack->draw(0,0,1,1);
+    fboBack[pingpong]->draw(0,0,1,1);
     [GetPlugin(Keystoner)  popSurface];    
     glPopMatrix();   
     

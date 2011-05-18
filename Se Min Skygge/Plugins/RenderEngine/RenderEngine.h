@@ -21,11 +21,15 @@ enum UpdateFlags {
     
     NSString * assetDir;
     
-    ofxFBOTexture *fboFront, *fboBack;
+    ofxFBOTexture *fboFront[2], *fboBack[2];
     
     ofxShader * blurShader;
     
     CIContext * ciContext;
+    
+    int pingpong;
+    
+    CFAbsoluteTime time;
 }
 
 @property (retain) NSMutableArray * objectsArray;

@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5831E7EE1383E9E200156214 /* Example.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5831E7ED1383E9E200156214 /* Example.mm */; };
+		5831E7FB1383F89E00156214 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5831E7FA1383F89E00156214 /* SystemConfiguration.framework */; };
+		5831E81113840BB700156214 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5831E81013840BB700156214 /* Cocoa.framework */; };
+		5831E81313840BBE00156214 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5831E81213840BBE00156214 /* AppKit.framework */; };
+		5831E81513840BC300156214 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5831E81413840BC300156214 /* Foundation.framework */; };
+		5831E81B13840FA300156214 /* BeamSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 5831E81A13840FA300156214 /* BeamSync.m */; };
 		DD62F864135F40A500465B2E /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD62F863135F40A500465B2E /* MainMenu.xib */; };
 		DD7B14AE11A3CF38000D9775 /* osc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7B146211A3CF38000D9775 /* osc.a */; };
 		DD7B14AF11A3CF38000D9775 /* ofxOscBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD7B146611A3CF38000D9775 /* ofxOscBundle.cpp */; };
@@ -32,14 +38,12 @@
 		DDB3CDC4135DA71C0097B98E /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CDBA135DA71C0097B98E /* AGL.framework */; };
 		DDB3CDC5135DA71C0097B98E /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CDBB135DA71C0097B98E /* ApplicationServices.framework */; };
 		DDB3CDC6135DA71C0097B98E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CDBC135DA71C0097B98E /* AudioToolbox.framework */; };
-		DDB3CDC7135DA71C0097B98E /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CDBD135DA71C0097B98E /* Carbon.framework */; };
 		DDB3CDC8135DA71C0097B98E /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CDBE135DA71C0097B98E /* CoreAudio.framework */; };
 		DDB3CDC9135DA71C0097B98E /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CDBF135DA71C0097B98E /* CoreFoundation.framework */; };
 		DDB3CDCA135DA71C0097B98E /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CDC0135DA71C0097B98E /* CoreServices.framework */; };
 		DDB3CDCB135DA71C0097B98E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CDC1135DA71C0097B98E /* GLUT.framework */; };
 		DDB3CDCC135DA71C0097B98E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CDC2135DA71C0097B98E /* OpenGL.framework */; };
 		DDB3CDCD135DA71C0097B98E /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CDC3135DA71C0097B98E /* QuickTime.framework */; };
-		DDB3CE34135DB9640097B98E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CE33135DB9640097B98E /* Foundation.framework */; };
 		DDB3CE41135DEF010097B98E /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CE40135DEF010097B98E /* IOKit.framework */; };
 		DDB3CE45135DF06A0097B98E /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CE44135DF06A0097B98E /* openFrameworksDebug.a */; };
 		DDB3CE4F135DF08E0097B98E /* ofxThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDB3CE4B135DF08E0097B98E /* ofxThread.cpp */; };
@@ -114,8 +118,6 @@
 		DDB3D7C0135EDF9A0097B98E /* PluginListMeterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB3D4DB135EDF980097B98E /* PluginListMeterCell.m */; };
 		DDB3D7C1135EDF9A0097B98E /* PropertiesValueCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB3D4DD135EDF980097B98E /* PropertiesValueCell.m */; };
 		DDC8E6961137323900574926 /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DDC8E6931137323900574926 /* AppController.mm */; };
-		DDC8E7931137338900574926 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDC8E7911137338900574926 /* AppKit.framework */; };
-		DDC8E7941137338900574926 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDC8E7921137338900574926 /* Cocoa.framework */; };
 		DDC8E7BA113733E600574926 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDC8E7B9113733E600574926 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
@@ -130,36 +132,38 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		DDC8E85B1137351C00574926 /* CopyFiles */ = {
+		DDC8E85B1137351C00574926 /* Copy Files to Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
 			);
+			name = "Copy Files to Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E4C2427710CC5ABF004149E2 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E4C2444710CC769B004149E2 /* CopyFiles */ = {
+		E4C2444710CC769B004149E2 /* Copy Files to Resources */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
 			);
+			name = "Copy Files to Resources";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5831E7EC1383E9E200156214 /* Example.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Example.h; path = Example/Example.h; sourceTree = "<group>"; };
+		5831E7ED1383E9E200156214 /* Example.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Example.mm; path = Example/Example.mm; sourceTree = "<group>"; };
+		5831E7FA1383F89E00156214 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = ../../../../../System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<group>"; };
+		5831E8041384036700156214 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = ../../../../../System/Library/Frameworks/Carbon.framework; sourceTree = "<group>"; };
+		5831E81013840BB700156214 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = ../../../../../System/Library/Frameworks/Cocoa.framework; sourceTree = "<group>"; };
+		5831E81213840BBE00156214 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = ../../../../../System/Library/Frameworks/AppKit.framework; sourceTree = "<group>"; };
+		5831E81413840BC300156214 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = ../../../../../System/Library/Frameworks/Foundation.framework; sourceTree = "<group>"; };
+		5831E81913840FA200156214 /* BeamSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeamSync.h; sourceTree = "<group>"; };
+		5831E81A13840FA300156214 /* BeamSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeamSync.m; sourceTree = "<group>"; };
 		DD62F863135F40A500465B2E /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		DD7B145211A3CF38000D9775 /* IpEndpointName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IpEndpointName.h; sourceTree = "<group>"; };
 		DD7B145311A3CF38000D9775 /* NetworkingUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkingUtils.h; sourceTree = "<group>"; };
@@ -237,7 +241,12 @@
 		DD9AC4C813421D790059D4EC /* VideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayer.h; sourceTree = "<group>"; };
 		DD9AC4C913421D790059D4EC /* VideoPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = VideoPlayer.mm; sourceTree = "<group>"; };
 		DD9AC4CA13421D790059D4EC /* VideoPlayer.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VideoPlayer.xib; sourceTree = "<group>"; };
-		DDB3CD97135DA3BC0097B98E /* ExampleDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDAD0A75136DC0D9006562A3 /* simpleBlurHorizontal.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = simpleBlurHorizontal.frag; sourceTree = "<group>"; };
+		DDAD0A76136DC0D9006562A3 /* simpleBlurHorizontal.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = simpleBlurHorizontal.vert; sourceTree = "<group>"; };
+		DDAD0A77136DC0D9006562A3 /* simpleBlurVertical.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = simpleBlurVertical.frag; sourceTree = "<group>"; };
+		DDAD0A78136DC0D9006562A3 /* simpleBlurVertical.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = simpleBlurVertical.vert; sourceTree = "<group>"; };
+		DDAD0A8D136DD67C006562A3 /* gaussianBlurShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = gaussianBlurShader.frag; sourceTree = "<group>"; };
+		DDB3CD97135DA3BC0097B98E /* SeMinSkyggeDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeMinSkyggeDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDB3CDAB135DA71C0097B98E /* fmod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fmod.h; sourceTree = "<group>"; };
 		DDB3CDAC135DA71C0097B98E /* fmod.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = fmod.hpp; sourceTree = "<group>"; };
 		DDB3CDAD135DA71C0097B98E /* fmod_codec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fmod_codec.h; sourceTree = "<group>"; };
@@ -261,7 +270,6 @@
 		DDB3CDC2135DA71C0097B98E /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		DDB3CDC3135DA71C0097B98E /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
 		DDB3CE0C135DAB050097B98E /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = "<group>"; };
-		DDB3CE33135DB9640097B98E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = ../../../../../System/Library/Frameworks/Foundation.framework; sourceTree = "<group>"; };
 		DDB3CE40135DEF010097B98E /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = ../../../../../System/Library/Frameworks/IOKit.framework; sourceTree = "<group>"; };
 		DDB3CE44135DF06A0097B98E /* openFrameworksDebug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = openFrameworksDebug.a; path = libs/openFrameworksCompiled/lib/osx/openFrameworksDebug.a; sourceTree = "<group>"; };
 		DDB3CE4B135DF08E0097B98E /* ofxThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxThread.cpp; sourceTree = "<group>"; };
@@ -412,8 +420,6 @@
 		DDB3D4DD135EDF980097B98E /* PropertiesValueCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertiesValueCell.m; sourceTree = "<group>"; };
 		DDC8E6921137323900574926 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		DDC8E6931137323900574926 /* AppController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppController.mm; sourceTree = "<group>"; };
-		DDC8E7911137338900574926 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = ../../../../../../../../System/Library/Frameworks/AppKit.framework; sourceTree = "<group>"; };
-		DDC8E7921137338900574926 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = ../../../../../../../../System/Library/Frameworks/Cocoa.framework; sourceTree = "<group>"; };
 		DDC8E7B9113733E600574926 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = ../../../../../../../../System/Library/Frameworks/QuartzCore.framework; sourceTree = "<group>"; };
 		DDC8E87B1137360D00574926 /* openFrameworks-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "openFrameworks-Info.plist"; sourceTree = "<group>"; };
 		DDC8EA5E113809B100574926 /* PluginIncludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginIncludes.h; sourceTree = "<group>"; };
@@ -424,10 +430,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DDC8E7931137338900574926 /* AppKit.framework in Frameworks */,
-				DDC8E7941137338900574926 /* Cocoa.framework in Frameworks */,
-				DDC8E7BA113733E600574926 /* QuartzCore.framework in Frameworks */,
-				DD7B14AE11A3CF38000D9775 /* osc.a in Frameworks */,
+				5831E81113840BB700156214 /* Cocoa.framework in Frameworks */,
 				DD7B14B511A3CF38000D9775 /* openCV.a in Frameworks */,
 				DD7B158611A3CFD7000D9775 /* QTKit.framework in Frameworks */,
 				DDB3CDC8135DA71C0097B98E /* CoreAudio.framework in Frameworks */,
@@ -435,14 +438,15 @@
 				DD9ABFAD1341E1F20059D4EC /* ScriptingBridge.framework in Frameworks */,
 				DDB3CDC4135DA71C0097B98E /* AGL.framework in Frameworks */,
 				DDB3CDC5135DA71C0097B98E /* ApplicationServices.framework in Frameworks */,
+				DD7B14AE11A3CF38000D9775 /* osc.a in Frameworks */,
+				5831E7FB1383F89E00156214 /* SystemConfiguration.framework in Frameworks */,
 				DDB3CDC6135DA71C0097B98E /* AudioToolbox.framework in Frameworks */,
-				DDB3CDC7135DA71C0097B98E /* Carbon.framework in Frameworks */,
+				DDC8E7BA113733E600574926 /* QuartzCore.framework in Frameworks */,
 				DDB3CDC9135DA71C0097B98E /* CoreFoundation.framework in Frameworks */,
 				DDB3CDCA135DA71C0097B98E /* CoreServices.framework in Frameworks */,
 				DDB3CDCB135DA71C0097B98E /* GLUT.framework in Frameworks */,
 				DDB3CDCC135DA71C0097B98E /* OpenGL.framework in Frameworks */,
 				DDB3CDCD135DA71C0097B98E /* QuickTime.framework in Frameworks */,
-				DDB3CE34135DB9640097B98E /* Foundation.framework in Frameworks */,
 				DDB3CE41135DEF010097B98E /* IOKit.framework in Frameworks */,
 				DDB3CE45135DF06A0097B98E /* openFrameworksDebug.a in Frameworks */,
 				DDB3CE53135DF12C0097B98E /* freeimage.a in Frameworks */,
@@ -456,6 +460,8 @@
 				DDB3D061135DF2100097B98E /* GLee.a in Frameworks */,
 				DDB3D097135DF2190097B98E /* freetype.a in Frameworks */,
 				DDB3D795135EDF9A0097B98E /* libdc1394.a in Frameworks */,
+				5831E81313840BBE00156214 /* AppKit.framework in Frameworks */,
+				5831E81513840BC300156214 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -695,6 +701,19 @@
 			);
 			path = VideoPlayer;
 			sourceTree = "<group>";
+		};
+		DDAD0A74136DC0D9006562A3 /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				DDAD0A8D136DD67C006562A3 /* gaussianBlurShader.frag */,
+				DDAD0A75136DC0D9006562A3 /* simpleBlurHorizontal.frag */,
+				DDAD0A76136DC0D9006562A3 /* simpleBlurHorizontal.vert */,
+				DDAD0A77136DC0D9006562A3 /* simpleBlurVertical.frag */,
+				DDAD0A78136DC0D9006562A3 /* simpleBlurVertical.vert */,
+			);
+			name = shaders;
+			path = src/shaders;
+			sourceTree = SOURCE_ROOT;
 		};
 		DDB3CDA2135DA71C0097B98E /* libs */ = {
 			isa = PBXGroup;
@@ -1248,6 +1267,8 @@
 				DDB3D4B8135EDF980097B98E /* PluginOpenGLView.mm */,
 				DDB3D4B9135EDF980097B98E /* SharedContextLayer.h */,
 				DDB3D4BA135EDF980097B98E /* SharedContextLayer.mm */,
+				5831E81913840FA200156214 /* BeamSync.h */,
+				5831E81A13840FA300156214 /* BeamSync.m */,
 			);
 			path = OpenGL;
 			sourceTree = "<group>";
@@ -1314,6 +1335,8 @@
 			children = (
 				DD9AC4C713421D790059D4EC /* VideoPlayer */,
 				DDC8EA5E113809B100574926 /* PluginIncludes.h */,
+				5831E7EC1383E9E200156214 /* Example.h */,
+				5831E7ED1383E9E200156214 /* Example.mm */,
 			);
 			path = Plugins;
 			sourceTree = "<group>";
@@ -1321,6 +1344,7 @@
 		DDF87490114AB2D0004B2FE2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DDAD0A74136DC0D9006562A3 /* shaders */,
 			);
 			lineEnding = 0;
 			name = Resources;
@@ -1330,11 +1354,13 @@
 		E45BE0360E8CC5DE009D7055 /* libs */ = {
 			isa = PBXGroup;
 			children = (
-				DDC8E7921137338900574926 /* Cocoa.framework */,
+				5831E81013840BB700156214 /* Cocoa.framework */,
+				5831E81213840BBE00156214 /* AppKit.framework */,
+				5831E81413840BC300156214 /* Foundation.framework */,
+				5831E8041384036700156214 /* Carbon.framework */,
+				5831E7FA1383F89E00156214 /* SystemConfiguration.framework */,
 				DD7B158711A3CFDE000D9775 /* CoreMIDI.framework */,
 				DDC8E7B9113733E600574926 /* QuartzCore.framework */,
-				DDC8E7911137338900574926 /* AppKit.framework */,
-				DDB3CE33135DB9640097B98E /* Foundation.framework */,
 				DDB3CE40135DEF010097B98E /* IOKit.framework */,
 				DD9ABFAC1341E1F20059D4EC /* ScriptingBridge.framework */,
 				DD7B158511A3CFD7000D9775 /* QTKit.framework */,
@@ -1351,7 +1377,7 @@
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
 				E4C2422310CC54B6004149E2 /* openFrameworks */,
 				E45BE0360E8CC5DE009D7055 /* libs */,
-				DDB3CD97135DA3BC0097B98E /* ExampleDebug.app */,
+				DDB3CD97135DA3BC0097B98E /* SeMinSkyggeDebug.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1379,25 +1405,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E4B69B5A0A3A1756003C02F2 /* parsifals */ = {
+		E4B69B5A0A3A1756003C02F2 /* SeMinSkygge */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "parsifals" */;
+			buildConfigurationList = E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "SeMinSkygge" */;
 			buildPhases = (
 				E4B69B580A3A1756003C02F2 /* Sources */,
 				E4B69B590A3A1756003C02F2 /* Frameworks */,
 				E4B6FFFD0C3F9AB9008CF71C /* ShellScript */,
-				E4C2427710CC5ABF004149E2 /* CopyFiles */,
-				E4C2444710CC769B004149E2 /* CopyFiles */,
-				DDC8E85B1137351C00574926 /* CopyFiles */,
+				E4C2444710CC769B004149E2 /* Copy Files to Resources */,
+				DDC8E85B1137351C00574926 /* Copy Files to Frameworks */,
 				DDC8E96311373C0000574926 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = parsifals;
+			name = SeMinSkygge;
 			productName = myOFApp;
-			productReference = DDB3CD97135DA3BC0097B98E /* ExampleDebug.app */;
+			productReference = DDB3CD97135DA3BC0097B98E /* SeMinSkyggeDebug.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1426,7 +1451,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				E4B69B5A0A3A1756003C02F2 /* parsifals */,
+				E4B69B5A0A3A1756003C02F2 /* SeMinSkygge */,
 			);
 		};
 /* End PBXProject section */
@@ -1550,6 +1575,8 @@
 				DDB3D7BF135EDF9A0097B98E /* PluginEnabledCell.m in Sources */,
 				DDB3D7C0135EDF9A0097B98E /* PluginListMeterCell.m in Sources */,
 				DDB3D7C1135EDF9A0097B98E /* PropertiesValueCell.m in Sources */,
+				5831E7EE1383E9E200156214 /* Example.mm in Sources */,
+				5831E81B13840FA300156214 /* BeamSync.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1600,7 +1627,7 @@
 				OTHER_LDFLAGS = "";
 				OpenframeworksPath = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT\"";
 				PRODUCT_NAME = "";
-				SDKROOT = "";
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 			};
 			name = ReleaseUniversal;
 		};
@@ -1619,10 +1646,12 @@
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/addons/ofxCocoaPlugins/src/Libs\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"$(OpenframeworksPath)/libs/openFrameworks/**",
 					"$(OpenframeworksPath)/libs/freetype/include/",
@@ -1657,11 +1686,13 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_10)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_11)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_12)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_13)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "$(OpenframeworksPath)/libs/freeimage/lib/osx";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_10 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/fmodex/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_11 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/glee/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_12 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/freetype/lib/osx\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_13 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/addons/ofxOsc/libs/oscpack/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_14 = "\"$(OpenframeworksPath)/libs/fmodex/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_15 = "\"$(OpenframeworksPath)/libs/freetype/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "$(OpenframeworksPath)/libs/FreeImage/lib/osx";
@@ -1673,7 +1704,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_8 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/poco/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_9 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/rtAudio/lib/osx\"";
 				PREBINDING = NO;
-				PRODUCT_NAME = ExampleUniversal;
+				PRODUCT_NAME = SeMinSkyggeUniversal;
 				ZERO_LINK = NO;
 			};
 			name = ReleaseUniversal;
@@ -1719,7 +1750,7 @@
 				OTHER_LDFLAGS = "";
 				OpenframeworksPath = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT\"";
 				PRODUCT_NAME = "";
-				SDKROOT = "";
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 			};
 			name = Debug;
 		};
@@ -1764,7 +1795,7 @@
 				OTHER_LDFLAGS = "";
 				OpenframeworksPath = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT\"";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = "";
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 			};
 			name = Release;
 		};
@@ -1784,10 +1815,12 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_MODEL_TUNING = G4;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"$(OpenframeworksPath)/libs/openFrameworks/**",
 					"$(OpenframeworksPath)/libs/freetype/include/",
@@ -1822,11 +1855,13 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_10)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_11)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_12)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_13)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "$(OpenframeworksPath)/libs/freeimage/lib/osx";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_10 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/fmodex/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_11 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/glee/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_12 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/freetype/lib/osx\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_13 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/addons/ofxOsc/libs/oscpack/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_14 = "\"$(OpenframeworksPath)/libs/fmodex/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_15 = "\"$(OpenframeworksPath)/libs/freetype/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "$(OpenframeworksPath)/libs/FreeImage/lib/osx";
@@ -1838,7 +1873,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_8 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/poco/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_9 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/rtAudio/lib/osx\"";
 				PREBINDING = NO;
-				PRODUCT_NAME = ExampleDebug;
+				PRODUCT_NAME = SeMinSkyggeDebug;
 				ZERO_LINK = NO;
 			};
 			name = Debug;
@@ -1858,10 +1893,12 @@
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/addons/ofxCocoaPlugins/src/Libs\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
 				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"$(OpenframeworksPath)/libs/openFrameworks/**",
 					"$(OpenframeworksPath)/libs/freetype/include/",
@@ -1896,11 +1933,13 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_10)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_11)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_12)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_13)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "$(OpenframeworksPath)/libs/freeimage/lib/osx";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_10 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/fmodex/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_11 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/glee/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_12 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/freetype/lib/osx\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_13 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/addons/ofxOsc/libs/oscpack/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_14 = "\"$(OpenframeworksPath)/libs/fmodex/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_15 = "\"$(OpenframeworksPath)/libs/freetype/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "$(OpenframeworksPath)/libs/FreeImage/lib/osx";
@@ -1912,7 +1951,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_8 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/poco/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_9 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/rtAudio/lib/osx\"";
 				PREBINDING = NO;
-				PRODUCT_NAME = Example;
+				PRODUCT_NAME = SeMinSkygge;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -1930,7 +1969,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "parsifals" */ = {
+		E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "SeMinSkygge" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4B69B600A3A1757003C02F2 /* Debug */,

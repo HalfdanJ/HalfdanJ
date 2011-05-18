@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		58A9364B138411D400E534A0 /* BeamSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A9364A138411D400E534A0 /* BeamSync.m */; };
 		DD42F5FE1366BC9E0022FD52 /* RenderObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = DD42F5FD1366BC9E0022FD52 /* RenderObject.mm */; };
 		DD62F864135F40A500465B2E /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD62F863135F40A500465B2E /* MainMenu.xib */; };
 		DD7B14AE11A3CF38000D9775 /* osc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7B146211A3CF38000D9775 /* osc.a */; };
@@ -168,6 +169,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		58A93649138411D400E534A0 /* BeamSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeamSync.h; sourceTree = "<group>"; };
+		58A9364A138411D400E534A0 /* BeamSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeamSync.m; sourceTree = "<group>"; };
 		DD42F5FC1366BC9E0022FD52 /* RenderObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderObject.h; sourceTree = "<group>"; };
 		DD42F5FD1366BC9E0022FD52 /* RenderObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RenderObject.mm; sourceTree = "<group>"; };
 		DD62F863135F40A500465B2E /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
@@ -1307,6 +1310,8 @@
 				DDB3D4B8135EDF980097B98E /* PluginOpenGLView.mm */,
 				DDB3D4B9135EDF980097B98E /* SharedContextLayer.h */,
 				DDB3D4BA135EDF980097B98E /* SharedContextLayer.mm */,
+				58A93649138411D400E534A0 /* BeamSync.h */,
+				58A9364A138411D400E534A0 /* BeamSync.m */,
 			);
 			path = OpenGL;
 			sourceTree = "<group>";
@@ -1615,6 +1620,7 @@
 				DD42F5FE1366BC9E0022FD52 /* RenderObject.mm in Sources */,
 				DDAD0A71136D6595006562A3 /* ofxFBOTexture.cpp in Sources */,
 				DDAD0A72136D6595006562A3 /* ofxShader.cpp in Sources */,
+				58A9364B138411D400E534A0 /* BeamSync.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

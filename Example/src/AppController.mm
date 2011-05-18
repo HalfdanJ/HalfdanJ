@@ -31,7 +31,7 @@ extern ofAppBaseWindow * window;
 -(void) setupPlugins{
 	[pluginManagerController addHeader:@"Plugins"];
 	//[pluginManagerController addPlugin:[[Parsifal alloc] init]];
-	//[pluginManagerController addPlugin:[[VideoPlayer alloc] init]];
+	[pluginManagerController addPlugin:[[Example alloc] init]];
 	[pluginManagerController addPlugin:[[Keystoner alloc] initWithSurfaces:[NSArray arrayWithObjects:@"Screen", nil]]];
 
 }
