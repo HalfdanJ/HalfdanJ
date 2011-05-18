@@ -35,6 +35,7 @@
     float opacity;
     
     BOOL maskOnBack;
+    BOOL autoFill;
     
     ofxFBOTexture * borderFbo;
 //    ofxFBOTexture * tempFbo;
@@ -73,6 +74,7 @@
 @property (readwrite) float depthBlurAmount;
 @property (readwrite) float opacity;
 @property (readwrite) BOOL maskOnBack;
+@property (readwrite) BOOL autoFill;
 
 -(void) loadAsset;
 

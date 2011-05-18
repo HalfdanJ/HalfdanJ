@@ -4,7 +4,7 @@
 #import "RenderObject.h"
 #import "ofxFBOTexture.h"
 #import "ofxShader.h"
-
+#import "ofxVectorMath.h"
 
 enum UpdateFlags {
     USE_ASSET_TEXTURE = 1,
@@ -28,8 +28,13 @@ enum UpdateFlags {
     CIContext * ciContext;
     
     int pingpong;
+  
+    ofxVec3f camCoord;
+    ofxVec3f eyeCoord;
     
-    CFAbsoluteTime time;
+    float mouseLastX,mouseLastY;
+    IBOutlet NSButton *autoPanCheckbox;
+    IBOutlet NSSlider *autoPanSpeed;
 }
 
 @property (retain) NSMutableArray * objectsArray;
@@ -42,11 +47,14 @@ enum UpdateFlags {
 - (IBAction)addObject:(id)sender;
 - (IBAction)removeObject:(id)sender;
 - (IBAction)setAssset:(id)sender;
+- (IBAction)resetCam:(id)sender;
 
 - (NSArray*) allObjects;
 - (NSArray*) allObjectsOrderedByDepth;
 
 - (RenderObject*) selectedObject;
+
+-(void) renderFbo;
 
 - (int) updateFlags;
 @end

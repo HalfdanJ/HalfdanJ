@@ -57,7 +57,7 @@ const int fboBorder = 20;
 
 @implementation RenderObject
 @synthesize engine, name, subObjects, assetString, assetInfo;
-@synthesize posX, posY, posZ, scale,rotationZ,depthBlurAmount, opacity, maskOnBack;
+@synthesize posX, posY, posZ, scale,rotationZ,depthBlurAmount, opacity, maskOnBack, autoFill;
 - (id)init
 {
     self = [super init];
@@ -78,10 +78,16 @@ const int fboBorder = 20;
     return self;
 }
 
+//------------------------------------------------------------------------------------------------------------------------
+
+
 - (void)dealloc
 {
     [super dealloc];
 }
+
+//------------------------------------------------------------------------------------------------------------------------
+
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
     if([(NSString*)context isEqualToString:@"loadAsset"]){
@@ -92,16 +98,33 @@ const int fboBorder = 20;
         borderedFBOOutdated = YES;
         ciImageOutdated = YES;
 
-    }
-    
+    }    
 }
 
+//------------------------------------------------------------------------------------------------------------------------
+
+
 -(void) transform{
-    glTranslatef(posX, posY, posZ);
-    glScaled(scale, scale,scale);
-    glRotated(rotationZ, 0,0,1);
-    glTranslated(-[self aspect]*0.5, -0.5, 0);
+    if(!autoFill){
+        glTranslatef(posX, posY, posZ);
+        glScaled(scale, scale,scale);
+        glRotated(rotationZ, 0,0,1);
+        glTranslated(-[self aspect]*0.5, -0.5, 0);
+    } else {
+        float depthScale = [[[engine properties] objectForKey:@"camDepthScale"] floatValue] / 100.0;
+        
+        float _scale = (1+posZ * -0.3*depthScale);
+      
+        glTranslatef(posX, 0.5, posZ);
+        glScaled(_scale, _scale,_scale);
+        glRotated(rotationZ, 0,0,1);
+        glTranslated(-0.5, -0.5, 0);
+
+    }
 }
+
+//------------------------------------------------------------------------------------------------------------------------
+
 
 -(void) drawObject{
     int flags = [engine updateFlags];
@@ -146,6 +169,9 @@ const int fboBorder = 20;
     //        fbo->draw(0,0,[self aspect],1);    
 }
 
+//------------------------------------------------------------------------------------------------------------------------
+
+
 -(void)drawWithAlpha:(float)alpha{
     glColor4f(255,255,255,(float)alpha*opacity);    
     glPushMatrix();{
@@ -153,6 +179,8 @@ const int fboBorder = 20;
         [self drawObject];
     }glPopMatrix();
 }
+
+//------------------------------------------------------------------------------------------------------------------------
 
 
 -(void) drawMaskWithAlpha:(float)alpha{
@@ -163,6 +191,8 @@ const int fboBorder = 20;
      
      }glPopMatrix();*/
 }
+
+//------------------------------------------------------------------------------------------------------------------------
 
 
 -(void) drawControlsWithColor:(NSColor*)color{
@@ -216,6 +246,8 @@ const int fboBorder = 20;
     }glPopMatrix();
 }
 
+//------------------------------------------------------------------------------------------------------------------------
+
 
 -(void) drawTexture:(GLuint)tex size:(NSSize)size{
     glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
@@ -229,6 +261,8 @@ const int fboBorder = 20;
     glEnd();    
     glDisable(GL_TEXTURE_RECTANGLE_EXT);         
 }
+
+//------------------------------------------------------------------------------------------------------------------------
 
 
 -(void) allocateFBO{
@@ -246,6 +280,9 @@ const int fboBorder = 20;
     }*/
 }
 
+//------------------------------------------------------------------------------------------------------------------------
+
+
 
 -(GLuint) uploadAssetTexture{
     NSLog(@"Upload asset %@",self);
@@ -258,6 +295,8 @@ const int fboBorder = 20;
     
     return texture;
 }
+
+//------------------------------------------------------------------------------------------------------------------------
 
 
 -(GLuint) createBorderedFBOFromTexture:(GLuint)tex{
@@ -306,6 +345,9 @@ const int fboBorder = 20;
     return borderFbo->texData.textureID;
 }
 
+//------------------------------------------------------------------------------------------------------------------------
+
+
 -(CIImage*) createCIImageFromTexture:(GLint)tex size:(NSSize)size{
     NSLog(@"Create CI Image");
     CIImage * image = [CIImage imageWithTexture:tex size:CGSizeMake(size.width, size.height) flipped:NO colorSpace:CGColorSpaceCreateDeviceRGB()];
@@ -314,6 +356,9 @@ const int fboBorder = 20;
     return image;
 }
 
+//------------------------------------------------------------------------------------------------------------------------
+
+
 -(CIImage*) filterCIImage:(CIImage*)inputImage{
      //   [resizeFilter setValue:inputImage forKey:@"inputImage"];
    // [depthBlurFilter setValue:[resizeFilter valueForKey:@"outputImage"] forKey:@"inputImage"];
@@ -321,6 +366,8 @@ const int fboBorder = 20;
     CIImage * _outputImage = [depthBlurFilter valueForKey:@"outputImage"];
     return _outputImage;
 }
+
+//------------------------------------------------------------------------------------------------------------------------
 
 -(GLuint) createFBOFromCIImage:(CIImage*)image{
     NSLog(@"Create FBO from CIImage");
@@ -375,6 +422,7 @@ const int fboBorder = 20;
     return fbo->texData.textureID;
 }
 
+//------------------------------------------------------------------------------------------------------------------------
 
 
 -(void)update{
@@ -554,6 +602,7 @@ const int fboBorder = 20;
     }
 }
 
+
 -(void)setEngine:(RenderEngine*)_e{
     engine = _e;
     
@@ -578,7 +627,8 @@ const int fboBorder = 20;
     [self setRotationZ:[aDecoder decodeFloatForKey:@"rotationZ"]];
     [self setOpacity:[aDecoder decodeFloatForKey:@"opacity"]];
     [self setMaskOnBack:[aDecoder decodeBoolForKey:@"maskOnBack"]];
-    
+    [self setAutoFill:[aDecoder decodeBoolForKey:@"autoFill"]];
+
     [self addObserver:self forKeyPath:@"assetString" options:0 context:@"loadAsset"];
     
     return self;
@@ -595,7 +645,7 @@ const int fboBorder = 20;
     [aCoder encodeFloat:rotationZ forKey:@"rotationZ"];
     [aCoder encodeFloat:opacity forKey:@"opacity"];
     [aCoder encodeBool:maskOnBack forKey:@"maskOnBack"];
-    
+    [aCoder encodeBool:autoFill forKey:@"autoFill"];    
 }
 
 -(NSString *)description{

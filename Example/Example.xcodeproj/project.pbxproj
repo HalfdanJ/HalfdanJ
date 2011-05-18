@@ -990,6 +990,7 @@
 		DDB3D098135EDF930097B98E /* ofxCocoaPlugins */ = {
 			isa = PBXGroup;
 			children = (
+				DDB3D43D135EDF980097B98E /* Application */,
 				DDB3D43C135EDF980097B98E /* src */,
 			);
 			path = ofxCocoaPlugins;
@@ -998,7 +999,6 @@
 		DDB3D43C135EDF980097B98E /* src */ = {
 			isa = PBXGroup;
 			children = (
-				DDB3D43D135EDF980097B98E /* Application */,
 				DDB3D44A135EDF980097B98E /* CorePlugins */,
 				DDB3D4B1135EDF980097B98E /* Libs */,
 				DDB3D4B3135EDF980097B98E /* main.mm */,
@@ -1026,7 +1026,8 @@
 				DDB3D448135EDF980097B98E /* SaveManager.h */,
 				DDB3D449135EDF980097B98E /* SaveManager.mm */,
 			);
-			path = Application;
+			name = Application;
+			path = src/Application;
 			sourceTree = "<group>";
 		};
 		DDB3D44A135EDF980097B98E /* CorePlugins */ = {
