@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		581F9D1D13856DF90091B02B /* ObjectTreeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 581F9D1C13856DF90091B02B /* ObjectTreeViewController.mm */; };
 		58A9364B138411D400E534A0 /* BeamSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A9364A138411D400E534A0 /* BeamSync.m */; };
 		58EA46C71384611300CCB078 /* colorCorrectShader.frag in Sources */ = {isa = PBXBuildFile; fileRef = 58EA46C51384611300CCB078 /* colorCorrectShader.frag */; };
 		58EA46C81384611300CCB078 /* colorCorrectShader.vert in Sources */ = {isa = PBXBuildFile; fileRef = 58EA46C61384611300CCB078 /* colorCorrectShader.vert */; };
@@ -165,6 +166,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		581F9D1B13856DF90091B02B /* ObjectTreeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectTreeViewController.h; sourceTree = "<group>"; };
+		581F9D1C13856DF90091B02B /* ObjectTreeViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ObjectTreeViewController.mm; sourceTree = "<group>"; };
 		58A93649138411D400E534A0 /* BeamSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeamSync.h; sourceTree = "<group>"; };
 		58A9364A138411D400E534A0 /* BeamSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeamSync.m; sourceTree = "<group>"; };
 		58EA46C51384611300CCB078 /* colorCorrectShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = colorCorrectShader.frag; sourceTree = "<group>"; };
@@ -718,6 +721,8 @@
 				DD947745135F6B2D0027F1CC /* RenderEngine.xib */,
 				DD42F5FC1366BC9E0022FD52 /* RenderObject.h */,
 				DD42F5FD1366BC9E0022FD52 /* RenderObject.mm */,
+				581F9D1B13856DF90091B02B /* ObjectTreeViewController.h */,
+				581F9D1C13856DF90091B02B /* ObjectTreeViewController.mm */,
 			);
 			path = RenderEngine;
 			sourceTree = "<group>";
@@ -1623,6 +1628,7 @@
 				58A9364B138411D400E534A0 /* BeamSync.m in Sources */,
 				58EA46C71384611300CCB078 /* colorCorrectShader.frag in Sources */,
 				58EA46C81384611300CCB078 /* colorCorrectShader.vert in Sources */,
+				581F9D1D13856DF90091B02B /* ObjectTreeViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

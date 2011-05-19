@@ -1,16 +1,19 @@
 #import "RenderEngine.h"
 #import "Keystoner.h"
+#import "ObjectTreeViewController.h"
 
 @implementation RenderEngine
 @synthesize objectTreeController;
 @synthesize objectsArray, assetDir;
-@synthesize blurShader, ciContext;
+@synthesize blurShader, ciContext, treeController;
 
 //------------------------------------------------------------------------------------------------------------------------
 
 -(void)initPlugin{
     objectsArray = [NSMutableArray array]; 
     assetDir = @"";
+    
+    treeController = [[ObjectTreeViewController alloc] initWithEngine:self];
     
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:3] named:@"camPosX"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:-1 maxValue:1] named:@"camPosY"];
@@ -22,9 +25,17 @@
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:5] named:@"assetTextureMode"];    
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"borderedRendering"];    
     
-        [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"levelsMin"];    
-            [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0 maxValue:1] named:@"levelsMax"];    
-                [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.5 minValue:0 maxValue:1] named:@"levelsMiddle"];    
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"levelsMin"];    
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0 maxValue:1] named:@"levelsMax"];    
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.5 minValue:0 maxValue:1] named:@"levelsMiddle"];    
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+
+-(void)awakeFromNib{
+    [super awakeFromNib];
+    [objectOutlineView setDataSource:treeController];
+    [objectOutlineView registerForDraggedTypes:[NSArray arrayWithObjects:@"ObjectName", nil]];
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -69,13 +80,16 @@
     }
     
     colorCorrectShader = new ofxShader();
-     NSString *fragpath = [[NSBundle mainBundle] pathForResource:@"colorCorrectShader" ofType:@"frag"];
-     NSString *vertpath = [[NSBundle mainBundle] pathForResource:@"colorCorrectShader" ofType:@"vert"];
-     colorCorrectShader->loadShader([fragpath cStringUsingEncoding:NSUTF8StringEncoding],[vertpath cStringUsingEncoding:NSUTF8StringEncoding]); 
+    NSString *fragpath = [[NSBundle mainBundle] pathForResource:@"colorCorrectShader" ofType:@"frag"];
+    NSString *vertpath = [[NSBundle mainBundle] pathForResource:@"colorCorrectShader" ofType:@"vert"];
+    colorCorrectShader->loadShader([fragpath cStringUsingEncoding:NSUTF8StringEncoding],[vertpath cStringUsingEncoding:NSUTF8StringEncoding]); 
     
     
     camCoord = ofxVec3f(0,0,-5);
     eyeCoord = ofxVec3f(0,0,1);
+    
+    glEnable(GL_DEPTH_TEST);
+
 }
 
 
@@ -91,6 +105,7 @@
 
 
 -(void)controlDraw:(NSDictionary *)drawingInformation{
+    
     ofEnableAlphaBlending();
     ofBackground(0,0,0);
     glScaled(ofGetWidth(), ofGetHeight(), 1);
@@ -182,7 +197,7 @@
     colorCorrectShader->setUniformVariable1f("max", PropF(@"levelsMax"));
     
     colorCorrectShader->setUniformVariable2f("start", 0.0, 0.0);
-        colorCorrectShader->setUniformVariable2f("middle",0.5, PropF(@"levelsMiddle"));    
+    colorCorrectShader->setUniformVariable2f("middle",0.5, PropF(@"levelsMiddle"));    
     colorCorrectShader->setUniformVariable2f("end", 1.0, 1.0);    
     
     [GetPlugin(Keystoner)  applySurface:@"Screen" projectorNumber:0 viewNumber:ViewNumber];
@@ -196,7 +211,7 @@
     [GetPlugin(Keystoner)  popSurface];    
     glPopMatrix();   
     colorCorrectShader->setShaderActive(NO);
-
+    
     ofEnableAlphaBlending();
     
 }
@@ -246,13 +261,16 @@
     pingpong = !pingpong;
     
     NSArray * allObjects = [self allObjectsOrderedByDepth];       
-    
+    //NSArray * rootsObjects = [self rootObjectsOrdredByDepth];       
+
     int timer = ofGetElapsedTimeMillis();    
+
     for(RenderObject * obj in allObjects){
         float dist = [obj posZ]+PropF(@"camPosZ");
         [obj setDepthBlurAmount:fabs(dist*PropF(@"depthBlur"))];        
         [obj update];
     }
+
     
     if(ofGetElapsedTimeMillis()-timer > 2){
         cout<<"Update time: "<<ofGetElapsedTimeMillis()-timer<<endl;
@@ -265,7 +283,6 @@
     fboBack[pingpong]->swapIn(); {           
         glPushMatrix();
         [self setupFboOpengl];
-        
         
         glPushMatrix();
         
@@ -354,10 +371,21 @@
 
 - (NSArray*) allObjectsOrderedByDepth{
     NSArray * allObjects = [self allObjects];
-    NSSortDescriptor * descriptor =[[[NSSortDescriptor alloc] initWithKey:@"posZ" ascending:YES] autorelease];
+    NSSortDescriptor * descriptor =[[[NSSortDescriptor alloc] initWithKey:@"absolutePosZ" ascending:YES] autorelease];
     
     NSArray * descriptors = [NSArray arrayWithObjects:descriptor, nil];
     return [allObjects sortedArrayUsingDescriptors:descriptors];
+}
+
+//------------------------------------------------------------------------------------------------------------------------
+
+
+-(NSArray*) rootObjectsOrdredByDepth{
+    NSSortDescriptor * descriptor =[[[NSSortDescriptor alloc] initWithKey:@"absolutePosZ" ascending:YES] autorelease];
+    
+    NSArray * descriptors = [NSArray arrayWithObjects:descriptor, nil];
+    return [objectsArray sortedArrayUsingDescriptors:descriptors];
+    
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -370,7 +398,6 @@
 
 
 - (IBAction)addObject:(id)sender {
-    NSLog(@"Add objects");
     RenderObject * newObject = [[RenderObject alloc] init];
     [newObject setEngine:self];
     [objectTreeController addObject:newObject];
@@ -379,7 +406,7 @@
 //------------------------------------------------------------------------------------------------------------------------
 
 - (IBAction)removeObject:(id)sender {
-    [objectTreeController removeObject:[self selectedObject]];
+    [objectTreeController remove:[self selectedObject]];
 }
 
 //------------------------------------------------------------------------------------------------------------------------

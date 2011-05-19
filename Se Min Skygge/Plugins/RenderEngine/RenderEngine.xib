@@ -1064,7 +1064,6 @@
 											<int key="NSvFlags">268</int>
 											<string key="NSFrame">{{17, 17}, {87, 25}}</string>
 											<reference key="NSSuperview" ref="628458915"/>
-											<reference key="NSNextKeyView" ref="148090505"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSButtonCell" key="NSCell" id="919006913">
 												<int key="NSCellFlags">-2080244224</int>
@@ -1761,7 +1760,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 											</object>
 										</object>
 										<double key="NSRowHeight">17</double>
-										<int key="NSTvFlags">-767557632</int>
+										<int key="NSTvFlags">-633339904</int>
 										<reference key="NSDelegate"/>
 										<reference key="NSDataSource"/>
 										<int key="NSColumnAutoresizingStyle">4</int>
@@ -1861,6 +1860,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				<bool key="NSPreservesSelection">YES</bool>
 				<bool key="NSSelectsInsertedObjects">YES</bool>
 				<string key="NSTreeContentChildrenKey">subObjects</string>
+				<string key="NSTreeContentLeafKey">isLeaf</string>
 			</object>
 			<object class="NSUserDefaultsController" id="32750308">
 				<bool key="NSSharedInstance">YES</bool>
@@ -2512,6 +2512,14 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						</object>
 					</object>
 					<int key="connectionID">287</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">objectOutlineView</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="377234748"/>
+					</object>
+					<int key="connectionID">289</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -3748,7 +3756,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">287</int>
+			<int key="maxID">289</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3816,12 +3824,14 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>autoPanCheckbox</string>
 							<string>autoPanSpeed</string>
+							<string>objectOutlineView</string>
 							<string>objectTreeController</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSButton</string>
 							<string>NSSlider</string>
+							<string>NSOutlineView</string>
 							<string>NSTreeController</string>
 						</object>
 					</object>
@@ -3831,6 +3841,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>autoPanCheckbox</string>
 							<string>autoPanSpeed</string>
+							<string>objectOutlineView</string>
 							<string>objectTreeController</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -3842,6 +3853,10 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<object class="IBToOneOutletInfo">
 								<string key="name">autoPanSpeed</string>
 								<string key="candidateClassName">NSSlider</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">objectOutlineView</string>
+								<string key="candidateClassName">NSOutlineView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">objectTreeController</string>

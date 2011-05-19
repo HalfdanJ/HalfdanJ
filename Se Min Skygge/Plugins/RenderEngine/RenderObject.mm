@@ -8,6 +8,8 @@
 
 #import "RenderObject.h"
 #import "RenderEngine.h"
+
+
 //#include "GLee.h"
 //#include <OpenGL/glu.h>
 //#include "ofConstants.h"
@@ -56,7 +58,7 @@ const int fboBorder = 20;
 
 
 @implementation RenderObject
-@synthesize engine, name, subObjects, assetString, assetInfo;
+@synthesize engine, name, subObjects, parent, assetString, assetInfo;
 @synthesize posX, posY, posZ, scale,rotationZ,depthBlurAmount, opacity, maskOnBack, autoFill;
 - (id)init
 {
@@ -64,6 +66,7 @@ const int fboBorder = 20;
     if (self) {
         [self addObserver:self forKeyPath:@"assetString" options:0 context:@"loadAsset"];
         
+        subObjects = [NSMutableArray array];
         
         depthBlurFilter = [[CIFilter filterWithName:@"CIGaussianBlur"] retain];
         [depthBlurFilter setDefaults];
@@ -97,7 +100,7 @@ const int fboBorder = 20;
         //changedFlag = YES;
         borderedFBOOutdated = YES;
         ciImageOutdated = YES;
-
+        
     }    
 }
 
@@ -105,6 +108,9 @@ const int fboBorder = 20;
 
 
 -(void) transform{
+    if(parent)
+        [parent transform];
+    
     if(!autoFill){
         glTranslatef(posX, posY, posZ);
         glScaled(scale, scale,scale);
@@ -114,12 +120,12 @@ const int fboBorder = 20;
         float depthScale = [[[engine properties] objectForKey:@"camDepthScale"] floatValue] / 100.0;
         
         float _scale = (1+posZ * -0.3*depthScale);
-      
-        glTranslatef(posX, 0.5, posZ);
+        
+        glTranslatef(0, 0.5, posZ);
         glScaled(_scale, _scale,_scale);
         glRotated(rotationZ, 0,0,1);
         glTranslated(-0.5, -0.5, 0);
-
+        
     }
 }
 
@@ -140,13 +146,15 @@ const int fboBorder = 20;
         if(flags & USE_BORDERED_FBO){
             [self drawTexture:fbo->texData.textureID size:NSMakeSize([self pixelsWide]+2*fboBorder, [self pixelsHigh]+2*fboBorder)];        
         } else {
-            CGRect rect = filteredRect;
-
-            glScaled(1.0/([self pixelsWide]),1.0/([self pixelsHigh]),1); 
-            glTranslated(rect.origin.x, rect.origin.y,0);
-            glScaled(rect.size.width, rect.size.height, 1);
-
-            [self drawTexture:fbo->texData.textureID size:NSMakeSize(rect.size.width, rect.size.height)];                    
+            if(fbo){
+                CGRect rect = filteredRect;
+                
+                glScaled(1.0/([self pixelsWide]),1.0/([self pixelsHigh]),1); 
+                glTranslated(rect.origin.x, rect.origin.y,0);
+                glScaled(rect.size.width, rect.size.height, 1);
+                
+                [self drawTexture:fbo->texData.textureID size:NSMakeSize(rect.size.width, rect.size.height)];                    
+            }
         }
     } else if(flags & USE_CIIMAGE){
         glScaled(1.0/[ciImage extent].size.width, 1.0/[ciImage extent].size.height, 1);     
@@ -154,8 +162,8 @@ const int fboBorder = 20;
                               atPoint:CGPointMake(0,0) // use integer coordinates to avoid interpolation
                              fromRect:[outputImage extent]];
         
-//        [ciImage drawAtPoint:CGPointMake(0,0) fromRect:[ciImage extent] operation: NSCompositeClear   fraction:1.0];
-      
+        //        [ciImage drawAtPoint:CGPointMake(0,0) fromRect:[ciImage extent] operation: NSCompositeClear   fraction:1.0];
+        
     }
     else if(flags & USE_BORDERED_FBO){   
         [self drawTexture:borderFbo->texData.textureID size:NSMakeSize([self pixelsWide]+2*fboBorder, [self pixelsHigh]+2*fboBorder)];        
@@ -165,6 +173,7 @@ const int fboBorder = 20;
         ofSetColor(200,255,255,200);
         ofRect(0,0,1,1);
     }
+    
     
     //        fbo->draw(0,0,[self aspect],1);    
 }
@@ -177,6 +186,7 @@ const int fboBorder = 20;
     glPushMatrix();{
         [self transform];        
         [self drawObject];
+        
     }glPopMatrix();
 }
 
@@ -270,14 +280,7 @@ const int fboBorder = 20;
     if(borderFbo)
         delete borderFbo;
     borderFbo = new ofxFBOTexture();
-
-    
-    //    if([engine updateFlags] & USE_BORDERED_FBO){
-        borderFbo->allocate([self pixelsWide]+2*fboBorder, [self pixelsHigh]+2*fboBorder,GL_RGBA, 0);
-//        fbo->allocate([self pixelsWide]+2*fboBorder, [self pixelsHigh]+2*fboBorder);
-  /*  } else {
-        fbo->allocate([self pixelsWide], [self pixelsHigh]);
-    }*/
+    borderFbo->allocate([self pixelsWide]+2*fboBorder, [self pixelsHigh]+2*fboBorder,GL_RGBA, 0);
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -287,12 +290,12 @@ const int fboBorder = 20;
 -(GLuint) uploadAssetTexture{
     NSLog(@"Upload asset %@",self);
     GLuint texture = 0;
-    NSBitmapImageRep * rep = [[imageAsset representations] lastObject];
-    glGenTextures( 1, &texture );            
-    [rep uploadAsOpenGLTexture:texture];  
-    [self allocateFBO];
-    
-    
+    if(objectType == IMAGE){
+        NSBitmapImageRep * rep = [[imageAsset representations] lastObject];
+        glGenTextures( 1, &texture );            
+        [rep uploadAsOpenGLTexture:texture];  
+        [self allocateFBO];
+    }    
     return texture;
 }
 
@@ -320,7 +323,7 @@ const int fboBorder = 20;
     borderFbo->swapIn();{
         glEnable(GL_BLEND);
         glBlendFunc(GL_ONE, GL_ONE);
-
+        
         glPushMatrix();
         glViewport(0, 0, w, h);    
         glMatrixMode(GL_PROJECTION);
@@ -351,8 +354,8 @@ const int fboBorder = 20;
 -(CIImage*) createCIImageFromTexture:(GLint)tex size:(NSSize)size{
     NSLog(@"Create CI Image");
     CIImage * image = [CIImage imageWithTexture:tex size:CGSizeMake(size.width, size.height) flipped:NO colorSpace:CGColorSpaceCreateDeviceRGB()];
-  //  NSURL * url = [[NSURL alloc] initFileURLWithPath:[NSString stringWithFormat:@"%@%@", [engine assetDir],[self assetString]] isDirectory:NO];
-//    CIImage * image = [CIImage imageWithContentsOfURL:url];
+    //  NSURL * url = [[NSURL alloc] initFileURLWithPath:[NSString stringWithFormat:@"%@%@", [engine assetDir],[self assetString]] isDirectory:NO];
+    //    CIImage * image = [CIImage imageWithContentsOfURL:url];
     return image;
 }
 
@@ -360,9 +363,9 @@ const int fboBorder = 20;
 
 
 -(CIImage*) filterCIImage:(CIImage*)inputImage{
-     //   [resizeFilter setValue:inputImage forKey:@"inputImage"];
-   // [depthBlurFilter setValue:[resizeFilter valueForKey:@"outputImage"] forKey:@"inputImage"];
-       [depthBlurFilter setValue:inputImage forKey:@"inputImage"];
+    //   [resizeFilter setValue:inputImage forKey:@"inputImage"];
+    // [depthBlurFilter setValue:[resizeFilter valueForKey:@"outputImage"] forKey:@"inputImage"];
+    [depthBlurFilter setValue:inputImage forKey:@"inputImage"];
     CIImage * _outputImage = [depthBlurFilter valueForKey:@"outputImage"];
     return _outputImage;
 }
@@ -372,8 +375,8 @@ const int fboBorder = 20;
 -(GLuint) createFBOFromCIImage:(CIImage*)image{
     NSLog(@"Create FBO from CIImage");
     /*if(fbo == nil){
-        [self allocateFBO];
-    }*/
+     [self allocateFBO];
+     }*/
     
     if(fbo)
         delete fbo;
@@ -384,8 +387,8 @@ const int fboBorder = 20;
     
     fbo = new ofxFBOTexture();    
     fbo->allocate(w, h);
-
-   
+    
+    
     float screenFov = 60;    
     float eyeX 		= (float)w / 2.0;
     float eyeY 		= (float)h / 2.0;
@@ -399,7 +402,7 @@ const int fboBorder = 20;
     fbo->clear(0,0,0,0);
     fbo->swapIn();{
         glBlendFunc(GL_ONE  , GL_ONE);
-
+        
         glPushMatrix();
         glViewport(0, 0, w, h);    
         glMatrixMode(GL_PROJECTION);
@@ -444,26 +447,28 @@ const int fboBorder = 20;
     }
     
     
-    if(flags & USE_BORDERED_FBO){
-        if(borderedFBOOutdated){
-            //Create a bordered FBO
-            [self createBorderedFBOFromTexture:texture];
-            ciImageOutdated = YES;
-            borderedFBOOutdated = NO;
-        }
-        texture = borderFbo->texData.textureID;
-        size = NSMakeSize([self pixelsWide]+2*fboBorder, [self pixelsHigh]+2*fboBorder);
-    }
+    /*if(flags & USE_BORDERED_FBO){
+     if(borderedFBOOutdated){
+     //Create a bordered FBO
+     [self createBorderedFBOFromTexture:texture];
+     ciImageOutdated = YES;
+     borderedFBOOutdated = NO;
+     }
+     texture = borderFbo->texData.textureID;
+     size = NSMakeSize([self pixelsWide]+2*fboBorder, [self pixelsHigh]+2*fboBorder);
+     }*/
     
-   
+    
     
     if(flags & USE_CIIMAGE){
-        if(ciImageOutdated){    
+        if(ciImageOutdated && texture){    
             ciImage = [self createCIImageFromTexture:texture size:size];
             ciImageOutdated = NO;
             ciFilterOutdated = YES;
             ciFBOOutdated = YES;
-        } 
+        } else if(ciImageOutdated){
+            ciImage = nil;
+        }
     }
     CIImage * image = ciImage;
     
@@ -476,12 +481,15 @@ const int fboBorder = 20;
     }
     
     outputImage = image;
-
+    
     
     if(flags & USE_CI_FBO){
         if(ciFBOOutdated){    
-            texture = [self createFBOFromCIImage:outputImage];
-            ciFBOOutdated = NO;
+            texture = 0;
+            if(outputImage){
+                texture = [self createFBOFromCIImage:outputImage];
+                ciFBOOutdated = NO;
+            }
         }
     }
     
@@ -500,20 +508,35 @@ const int fboBorder = 20;
     
     [self setAssetInfo:@"No asset"];
     
-    NSURL * url = [[NSURL alloc] initFileURLWithPath:[NSString stringWithFormat:@"%@%@", [engine assetDir],[self assetString]] isDirectory:NO];
-    BOOL reachable = [url checkResourceIsReachableAndReturnError:nil];
-    if(!reachable){
-        NSLog(@"%@ not reachable", url);
+    if(![[self assetString] isEqualToString:@""]){
         
-    } else {
-        NSLog(@"%@ reachable", url);  
-        imageAsset = [[NSImage alloc] initWithContentsOfURL:url];
-        NSBitmapImageRep * rep = [[imageAsset representations] lastObject];
+        NSURL * url = [[NSURL alloc] initFileURLWithPath:[NSString stringWithFormat:@"%@%@", [engine assetDir],[self assetString]] isDirectory:NO];
         
-        NSMutableString * info = [NSMutableString string];
-        [info appendString:@"Image asset\n"];
-        [info appendFormat:@"Size: %ix%i",[rep pixelsWide],[rep pixelsHigh]];
-        [self setAssetInfo:info];
+        
+        BOOL reachable = [url checkResourceIsReachableAndReturnError:nil];
+        if(!reachable){
+            NSLog(@"%@ not reachable", url);
+            
+        } else {
+            NSLog(@"%@ reachable", url);  
+            
+            if([self isImageFile:[url relativePath]]){
+                objectType = IMAGE;
+            } else {
+                objectType = GENERIC;
+            }
+            
+            if(objectType == IMAGE){
+                imageAsset = [[NSImage alloc] initWithContentsOfURL:url];
+                NSBitmapImageRep * rep = [[imageAsset representations] lastObject];
+                
+                NSMutableString * info = [NSMutableString string];
+                [info appendString:@"Image asset\n"];
+                [info appendFormat:@"Size: %ix%i",[rep pixelsWide],[rep pixelsHigh]];
+                [self setAssetInfo:info];
+            }
+        }
+        
     }
     
     //    changedFlag =YES;
@@ -544,13 +567,13 @@ const int fboBorder = 20;
 }
 
 -(float)backAlpha{
-    if(posZ <= 0)
+    if([self absolutePosZ] <= 0)
         return 1;
     return 0;
 }
 
 -(float)frontAlpha{
-    if(posZ <= 0)
+    if([self absolutePosZ] <= 0)
         return 0;
     return 1;
 }
@@ -570,6 +593,12 @@ const int fboBorder = 20;
         return [imageAsset size].width / [imageAsset size].height;
     }    
     return 1;
+}
+
+-(float) absolutePosZ{
+    if(parent)
+        return [self posZ] + [parent absolutePosZ];
+    return [self posZ];                
 }
 
 
@@ -594,11 +623,11 @@ const int fboBorder = 20;
     if(fabs(depthBlurAmount - _depthBlurAmount) > 0.1){
         depthBlurAmount = _depthBlurAmount;
         NSLog(@"Update depth blur on %f %@",depthBlurAmount,self);
-
+        
         [depthBlurFilter setValue:[NSNumber numberWithFloat:depthBlurAmount] forKey:@"inputRadius"];
-
+        
         ciFBOOutdated = YES;
-                ciFilterOutdated = YES;
+        ciFilterOutdated = YES;
     }
 }
 
@@ -611,9 +640,29 @@ const int fboBorder = 20;
     [_e addObserver:self forKeyPath:@"properties.coreImageMode.value" options:0 context:@"changedTexture"];
     [_e addObserver:self forKeyPath:@"properties.assetTextureMode.value" options:0 context:@"changedTexture"];
     [_e addObserver:self forKeyPath:@"properties.borderedRendering.value" options:0 context:@"changedTexture"];
-
+    
     [self loadAsset];
 }
+
+-(BOOL)isLeaf{
+    if([subObjects count] == 0)
+        return YES;
+    return NO;
+}
+
+-(void) addSubObject:(RenderObject*)obj{
+    [self willChangeValueForKey:@"isLeaf"];
+    [subObjects addObject:obj];
+    [self didChangeValueForKey:@"isLeaf"];
+}
+
+-(void) removeSubObject:(RenderObject*)obj{
+    [self willChangeValueForKey:@"isLeaf"];
+    [subObjects removeObject:obj];
+    [self didChangeValueForKey:@"isLeaf"];
+    
+}
+
 
 -(id)initWithCoder:(NSCoder *)aDecoder{
     [self init];
@@ -628,7 +677,13 @@ const int fboBorder = 20;
     [self setOpacity:[aDecoder decodeFloatForKey:@"opacity"]];
     [self setMaskOnBack:[aDecoder decodeBoolForKey:@"maskOnBack"]];
     [self setAutoFill:[aDecoder decodeBoolForKey:@"autoFill"]];
-
+    
+    [self setSubObjects:[aDecoder decodeObjectForKey:@"subObjects"]];
+    
+    for(RenderObject * obj in subObjects){
+        [obj setParent:self];
+    }
+    
     [self addObserver:self forKeyPath:@"assetString" options:0 context:@"loadAsset"];
     
     return self;
@@ -645,10 +700,66 @@ const int fboBorder = 20;
     [aCoder encodeFloat:rotationZ forKey:@"rotationZ"];
     [aCoder encodeFloat:opacity forKey:@"opacity"];
     [aCoder encodeBool:maskOnBack forKey:@"maskOnBack"];
-    [aCoder encodeBool:autoFill forKey:@"autoFill"];    
+    [aCoder encodeBool:autoFill forKey:@"autoFill"];   
+    
+    [aCoder encodeObject:subObjects forKey:@"subObjects"];
 }
 
 -(NSString *)description{
     return [NSString stringWithFormat:@"RenderObject: %@",name];
 }
+
+- (BOOL)isImageFile:(NSString*)filePath
+{
+    BOOL isImageFile = NO;
+    FSRef fileRef;
+    Boolean isDirectory;
+    
+    if (FSPathMakeRef((const UInt8 *)[filePath fileSystemRepresentation], &fileRef, &isDirectory) == noErr)
+    {
+        // get the content type (UTI) of this file
+        CFDictionaryRef values = NULL;
+        CFStringRef attrs[1] = { kLSItemContentType };
+        CFArrayRef attrNames = CFArrayCreate(NULL, (const void **)attrs, 1, NULL);
+        
+        if (LSCopyItemAttributes(&fileRef, kLSRolesViewer, attrNames, &values) == noErr)
+        {
+            // verify that this is a file that the Image I/O framework supports
+            if (values != NULL)
+            {
+                CFTypeRef uti = CFDictionaryGetValue(values, kLSItemContentType);
+                if (uti != NULL)
+                {
+                    CFArrayRef supportedTypes = CGImageSourceCopyTypeIdentifiers();
+                    CFIndex i, typeCount = CFArrayGetCount(supportedTypes);
+                    
+                    for (i = 0; i < typeCount; i++)
+                    {
+                        CFStringRef supportedUTI = (CFStringRef) CFArrayGetValueAtIndex(supportedTypes, i);
+                        
+                        // make sure the supported UTI conforms only to "public.image" (this will skip PDF)
+                        if (UTTypeConformsTo(supportedUTI, CFSTR("public.image")))
+                        {
+                            if (UTTypeConformsTo((CFStringRef)uti, (CFStringRef)supportedUTI))
+                            {
+                                isImageFile = YES;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    CFRelease(supportedTypes);
+                }
+                
+                CFRelease(values);
+            }
+        }
+        
+        CFRelease(attrNames);
+    }
+    
+    return isImageFile;
+}
+
+
 @end

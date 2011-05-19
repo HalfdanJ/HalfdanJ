@@ -14,6 +14,7 @@ enum UpdateFlags {
     USE_CI_FBO = 16
     };
 
+@class ObjectTreeViewController;
 
 @interface RenderEngine : ofPlugin {
     NSMutableArray * objectsArray;
@@ -36,6 +37,9 @@ enum UpdateFlags {
     float mouseLastX,mouseLastY;
     IBOutlet NSButton *autoPanCheckbox;
     IBOutlet NSSlider *autoPanSpeed;
+    
+    IBOutlet NSOutlineView *objectOutlineView;
+    ObjectTreeViewController * treeController;
 }
 
 @property (retain) NSMutableArray * objectsArray;
@@ -43,6 +47,8 @@ enum UpdateFlags {
 @property (retain) NSString * assetDir;
 @property (readwrite) ofxShader * blurShader;
 @property (readonly)  CIContext *ciContext;
+@property (readonly) ObjectTreeViewController * treeController;
+
 
 
 - (IBAction)addObject:(id)sender;
@@ -52,6 +58,7 @@ enum UpdateFlags {
 
 - (NSArray*) allObjects;
 - (NSArray*) allObjectsOrderedByDepth;
+- (NSArray*) rootObjectsOrdredByDepth;
 
 - (RenderObject*) selectedObject;
 

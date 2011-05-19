@@ -10,11 +10,18 @@
 #include "ofxFBOTexture.h"
 #import "ofxShader.h"
 
+enum RenderObjectType {
+    GENERIC = 0,
+    IMAGE = 1,
+    VIDEO = 2
+    };
+
 @class RenderEngine;
 
 @interface RenderObject : NSObject <NSCoding>{
     NSString * name;
     NSMutableArray * subObjects;
+    RenderObject * parent;
     
     
     RenderEngine * engine;
@@ -55,11 +62,14 @@
     BOOL ciFBOOutdated;
     
     float depthBlurAmount;
+    
+    RenderObjectType objectType;
 }
 
 @property (retain) NSString * name;
 @property (retain) NSString * assetString;
 @property (retain) NSMutableArray * subObjects;
+@property (retain) RenderObject * parent;
 @property (assign) RenderEngine * engine;
 
 @property (readonly) NSImage * imageRep;
@@ -75,6 +85,7 @@
 @property (readwrite) float opacity;
 @property (readwrite) BOOL maskOnBack;
 @property (readwrite) BOOL autoFill;
+@property (readonly) BOOL isLeaf;
 
 -(void) loadAsset;
 
@@ -96,4 +107,11 @@
 
 -(int) pixelsWide;
 -(int) pixelsHigh;
+
+-(float) absolutePosZ;
+
+-(void) addSubObject:(RenderObject*)obj;
+-(void) removeSubObject:(RenderObject*)obj;
+
+- (BOOL)isImageFile:(NSString*)filePath;
 @end
