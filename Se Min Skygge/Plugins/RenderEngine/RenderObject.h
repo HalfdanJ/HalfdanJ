@@ -52,6 +52,7 @@ enum RenderObjectType {
     BOOL maskOnBack;
     BOOL autoFill;
     BOOL blendmodeAdd;
+    BOOL visible;
     
     ofxFBOTexture * borderFbo;
 //    ofxFBOTexture * tempFbo;
@@ -95,6 +96,7 @@ enum RenderObjectType {
 @property (readwrite) BOOL maskOnBack;
 @property (readwrite) BOOL autoFill;
 @property (readonly) BOOL isLeaf;
+@property (readwrite) BOOL visible;
 
 @property (readwrite) BOOL blendmodeAdd;
 
@@ -120,6 +122,7 @@ enum RenderObjectType {
 -(int) pixelsHigh;
 
 -(float) absolutePosZ;
+-(BOOL) absoluteVisible;
 
 -(void) addSubObject:(RenderObject*)obj;
 -(void) removeSubObject:(RenderObject*)obj;

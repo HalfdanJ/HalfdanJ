@@ -68,7 +68,7 @@
 	CGLPixelFormatObj pixelformatGl = CGLPixelFormatObj([[[[[globalController viewManager] glViews] objectAtIndex:0] pixelFormat] CGLPixelFormatObj]);
 	
     ciContext = [CIContext contextWithCGLContext:contextGl pixelFormat:pixelformatGl  colorSpace:CGColorSpaceCreateDeviceRGB() options:nil];
-
+    
     
     for(int i=0;i<2;i++){
         fboFront[i] = new ofxFBOTexture();
@@ -90,7 +90,7 @@
     eyeCoord = ofxVec3f(0,0,1);
     
     glEnable(GL_DEPTH_TEST);
-
+    
 }
 
 
@@ -107,9 +107,11 @@
     int timer = ofGetElapsedTimeMillis();    
     
     for(RenderObject * obj in allObjects){
-        float dist = [obj absolutePosZ]+PropF(@"camPosZ");
-        [obj setDepthBlurAmount:fabs(dist*PropF(@"depthBlur"))];        
-        [obj update:drawingInformation];
+        if([obj absoluteVisible]){
+            float dist = [obj absolutePosZ]+PropF(@"camPosZ");
+            [obj setDepthBlurAmount:fabs(dist*PropF(@"depthBlur"))];        
+            [obj update:drawingInformation];
+        }
     }
     
     
@@ -141,11 +143,13 @@
         glTranslated(camCoord.x-PropF(@"camPosX"), camCoord.y,camCoord.z);
         
         NSArray * allObjects = [self allObjectsOrderedByDepth];
-        for(RenderObject * obj in allObjects){        
-            if(obj == [self selectedObject]){
-                [obj drawControlsWithColor:[NSColor greenColor]];
-            } else {
-                [obj drawControlsWithColor:[NSColor yellowColor]];
+        for(RenderObject * obj in allObjects){      
+            if([obj absoluteVisible]){
+                if(obj == [self selectedObject]){
+                    [obj drawControlsWithColor:[NSColor greenColor]];
+                } else {
+                    [obj drawControlsWithColor:[NSColor yellowColor]];
+                }
             }
         }
         
@@ -280,8 +284,8 @@
     
     NSArray * allObjects = [self allObjectsOrderedByDepth];       
     //NSArray * rootsObjects = [self rootObjectsOrdredByDepth];       
-
-      
+    
+    
     ofEnableAlphaBlending();
     
     fboBack[pingpong]->clear(0,0,0,255);
@@ -293,16 +297,18 @@
         
         [self placeCamera];
         for(RenderObject * obj in allObjects){
-            if([obj blendmodeAdd]){
-                glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-            } else {
-                glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA, GL_ONE,GL_ONE);        
-            }
-            
-            if([obj backAlpha] > 0){
-                [obj drawWithAlpha:[obj backAlpha]];
-            } else if([obj maskBack]) {
-                [obj drawMaskWithAlpha:1.0];
+            if([obj absoluteVisible]){
+                if([obj blendmodeAdd]){
+                    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+                } else {
+                    glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA, GL_ONE,GL_ONE);        
+                }
+                
+                if([obj backAlpha] > 0){
+                    [obj drawWithAlpha:[obj backAlpha]];
+                } else if([obj maskBack]) {
+                    [obj drawMaskWithAlpha:1.0];
+                }
             }
         }
         glPopMatrix();       
@@ -321,18 +327,20 @@
         [self placeCamera];
         
         for(RenderObject * obj in allObjects){
-            if([obj frontAlpha] > 0){
-                [obj drawWithAlpha:[obj frontAlpha]];
+            if([obj absoluteVisible]){
+                if([obj frontAlpha] > 0){
+                    [obj drawWithAlpha:[obj frontAlpha]];
+                }
             }
         }
         glPopMatrix();
     }fboFront[pingpong]->swapOut();    
     ofEnableAlphaBlending();
     
- /*   if(ofGetElapsedTimeMillis()-timer > 2){
-        cout<<"Render time: "<<ofGetElapsedTimeMillis()-timer<<endl;
-    }    
-   */ 
+    /*   if(ofGetElapsedTimeMillis()-timer > 2){
+     cout<<"Render time: "<<ofGetElapsedTimeMillis()-timer<<endl;
+     }    
+     */ 
     glViewport(0,0,ofGetWidth(),ofGetHeight());    
     ofSetupScreen();
     glScaled(ofGetWidth(), ofGetHeight(), 1);       

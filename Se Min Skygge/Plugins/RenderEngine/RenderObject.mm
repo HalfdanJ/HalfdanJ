@@ -59,7 +59,7 @@ const int fboBorder = 20;
 
 @implementation RenderObject
 @synthesize engine, name, subObjects, parent, assetString, assetInfo;
-@synthesize posX, posY, posZ, scale,rotationZ,depthBlurAmount, opacity, maskOnBack, autoFill, blendmodeAdd;
+@synthesize posX, posY, posZ, scale,rotationZ,depthBlurAmount, opacity, maskOnBack, autoFill, blendmodeAdd, visible;
 - (id)init
 {
     self = [super init];
@@ -78,6 +78,7 @@ const int fboBorder = 20;
         depthBlurAmount = -1;
         opacity = 1.0;
         scale = 1.0;
+        visible = YES;
     }
     
     return self;
@@ -671,6 +672,13 @@ const int fboBorder = 20;
     return [self posZ];                
 }
 
+-(BOOL) absoluteVisible{
+    if(parent)
+        return [self visible] && [parent absoluteVisible];
+    return [self visible];                
+
+}
+
 
 -(void)setAssetString:(NSString *)_assetString{
     if(_assetString != nil && engine){
@@ -747,7 +755,8 @@ const int fboBorder = 20;
     [self setOpacity:[aDecoder decodeFloatForKey:@"opacity"]];
     [self setMaskOnBack:[aDecoder decodeBoolForKey:@"maskOnBack"]];
     [self setAutoFill:[aDecoder decodeBoolForKey:@"autoFill"]];
-    
+    [self setVisible:[aDecoder decodeBoolForKey:@"visible"]];
+
     [self setBlendmodeAdd:[aDecoder decodeBoolForKey:@"blendmodeAdd"]];
 
     
@@ -774,7 +783,8 @@ const int fboBorder = 20;
     [aCoder encodeFloat:opacity forKey:@"opacity"];
     [aCoder encodeBool:maskOnBack forKey:@"maskOnBack"];
     [aCoder encodeBool:autoFill forKey:@"autoFill"];   
-    
+    [aCoder encodeBool:visible forKey:@"visible"];   
+
     [aCoder encodeBool:blendmodeAdd forKey:@"blendmodeAdd"];   
     
     [aCoder encodeObject:subObjects forKey:@"subObjects"];
