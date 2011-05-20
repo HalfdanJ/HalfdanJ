@@ -9,6 +9,7 @@
 #include "Plugin.h"
 #include "ofxFBOTexture.h"
 #import "ofxShader.h"
+#import <QTKit/QTKit.h>
 
 enum RenderObjectType {
     GENERIC = 0,
@@ -30,9 +31,16 @@ enum RenderObjectType {
     NSString * assetInfo;
     
     NSImage * imageAsset;
-
-    GLuint assetTexture;
+    QTMovie * videoAsset;
     
+    GLuint assetTexture;
+    CVOpenGLTextureRef  currentVideoFrame;
+    QTVisualContextRef qtContext;    
+
+    
+    NSSize videoSize;
+
+
     float posX;
     float posY;
     float posZ;
@@ -43,6 +51,7 @@ enum RenderObjectType {
     
     BOOL maskOnBack;
     BOOL autoFill;
+    BOOL blendmodeAdd;
     
     ofxFBOTexture * borderFbo;
 //    ofxFBOTexture * tempFbo;
@@ -87,6 +96,8 @@ enum RenderObjectType {
 @property (readwrite) BOOL autoFill;
 @property (readonly) BOOL isLeaf;
 
+@property (readwrite) BOOL blendmodeAdd;
+
 -(void) loadAsset;
 
 -(void) drawTexture:(GLuint)tex size:(NSSize)size;
@@ -95,9 +106,9 @@ enum RenderObjectType {
 -(void) drawControlsWithColor:(NSColor*)color;
 -(void) drawMaskWithAlpha:(float)alpha;
 
--(void) update;
+-(void) update:(NSDictionary *)drawingInformation;
 
--(void) setupAssetOpengl;
+//-(void) setupAssetOpengl;
 
 -(BOOL) maskBack;
 -(float) backAlpha;

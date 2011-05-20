@@ -28,7 +28,7 @@ enum UpdateFlags {
     ofxShader * colorCorrectShader;
     
     CIContext * ciContext;
-    
+
     int pingpong;
   
     ofxVec3f camCoord;

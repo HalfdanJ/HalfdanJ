@@ -59,7 +59,7 @@ const int fboBorder = 20;
 
 @implementation RenderObject
 @synthesize engine, name, subObjects, parent, assetString, assetInfo;
-@synthesize posX, posY, posZ, scale,rotationZ,depthBlurAmount, opacity, maskOnBack, autoFill;
+@synthesize posX, posY, posZ, scale,rotationZ,depthBlurAmount, opacity, maskOnBack, autoFill, blendmodeAdd;
 - (id)init
 {
     self = [super init];
@@ -76,6 +76,8 @@ const int fboBorder = 20;
         [resizeFilter setValue:[NSNumber numberWithFloat:0.2] forKey:@"inputScale"];
         
         depthBlurAmount = -1;
+        opacity = 1.0;
+        scale = 1.0;
     }
     
     return self;
@@ -161,9 +163,6 @@ const int fboBorder = 20;
         [[engine ciContext] drawImage:outputImage 
                               atPoint:CGPointMake(0,0) // use integer coordinates to avoid interpolation
                              fromRect:[outputImage extent]];
-        
-        //        [ciImage drawAtPoint:CGPointMake(0,0) fromRect:[ciImage extent] operation: NSCompositeClear   fraction:1.0];
-        
     }
     else if(flags & USE_BORDERED_FBO){   
         [self drawTexture:borderFbo->texData.textureID size:NSMakeSize([self pixelsWide]+2*fboBorder, [self pixelsHigh]+2*fboBorder)];        
@@ -272,81 +271,84 @@ const int fboBorder = 20;
     glDisable(GL_TEXTURE_RECTANGLE_EXT);         
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-
-
--(void) allocateFBO{
-    NSLog(@"Allocate FBO");
-    if(borderFbo)
-        delete borderFbo;
-    borderFbo = new ofxFBOTexture();
-    borderFbo->allocate([self pixelsWide]+2*fboBorder, [self pixelsHigh]+2*fboBorder,GL_RGBA, 0);
-}
+////------------------------------------------------------------------------------------------------------------------------
+//
+//
+//-(void) allocateFBO{
+//    NSLog(@"Allocate FBO");
+//    if(borderFbo)
+//        delete borderFbo;
+//    borderFbo = new ofxFBOTexture();
+//    borderFbo->allocate([self pixelsWide]+2*fboBorder, [self pixelsHigh]+2*fboBorder,GL_RGBA, 0);
+//}
 
 //------------------------------------------------------------------------------------------------------------------------
 
 
 
 -(GLuint) uploadAssetTexture{
-    NSLog(@"Upload asset %@",self);
+  //  NSLog(@"Upload asset %@",self);
     GLuint texture = 0;
     if(objectType == IMAGE){
         NSBitmapImageRep * rep = [[imageAsset representations] lastObject];
         glGenTextures( 1, &texture );            
         [rep uploadAsOpenGLTexture:texture];  
-        [self allocateFBO];
-    }    
+    } else if(objectType == VIDEO){
+       texture = CVOpenGLTextureGetName(currentVideoFrame);
+    }
+  //  [self allocateFBO];
+    
     return texture;
 }
 
 //------------------------------------------------------------------------------------------------------------------------
 
 
--(GLuint) createBorderedFBOFromTexture:(GLuint)tex{
-    NSLog(@"Create bordered fbo");
-    if(borderFbo == nil){
-        [self allocateFBO];
-    }
-    
-    int w = [self pixelsWide]+2*fboBorder;
-    int h = [self pixelsHigh]+2*fboBorder;        
-    float screenFov = 60;    
-    float eyeX 		= (float)w / 2.0;
-    float eyeY 		= (float)h / 2.0;
-    float halfFov 	= PI * screenFov / 360.0;
-    float theTan 	= tanf(halfFov);
-    float dist 		= eyeY / theTan;
-    float nearDist 	= dist / 10.0;	// near / far clip plane
-    float farDist 	= dist * 10.0;
-    float as 			= (float)w/(float)h;  
-    borderFbo->clear(0,0,0,0);
-    borderFbo->swapIn();{
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_ONE, GL_ONE);
-        
-        glPushMatrix();
-        glViewport(0, 0, w, h);    
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        gluPerspective(screenFov, as, nearDist, farDist);        
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-        gluLookAt(eyeX, eyeY, dist, eyeX, eyeY, 0.0, 0.0, 1.0, 0.0);        
-        glTranslated(fboBorder, fboBorder, 0);
-        glScaled([self pixelsWide],[self pixelsHigh],1);            
-        ofSetColor(255,255,255);
-        
-        if(tex!= 0){
-            [self drawTexture:tex size:NSMakeSize([self pixelsWide], [self pixelsHigh])];
-        } else {
-            ofSetColor(200,255,255,200);
-            ofRect(0,0,1,1);
-        }
-        glPopMatrix();
-    }borderFbo->swapOut();        
-    ofEnableAlphaBlending();
-    return borderFbo->texData.textureID;
-}
+//-(GLuint) createBorderedFBOFromTexture:(GLuint)tex{
+//    NSLog(@"Create bordered fbo");
+//    if(borderFbo == nil){
+//        [self allocateFBO];
+//    }
+//    
+//    int w = [self pixelsWide]+2*fboBorder;
+//    int h = [self pixelsHigh]+2*fboBorder;        
+//    float screenFov = 60;    
+//    float eyeX 		= (float)w / 2.0;
+//    float eyeY 		= (float)h / 2.0;
+//    float halfFov 	= PI * screenFov / 360.0;
+//    float theTan 	= tanf(halfFov);
+//    float dist 		= eyeY / theTan;
+//    float nearDist 	= dist / 10.0;	// near / far clip plane
+//    float farDist 	= dist * 10.0;
+//    float as 			= (float)w/(float)h;  
+//    borderFbo->clear(0,0,0,0);
+//    borderFbo->swapIn();{
+//        glEnable(GL_BLEND);
+//        glBlendFunc(GL_ONE, GL_ONE);
+//        
+//        glPushMatrix();
+//        glViewport(0, 0, w, h);    
+//        glMatrixMode(GL_PROJECTION);
+//        glLoadIdentity();
+//        gluPerspective(screenFov, as, nearDist, farDist);        
+//        glMatrixMode(GL_MODELVIEW);
+//        glLoadIdentity();
+//        gluLookAt(eyeX, eyeY, dist, eyeX, eyeY, 0.0, 0.0, 1.0, 0.0);        
+//        glTranslated(fboBorder, fboBorder, 0);
+//        glScaled([self pixelsWide],[self pixelsHigh],1);            
+//        ofSetColor(255,255,255);
+//        
+//        if(tex!= 0){
+//            [self drawTexture:tex size:NSMakeSize([self pixelsWide], [self pixelsHigh])];
+//        } else {
+//            ofSetColor(200,255,255,200);
+//            ofRect(0,0,1,1);
+//        }
+//        glPopMatrix();
+//    }borderFbo->swapOut();        
+//    ofEnableAlphaBlending();
+//    return borderFbo->texData.textureID;
+//}
 
 //------------------------------------------------------------------------------------------------------------------------
 
@@ -401,7 +403,7 @@ const int fboBorder = 20;
     
     fbo->clear(0,0,0,0);
     fbo->swapIn();{
-        glBlendFunc(GL_ONE  , GL_ONE);
+        glBlendFunc(GL_ONE  , GL_ONE);            
         
         glPushMatrix();
         glViewport(0, 0, w, h);    
@@ -428,11 +430,28 @@ const int fboBorder = 20;
 //------------------------------------------------------------------------------------------------------------------------
 
 
--(void)update{
+-(void)update:(NSDictionary *)drawingInformation{		
     int flags = [engine updateFlags];
     NSSize size;
     
     GLuint texture = 0;
+    
+    if(objectType == VIDEO){
+        QTVisualContextTask(qtContext);
+        const CVTimeStamp * outputTime;
+        [[drawingInformation objectForKey:@"outputTime"] getValue:&outputTime];	
+        if (qtContext != NULL && QTVisualContextIsNewImageAvailable(qtContext, outputTime)) {
+            if (NULL != currentVideoFrame) {
+                CVOpenGLTextureRelease(currentVideoFrame);
+                currentVideoFrame = NULL;
+            }
+            
+            QTVisualContextCopyImageForTime(qtContext, NULL, outputTime, &currentVideoFrame);
+            assetTextureOutdated = YES;
+        }
+    }
+    
+    
     
     if(flags & USE_ASSET_TEXTURE){
         if(assetTextureOutdated){
@@ -446,6 +465,7 @@ const int fboBorder = 20;
         size = NSMakeSize([self pixelsWide], [self pixelsHigh]);
     }
     
+ //   cout<<"Update texture "<<texture<<endl;
     
     /*if(flags & USE_BORDERED_FBO){
      if(borderedFBOOutdated){
@@ -461,8 +481,12 @@ const int fboBorder = 20;
     
     
     if(flags & USE_CIIMAGE){
-        if(ciImageOutdated && texture){    
-            ciImage = [self createCIImageFromTexture:texture size:size];
+        if(ciImageOutdated && texture){  
+            if(objectType == VIDEO){
+                ciImage = [CIImage imageWithCVImageBuffer:currentVideoFrame];
+            } else {
+                ciImage = [self createCIImageFromTexture:texture size:size];
+            }
             ciImageOutdated = NO;
             ciFilterOutdated = YES;
             ciFBOOutdated = YES;
@@ -522,11 +546,14 @@ const int fboBorder = 20;
             
             if([self isImageFile:[url relativePath]]){
                 objectType = IMAGE;
+            } else if([QTMovie canInitWithURL:url]){
+                objectType = VIDEO;  
             } else {
                 objectType = GENERIC;
             }
             
             if(objectType == IMAGE){
+                NSLog(@"Load as image");
                 imageAsset = [[NSImage alloc] initWithContentsOfURL:url];
                 NSBitmapImageRep * rep = [[imageAsset representations] lastObject];
                 
@@ -534,6 +561,31 @@ const int fboBorder = 20;
                 [info appendString:@"Image asset\n"];
                 [info appendFormat:@"Size: %ix%i",[rep pixelsWide],[rep pixelsHigh]];
                 [self setAssetInfo:info];
+            }
+            if(objectType == VIDEO){
+                NSLog(@"Load as video");
+                NSError * error = [NSError alloc];			
+
+                if (nil != videoAsset) [videoAsset release];                
+                videoAsset = [[QTMovie alloc] initWithURL:url error:&error];
+                if(error != nil){ 
+                    NSLog(@"ERROR: Could not load movie: %@",error);
+                }
+
+                QTOpenGLTextureContextCreate(kCFAllocatorDefault,  CGLContextObj(CGLGetCurrentContext()), CGLGetPixelFormat(CGLGetCurrentContext()), NULL, &qtContext);
+                
+                SetMovieVisualContext([videoAsset quickTimeMovie], qtContext);
+
+                
+                [videoAsset setAttribute:[NSNumber numberWithBool:YES] forKey:QTMovieLoopsAttribute];
+                [videoAsset setRate:1.0];
+
+                NSArray* vtracks = [videoAsset tracksOfMediaType:QTMediaTypeVideo];
+				QTTrack* track = [vtracks objectAtIndex:0];
+				videoSize = [track apertureModeDimensionsForMode:QTMovieApertureModeClean];
+				NSLog(@"Size: %@",NSStringFromSize(videoSize));
+				
+
             }
         }
         
@@ -579,20 +631,38 @@ const int fboBorder = 20;
 }
 
 -(int) pixelsWide{
-    NSBitmapImageRep * rep = [[imageAsset representations] lastObject];
-    return [rep pixelsWide];
+    if(objectType == IMAGE){
+        NSBitmapImageRep * rep = [[imageAsset representations] lastObject];
+        return [rep pixelsWide];
+    } else if(objectType == VIDEO){     
+        return videoSize.width;
+    } else {
+        return 0;
+    }
 }
 
 -(int) pixelsHigh{
-    NSBitmapImageRep * rep = [[imageAsset representations] lastObject];
-    return [rep pixelsHigh];
+    if(objectType == IMAGE){
+        NSBitmapImageRep * rep = [[imageAsset representations] lastObject];
+        return [rep pixelsHigh];    
+    } else if(objectType == VIDEO){
+        return videoSize.height;
+    } else {
+        return 0;
+    }
 }
 
 -(float)aspect{
-    if(imageAsset != nil){
+  /*  if(imageAsset != nil){
         return [imageAsset size].width / [imageAsset size].height;
     }    
     return 1;
+   */
+    float width = [self pixelsWide];
+    float height = [self pixelsHigh];
+    if(width != 0 && height != 0)
+        return width / height;
+    return 0;
 }
 
 -(float) absolutePosZ{
@@ -678,6 +748,9 @@ const int fboBorder = 20;
     [self setMaskOnBack:[aDecoder decodeBoolForKey:@"maskOnBack"]];
     [self setAutoFill:[aDecoder decodeBoolForKey:@"autoFill"]];
     
+    [self setBlendmodeAdd:[aDecoder decodeBoolForKey:@"blendmodeAdd"]];
+
+    
     [self setSubObjects:[aDecoder decodeObjectForKey:@"subObjects"]];
     
     for(RenderObject * obj in subObjects){
@@ -701,6 +774,8 @@ const int fboBorder = 20;
     [aCoder encodeFloat:opacity forKey:@"opacity"];
     [aCoder encodeBool:maskOnBack forKey:@"maskOnBack"];
     [aCoder encodeBool:autoFill forKey:@"autoFill"];   
+    
+    [aCoder encodeBool:blendmodeAdd forKey:@"blendmodeAdd"];   
     
     [aCoder encodeObject:subObjects forKey:@"subObjects"];
 }
