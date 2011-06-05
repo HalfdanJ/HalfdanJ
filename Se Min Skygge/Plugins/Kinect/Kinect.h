@@ -162,8 +162,10 @@ struct Dancer {
 -(void) setProjPoint:(int) point coord:(ofxPoint2f)coord;
 
 -(ofxPoint3f) convertKinectToWorld:(ofxPoint3f)p;
+-(ofxPoint3f) convertWorldToKinect:(ofxPoint3f)p;
 -(ofxPoint3f) convertWorldToProjection:(ofxPoint3f) p;
 -(ofxPoint3f) convertWorldToSurface:(ofxPoint3f) p;
+-(ofxPoint3f) convertSurfaceToWorld:(ofxPoint3f) p;
 
 -(vector<ofxPoint3f>) getPointsInBoxXMin:(float)xMin xMax:(float)xMax yMin:(float)yMin yMax:(float)yMax zMin:(float)zMin zMax:(float)zMax res:(int)res;
 

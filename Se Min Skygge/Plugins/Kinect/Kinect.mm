@@ -691,13 +691,45 @@
         [GetPlugin(Keystoner) popSurface];
         
 	}
+    
+    {
+        glPushMatrix();
+        [GetPlugin(Keystoner) applySurface:[self surface]];
+     
+        ofxPoint3f corners[4];
+        corners[0] = [self convertSurfaceToWorld:ofxPoint3f(0,0,0)];
+        corners[1] = [self convertSurfaceToWorld:ofxPoint3f(1,0,0)];
+        corners[2] = [self convertSurfaceToWorld:ofxPoint3f(1,1,0)];
+        corners[3] = [self convertSurfaceToWorld:ofxPoint3f(0,1,0)];
+        
+        for(int i=0;i<4;i++){
+            corners[i] = [self convertWorldToKinect:ofxPoint3f(corners[i])];
+        }
+        
+        ir.generateTexture();
+        ofTexture * tex = ir.getTexture();
+        ofSetColor(255, 255, 255,255);
+        tex->bind();
+        glBegin(GL_QUADS);
+        glTexCoord2f(corners[0].x, corners[0].y);   glVertex3d(0, 0, 0);
+        glTexCoord2f(corners[1].x, corners[1].y);   glVertex3d([self surfaceAspect], 0, 0);
+        glTexCoord2f(corners[2].x, corners[2].y);   glVertex3d([self surfaceAspect], 1, 0);
+        glTexCoord2f(corners[3].x, corners[3].y);   glVertex3d(0, 1, 0);
+        glEnd();
+        tex->unbind();
+        
+        [GetPlugin(Keystoner) popSurface];
+
+
+    }
+    
 }
 
 -(void) controlDraw:(NSDictionary *)drawingInformation{
     //	ofBackground(0, 0, 0);
 	
 	if(!kinectConnected){
-		ofSetColor(255, 255, 255);
+		ofSetColor(0, 0, 0);
 		ofDrawBitmapString("Kinect not connected", 640/2-80, 480/2-8);
 	} else {
 		ofEnableAlphaBlending();
@@ -768,7 +800,27 @@
                     glScaled(0.5, 0.5, 1.0);
                     ir.draw();
                 }glPopMatrix();
-                
+
+                glPushMatrix();{
+                    glTranslated((640/2), 0, 0);
+                    ofNoFill();
+                    //Y Axis 
+                    ofSetColor(0, 255, 0);
+                    handleImage->draw(handles[0].x*320.0 - 13,handles[0].y*240.0 - 13, 25, 25);
+                    
+                    //X Axis
+                    ofSetColor(255, 0, 0);
+                    ofLine(handles[0].x*320.0, handles[0].y*240.0, handles[1].x*320.0, handles[1].y*240.0);
+                    handleImage->draw(handles[1].x*320.0 - 13,handles[1].y*240.0 - 13, 25, 25);
+                    
+                    //Z Axis
+                    ofSetColor(0, 0, 255);
+                    ofLine(handles[0].x*320.0, handles[0].y*240.0, handles[2].x*320.0, handles[2].y*240.0);
+                    handleImage->draw(handles[2].x*320.0 - 13,handles[2].y*240.0 - 13, 25, 25);
+                    
+                    
+                }glPopMatrix();
+
                 ofSetColor(255, 255, 255);
                 ofDrawBitmapString("IR", (640/2)+10, 14);
                 
@@ -805,19 +857,16 @@
                     ofFill();
                     //Y Axis 
                     ofSetColor(0, 255, 0);
-                    //ofCircle(projHandles[0].x,projHandles[0].y, 10/640.0);
                     handleImage->draw(projHandles[0].x*320.0 - 13,projHandles[0].y*240.0 - 13, 25, 25);
                     
                     //X Axis
                     ofSetColor(255, 0, 0);
-                    //ofCircle(projHandles[1].x,projHandles[1].y, 10/640.0);
                     handleImage->draw(projHandles[1].x*320.0 - 13,projHandles[1].y*240.0 - 13, 25, 25);
                     ofLine(projHandles[0].x*320.0, projHandles[0].y*240.0 , projHandles[1].x*320.0, projHandles[1].y*240.0 );
                     
                     //Z Axis
                     ofSetColor(0, 0, 255,100);
                     ofNoFill();
-                    //ofCircle(projHandles[2].x,projHandles[2].y, 10/640.0);
                     handleImage->draw(int(projHandles[2].x*320.0) - 13,int(projHandles[2].y*240.0) - 13, 25, 25);
                     ofLine(projHandles[0].x*320.0, projHandles[0].y*240.0 , projHandles[2].x*320.0, projHandles[2].y*240.0 );
                     
@@ -855,126 +904,8 @@
                 ofSetColor(255, 255, 255);
                 ofDrawBitmapString("TOP - Kinect world", (640/2)+10, 10+480/2);
                 
-                
-                //----------	
-                //Mixed view
-                glPushMatrix();{
-                    glTranslated(640/2, 2*480/2, 0);	
-                    glScaled((640/2), (480/2), 1);
-                    glScaled(640/480, 1, 1);
-                    glTranslated(0.5, 0.5, 0);
-                    
-                    float aspect = [self surfaceAspect];
-                    ofFill();
-                    ofSetColor(70, 70, 70);
-                    if(aspect < 1){
-                        glTranslated(-aspect/2, -0.5, 0);
-                    } else {
-                        glTranslated(-0.5, -(1.0/aspect)/2.0, 0);
-                        glScaled(1.0/aspect, 1.0/aspect, 1);
-                    }
-                    
-                    ofRect(0,0,aspect, 1);
-                    ofNoFill();
-                    ofSetColor(120, 120, 120);
-                    ofRect(0,0,aspect, 1);
-                    
-                    ofxPoint3f kinect = [self convertWorldToSurface:ofxPoint3f(0,0,0)];
-                    ofxPoint3f p1 = [self convertWorldToSurface:points[0]];		
-                    ofxPoint3f p2 = [self convertWorldToSurface:points[1]];		
-                    ofxPoint3f p3 = [self convertWorldToSurface:points[2]];		
-                    
-                    ofxPoint3f lfoot, rfoot, lhand, rhand;
-                    if(users.getTrackedUsers().size() > 0){
-                        ofxTrackedUser * user = users.getTrackedUser(0);
-                        lfoot = [self convertWorldToSurface:user->left_lower_leg.worldEnd];
-                        rfoot = [self convertWorldToSurface:user->right_lower_leg.worldEnd];
-                        lhand = [self convertWorldToSurface:user->left_lower_arm.worldEnd];
-                        rhand = [self convertWorldToSurface:user->right_lower_arm.worldEnd];
-                        
-                    }
-                    
-                    {
-                        ofxPoint3f border0,border1, border2, border3;
-                        xn::DepthMetaData dmd;
-                        depth.getXnDepthGenerator().GetMetaData(dmd);
-                        
-                        XnPoint3D pIn[3];
-                        
-                        pIn[0].X = 0;
-                        pIn[0].Y = 240;
-                        pIn[0].Z = 4200;
-                        pIn[1].X = 320;
-                        pIn[1].Y = 240;
-                        pIn[1].Z = 4200;
-                        pIn[2].X = 640;
-                        pIn[2].Y = 240;
-                        pIn[2].Z = 4200;
-                        
-                        XnPoint3D pOut[3];				
-                        depth.getXnDepthGenerator().ConvertProjectiveToRealWorld(3, pIn, pOut);
-                        border0 = [self convertWorldToSurface:ofxPoint3f(0,0,0)];
-                        border1 = [self convertWorldToSurface:ofxPoint3f(pOut[0].X, pOut[0].Y, pOut[0].Z)];;
-                        border2 = [self convertWorldToSurface:ofxPoint3f(pOut[1].X, pOut[1].Y, pOut[1].Z)];
-                        border3 = [self convertWorldToSurface:ofxPoint3f(pOut[2].X, pOut[2].Y, pOut[2].Z)];
-                        
-                        ofSetColor(255, 0, 0);
-                        glBegin(GL_LINE_STRIP);
-                        glVertex2d(border0.x, border0.y);
-                        glVertex2d(border1.x, border1.y);
-                        glVertex2d(border2.x, border2.y);
-                        glVertex2d(border3.x, border3.y);
-                        glVertex2d(border0.x, border0.y);
-                        glEnd();
-                    }
-                    
-                    
-                    ofSetLineWidth(1);
-                    ofFill();
-                    ofSetColor(255, 255, 0);
-                    ofCircle(kinect.x, kinect.y, 10.0/640);
-                    ofSetColor(0, 255, 0);
-                    ofCircle(p1.x, p1.y, 10.0/640);
-                    ofSetColor(255, 0, 0);
-                    ofCircle(p2.x, p2.y, 10.0/640);
-                    ofSetColor(0, 0, 255);
-                    ofCircle(p3.x, p3.y, 10.0/640);
-                    
-                    ofEnableAlphaBlending();
-                    ofNoFill();
-                    ofSetColor(0, 255, 0, 255);
-                    ofCircle(lfoot.x, lfoot.z, 15.0/640);
-                    ofFill();
-                    ofSetColor(0, 255, 0, 255*(1-lfoot.y/500.0));
-                    ofCircle(lfoot.x, lfoot.z, 15.0/640);
-                    
-                    ofNoFill();
-                    ofSetColor(255, 0, 0, 255);
-                    ofCircle(rfoot.x, rfoot.z, 15.0/640);
-                    ofFill();
-                    ofSetColor(255, 0, 0, 255*(1-rfoot.y/500.0));
-                    ofCircle(rfoot.x, rfoot.z, 15.0/640);
-                    
-                    ofNoFill();
-                    ofSetColor(255, 255, 0, 255);
-                    ofCircle(lhand.x, lhand.z, 15.0/640);
-                    ofFill();
-                    ofSetColor(255, 255, 0, 255*(1-lhand.y/500.0));
-                    ofCircle(lhand.x, lhand.z, 15.0/640);
-                    
-                    
-                    ofNoFill();
-                    ofSetColor(0, 255, 244, 255);
-                    ofCircle(rhand.x, rhand.z, 15.0/640);
-                    ofFill();
-                    ofSetColor(0, 255, 255, 255*(1-rhand.y/500.0));
-                    ofCircle(rhand.x, rhand.z, 15.0/640);
-                    
-				}
-				
+               				
 			}glPopMatrix();
-			ofSetColor(255, 255, 255);
-			ofDrawBitmapString("TOP - Mixed world", 640/2+10, 2*480/2+10);
 			
 			
 			ofSetColor(255, 255, 255);
@@ -984,13 +915,14 @@
             
             
             
+            //---------------------------------------------------------------------------------------------	
             
         } else if([openglTabView indexOfTabViewItem:[openglTabView selectedTabViewItem]] == 1) {
             //    glEnable(GL_DEPTH);
             glEnable(GL_DEPTH_TEST);
             glDepthFunc(GL_LEQUAL);
             glClearDepth(1.0); 
-            
+
             
             ofxPoint3f points[3];
             ofxPoint2f handles[3];
@@ -1030,13 +962,28 @@
                     
                     
                     //Surface
-                    ofSetColor(255, 255, 0);
+
+                    ofxPoint3f corners[4];
+                    corners[0] = [self convertSurfaceToWorld:ofxPoint3f(0,0,0)];
+                    corners[1] = [self convertSurfaceToWorld:ofxPoint3f(1,0,0)];
+                    corners[2] = [self convertSurfaceToWorld:ofxPoint3f(1,1,0)];
+                    corners[3] = [self convertSurfaceToWorld:ofxPoint3f(0,1,0)];
+                        
+                    for(int i=0;i<4;i++){
+                    corners[i] = [self convertWorldToKinect:ofxPoint3f(corners[i])];
+                    }
+                    
+                    ir.generateTexture();
+                    ofTexture * tex = ir.getTexture();
+                    ofSetColor(255, 255, 255,255);
+                    tex->bind();
                     glBegin(GL_QUADS);
-                    glVertex3d(0, 0, 0);
-                    glVertex3d([self surfaceAspect], 0, 0);
-                    glVertex3d([self surfaceAspect], 1, 0);
-                    glVertex3d(0, 1, 0);
+                    glTexCoord2f(corners[0].x, corners[0].y);     glVertex3d(0, 0, 0);
+                    glTexCoord2f(corners[1].x, corners[1].y);   glVertex3d([self surfaceAspect], 0, 0);
+                    glTexCoord2f(corners[2].x, corners[2].y);   glVertex3d([self surfaceAspect], 1, 0);
+                    glTexCoord2f(corners[3].x, corners[3].y);   glVertex3d(0, 1, 0);
                     glEnd();
+                    tex->unbind();
                     
                     //Handles
                     glPushMatrix();{
@@ -1083,7 +1030,7 @@
                         border[i+1] = [self convertWorldToSurface:ofxPoint3f(pOut[i].X, pOut[i].Y, pOut[i].Z)];;
                     }
                     
-                    ofSetColor(100, 100, 100,150);
+                    ofSetColor(100, 100, 100,80);
                     glBegin(GL_LINES);
                     for(int i=0;i<4;i++){
                         glVertex3d(border[0].x, border[0].y, border[0].z);
@@ -1111,10 +1058,9 @@
                     xn::DepthMetaData dmd;
                     depth.getXnDepthGenerator().GetMetaData(dmd);
                     
-                    glColor3f(255,255,255);
                     glBegin(GL_POINTS);
-                    for(int y=0;y<480;y+=3){
-                        for(int x=0;x<640;x+=3){
+                    for(int y=0;y<480;y+=5){
+                        for(int x=0;x<640;x+=5){
                             XnPoint3D pIn;
                             pIn.X = x;
                             pIn.Y = y;
@@ -1122,8 +1068,17 @@
                             XnPoint3D pOut;
                             
                             if(pIn.Z != 0){
+                    
+                                
                                 depth.getXnDepthGenerator().ConvertProjectiveToRealWorld(1, &pIn, &pOut);
                                 ofxPoint3f p = [self convertWorldToSurface:ofxPoint3f(pOut.X, pOut.Y, pOut.Z)];;
+                                
+                                if(p.x >  0 && p.x < 1 && p.y > 0 && p.y < 1 && p.z > 0){
+                                    glColor4f(0.3,1.0,0.3,1.0);
+                                } else {
+                                    glColor4f(1.0,1.0,1.0,0.4);
+                                }
+                                
                                 glVertex3f(p.x,p.y,p.z);
                             }
                         }
@@ -1482,33 +1437,34 @@
     } else {
         return nil;
     }
-    
-    
+}
+
+-(ofxPoint3f) convertWorldToKinect:(ofxPoint3f)p{
+    if(!stop){
+        XnPoint3D pIn;
+        pIn.X = p.x;
+        pIn.Y = p.y;
+        pIn.Z = p.z;
+        XnPoint3D pOut;
+        
+        depth.getXnDepthGenerator().ConvertRealWorldToProjective(1, &pIn, &pOut);
+        
+        return ofxPoint3f(pOut.X, pOut.Y, pOut.Z);
+    } else {
+        return nil;
+    }
 }
 
 -(ofxPoint3f) convertWorldToSurface:(ofxPoint3f) p{
     p -= [self point3:0];	
     
-    /* float z = p.z;
-     p.z = p.y;
-     p.y = z;*/
-    //	p = rotationMatrix.transform3x3(rotationMatrix,p);
-    
-    
-    /*  p.rotate(PropF(@"angle3"), ofxVec3f(1,0,0));
-     p.rotate(PropF(@"angle2"), ofxVec3f(0,0,1));
-     p.rotate(PropF(@"angle1"), ofxVec3f(0,1,0));
-     */
-    
     float rotatex,rotatey,rotatez,rotateval;
     rotationQuaternion.getRotate(rotateval, rotatex, rotatey, rotatez);
     
-    
-    //cout<<rotateval*RAD_TO_DEG<<endl;
-    // 
     p.rotate(rotateval*RAD_TO_DEG,ofxVec3f(rotatex, rotatey, rotatez));
-    p.rotate(PropF(@"angle1"),ofxVec3f(1,0,0));
-    //
+    p.rotate(-PropF(@"angle1"),ofxVec3f(1,0,0));
+    
+    
     float localScale = ([self projPoint:1] - [self projPoint:0]).length(); 
     p.z *= -scale*localScale;
     p.x *= scale*localScale;
@@ -1517,10 +1473,31 @@
     p.rotate(-PropF(@"angle2"), ofxVec3f(0,0,1));
     
     p += ofxPoint3f([self projPoint:0].x, [self projPoint:0].y,0 );
+
+    return p;
+}
+
+-(ofxPoint3f) convertSurfaceToWorld:(ofxPoint3f) p{
+    p -= ofxPoint3f([self projPoint:0].x, [self projPoint:0].y,0 );
+
+    p.rotate(PropF(@"angle2"), ofxVec3f(0,0,1));
+
+    float localScale = ([self projPoint:1] - [self projPoint:0]).length(); 
+    p.z /= -scale*localScale;
+    p.x /= scale*localScale;
+    p.y /= -scale*localScale;
     
+    p.rotate(PropF(@"angle1"),ofxVec3f(1,0,0));
+
     
+    float rotatex,rotatey,rotatez,rotateval;
+    rotationQuaternion.getRotate(rotateval, rotatex, rotatey, rotatez);
+    p.rotate(-rotateval*RAD_TO_DEG,ofxVec3f(rotatex, rotatey, rotatez));
+    
+    p += [self point3:0];	
     
     return p;
+
 }
 
 -(ofxPoint3f) convertWorldToProjection:(ofxPoint3f) p{
