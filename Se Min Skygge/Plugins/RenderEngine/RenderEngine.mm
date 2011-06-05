@@ -89,7 +89,7 @@
     camCoord = ofxVec3f(0,0,-5);
     eyeCoord = ofxVec3f(0,0,1);
     
-    glEnable(GL_DEPTH_TEST);
+ //   glEnable(GL_DEPTH_TEST);
     
 }
 
@@ -125,7 +125,6 @@
 
 
 -(void)controlDraw:(NSDictionary *)drawingInformation{
-    
     ofEnableAlphaBlending();
     ofBackground(0,0,0);
     glScaled(ofGetWidth(), ofGetHeight(), 1);
@@ -215,12 +214,12 @@
     ofDisableAlphaBlending();
     
     colorCorrectShader->setShaderActive(YES);
-    colorCorrectShader->setUniformVariable1f("min", PropF(@"levelsMin") );
-    colorCorrectShader->setUniformVariable1f("max", PropF(@"levelsMax"));
+    colorCorrectShader->setUniformVariable1f((char*)"min", PropF(@"levelsMin") );
+    colorCorrectShader->setUniformVariable1f((char*)"max", PropF(@"levelsMax"));
     
-    colorCorrectShader->setUniformVariable2f("start", 0.0, 0.0);
-    colorCorrectShader->setUniformVariable2f("middle",0.5, PropF(@"levelsMiddle"));    
-    colorCorrectShader->setUniformVariable2f("end", 1.0, 1.0);    
+    colorCorrectShader->setUniformVariable2f((char*)"start", 0.0, 0.0);
+    colorCorrectShader->setUniformVariable2f((char*)"middle",0.5, PropF(@"levelsMiddle"));    
+    colorCorrectShader->setUniformVariable2f((char*)"end", 1.0, 1.0);    
     
     [GetPlugin(Keystoner)  applySurface:@"Screen" projectorNumber:0 viewNumber:ViewNumber];
     ofSetColor(255,255,255,255);

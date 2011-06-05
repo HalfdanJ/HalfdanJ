@@ -194,12 +194,13 @@ const int fboBorder = 20;
 
 
 -(void) drawMaskWithAlpha:(float)alpha{
-    /*   glColor4f(0,0,0,alpha*opacity);    
+    glColor4f(0,0,0,alpha*opacity);    
      glPushMatrix();{
-     [self transform];        
-     fbo->draw(0,0,[self aspect],1);
+         [self transform];        
+         [self drawObject];
+
      
-     }glPopMatrix();*/
+     }glPopMatrix();
 }
 
 //------------------------------------------------------------------------------------------------------------------------

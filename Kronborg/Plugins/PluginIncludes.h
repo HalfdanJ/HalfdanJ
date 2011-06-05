@@ -2,5 +2,4 @@
 #include "CorePluginsIncludes.h"
 
 #include "VideoPlayer.h"
-#include "RenderEngine.h"
-#include "Kinect.h"
+//#include "Globerummet.h"
