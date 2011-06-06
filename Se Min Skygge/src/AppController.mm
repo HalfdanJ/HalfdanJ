@@ -35,7 +35,7 @@ extern ofAppBaseWindow * window;
 	[pluginManagerController addPlugin:[[RenderEngine alloc] init]];
     
     [pluginManagerController addPlugin:[[Keystoner alloc] initWithSurfaces:[NSArray arrayWithObjects:@"Screen", nil]]];
-    [pluginManagerController addPlugin:[[Kinect alloc] init]];
+    [pluginManagerController addPlugin:[[Kinect alloc] initWithNumberKinects:2]];
 
 
 }

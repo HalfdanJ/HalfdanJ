@@ -9,10 +9,6 @@
 /* Begin PBXBuildFile section */
 		581F9D1D13856DF90091B02B /* ObjectTreeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 581F9D1C13856DF90091B02B /* ObjectTreeViewController.mm */; };
 		58A40E321387065000EC0A6A /* BeamSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A40E311387065000EC0A6A /* BeamSync.m */; };
-		58C07CA11386F3A800D95BB0 /* handle.png in Resources */ = {isa = PBXBuildFile; fileRef = 58C07CA01386F3A800D95BB0 /* handle.png */; };
-		58C07CA21386F3B000D95BB0 /* handle.png in Copy Files to Resources */ = {isa = PBXBuildFile; fileRef = 58C07CA01386F3A800D95BB0 /* handle.png */; };
-		58D23E5D1386BD2E002E994A /* Kinect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 58D23E5B1386BD2D002E994A /* Kinect.mm */; };
-		58D23E5E1386BD2E002E994A /* Kinect.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58D23E5C1386BD2D002E994A /* Kinect.xib */; };
 		58D23F771386BD66002E994A /* README in Resources */ = {isa = PBXBuildFile; fileRef = 58D23F141386BD65002E994A /* README */; };
 		58D23F781386BD66002E994A /* ofxDepthGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58D23F161386BD65002E994A /* ofxDepthGenerator.cpp */; };
 		58D23F791386BD66002E994A /* ofxImageGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58D23F181386BD65002E994A /* ofxImageGenerator.cpp */; };
@@ -22,6 +18,12 @@
 		58D23F7D1386BD66002E994A /* ofxUserGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58D23F231386BD65002E994A /* ofxUserGenerator.cpp */; };
 		58D23F9D1386C48B002E994A /* libOpenNI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 58D23F9C1386C48B002E994A /* libOpenNI.dylib */; };
 		58D23FB41386CCA0002E994A /* ofxIRGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58D23FB21386CCA0002E994A /* ofxIRGenerator.cpp */; };
+		58DA9146139BE6B70006B665 /* handle.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DA9140139BE6B70006B665 /* handle.png */; };
+		58DA9147139BE6B70006B665 /* Kinect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 58DA9142139BE6B70006B665 /* Kinect.mm */; };
+		58DA9148139BE6B70006B665 /* Kinect.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58DA9143139BE6B70006B665 /* Kinect.xib */; };
+		58DA9155139BE7B70006B665 /* BlobTracker3d.mm in Sources */ = {isa = PBXBuildFile; fileRef = 58DA9154139BE7B70006B665 /* BlobTracker3d.mm */; };
+		58DA9158139BE8C00006B665 /* BlobTrackerInstance3d.mm in Sources */ = {isa = PBXBuildFile; fileRef = 58DA9157139BE8C00006B665 /* BlobTrackerInstance3d.mm */; };
+		58DA915B139BE92D0006B665 /* KinectInstance.mm in Sources */ = {isa = PBXBuildFile; fileRef = 58DA915A139BE92D0006B665 /* KinectInstance.mm */; };
 		58EA46C71384611300CCB078 /* colorCorrectShader.frag in Sources */ = {isa = PBXBuildFile; fileRef = 58EA46C51384611300CCB078 /* colorCorrectShader.frag */; };
 		58EA46C81384611300CCB078 /* colorCorrectShader.vert in Sources */ = {isa = PBXBuildFile; fileRef = 58EA46C61384611300CCB078 /* colorCorrectShader.vert */; };
 		58EA46C91384612400CCB078 /* colorCorrectShader.frag in Copy Files to Resources */ = {isa = PBXBuildFile; fileRef = 58EA46C51384611300CCB078 /* colorCorrectShader.frag */; };
@@ -171,7 +173,6 @@
 			files = (
 				58EA46CA1384612700CCB078 /* colorCorrectShader.vert in Copy Files to Resources */,
 				58EA46C91384612400CCB078 /* colorCorrectShader.frag in Copy Files to Resources */,
-				58C07CA21386F3B000D95BB0 /* handle.png in Copy Files to Resources */,
 			);
 			name = "Copy Files to Resources";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -183,11 +184,6 @@
 		581F9D1C13856DF90091B02B /* ObjectTreeViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ObjectTreeViewController.mm; sourceTree = "<group>"; };
 		58A40E301387065000EC0A6A /* BeamSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeamSync.h; sourceTree = "<group>"; };
 		58A40E311387065000EC0A6A /* BeamSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeamSync.m; sourceTree = "<group>"; };
-		58C07CA01386F3A800D95BB0 /* handle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = handle.png; sourceTree = "<group>"; };
-		58D23E591386BD2D002E994A /* Filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Filter.h; sourceTree = "<group>"; };
-		58D23E5A1386BD2D002E994A /* Kinect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kinect.h; sourceTree = "<group>"; };
-		58D23E5B1386BD2D002E994A /* Kinect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Kinect.mm; sourceTree = "<group>"; };
-		58D23E5C1386BD2D002E994A /* Kinect.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Kinect.xib; sourceTree = "<group>"; };
 		58D23EC01386BD65002E994A /* IXnNodeAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXnNodeAllocator.h; sourceTree = "<group>"; };
 		58D23EC21386BD65002E994A /* XnPlatformLinux-Arm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XnPlatformLinux-Arm.h"; sourceTree = "<group>"; };
 		58D23EC41386BD65002E994A /* XnOSLinux-x86.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XnOSLinux-x86.h"; sourceTree = "<group>"; };
@@ -257,6 +253,17 @@
 		58D23F9C1386C48B002E994A /* libOpenNI.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libOpenNI.dylib; path = ../../../../../../usr/lib/libOpenNI.dylib; sourceTree = "<group>"; };
 		58D23FB21386CCA0002E994A /* ofxIRGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxIRGenerator.cpp; sourceTree = "<group>"; };
 		58D23FB31386CCA0002E994A /* ofxIRGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxIRGenerator.h; sourceTree = "<group>"; };
+		58DA9140139BE6B70006B665 /* handle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = handle.png; sourceTree = "<group>"; };
+		58DA9141139BE6B70006B665 /* Kinect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kinect.h; sourceTree = "<group>"; };
+		58DA9142139BE6B70006B665 /* Kinect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Kinect.mm; sourceTree = "<group>"; };
+		58DA9143139BE6B70006B665 /* Kinect.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Kinect.xib; sourceTree = "<group>"; };
+		58DA914B139BE6C30006B665 /* Filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Filter.h; sourceTree = "<group>"; };
+		58DA9153139BE7B70006B665 /* BlobTracker3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlobTracker3d.h; sourceTree = "<group>"; };
+		58DA9154139BE7B70006B665 /* BlobTracker3d.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BlobTracker3d.mm; sourceTree = "<group>"; };
+		58DA9156139BE8C00006B665 /* BlobTrackerInstance3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlobTrackerInstance3d.h; sourceTree = "<group>"; };
+		58DA9157139BE8C00006B665 /* BlobTrackerInstance3d.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BlobTrackerInstance3d.mm; sourceTree = "<group>"; };
+		58DA9159139BE92D0006B665 /* KinectInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KinectInstance.h; sourceTree = "<group>"; };
+		58DA915A139BE92D0006B665 /* KinectInstance.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = KinectInstance.mm; sourceTree = "<group>"; };
 		58EA46C51384611300CCB078 /* colorCorrectShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = colorCorrectShader.frag; sourceTree = "<group>"; };
 		58EA46C61384611300CCB078 /* colorCorrectShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = colorCorrectShader.vert; sourceTree = "<group>"; };
 		DD42F5FC1366BC9E0022FD52 /* RenderObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderObject.h; sourceTree = "<group>"; };
@@ -574,18 +581,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		58D23E581386BD2D002E994A /* Kinect */ = {
-			isa = PBXGroup;
-			children = (
-				58C07CA01386F3A800D95BB0 /* handle.png */,
-				58D23E591386BD2D002E994A /* Filter.h */,
-				58D23E5A1386BD2D002E994A /* Kinect.h */,
-				58D23E5B1386BD2D002E994A /* Kinect.mm */,
-				58D23E5C1386BD2D002E994A /* Kinect.xib */,
-			);
-			path = Kinect;
-			sourceTree = "<group>";
-		};
 		58D23E601386BD65002E994A /* ofxOpenNI */ = {
 			isa = PBXGroup;
 			children = (
@@ -708,6 +703,45 @@
 				58D23F241386BD65002E994A /* ofxUserGenerator.h */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		58DA913F139BE6B70006B665 /* Kinect */ = {
+			isa = PBXGroup;
+			children = (
+				58DA9140139BE6B70006B665 /* handle.png */,
+				58DA9141139BE6B70006B665 /* Kinect.h */,
+				58DA9142139BE6B70006B665 /* Kinect.mm */,
+				58DA9159139BE92D0006B665 /* KinectInstance.h */,
+				58DA915A139BE92D0006B665 /* KinectInstance.mm */,
+				58DA9143139BE6B70006B665 /* Kinect.xib */,
+			);
+			path = Kinect;
+			sourceTree = "<group>";
+		};
+		58DA914A139BE6C30006B665 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				58DA914B139BE6C30006B665 /* Filter.h */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		58DA9151139BE7AC0006B665 /* BlobTracker2d */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = BlobTracker2d;
+			sourceTree = "<group>";
+		};
+		58DA9152139BE7AC0006B665 /* BlobTracker3d */ = {
+			isa = PBXGroup;
+			children = (
+				58DA9153139BE7B70006B665 /* BlobTracker3d.h */,
+				58DA9154139BE7B70006B665 /* BlobTracker3d.mm */,
+				58DA9156139BE8C00006B665 /* BlobTrackerInstance3d.h */,
+				58DA9157139BE8C00006B665 /* BlobTrackerInstance3d.mm */,
+			);
+			path = BlobTracker3d;
 			sourceTree = "<group>";
 		};
 		DD7B144C11A3CF38000D9775 /* addons */ = {
@@ -1277,6 +1311,7 @@
 				DDB3D4BC135EDF980097B98E /* PluginManager */,
 				DDB3D4CB135EDF980097B98E /* Resources */,
 				DDB3D4D1135EDF980097B98E /* Views */,
+				58DA914A139BE6C30006B665 /* Helpers */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -1303,8 +1338,11 @@
 		DDB3D44A135EDF980097B98E /* CorePlugins */ = {
 			isa = PBXGroup;
 			children = (
-				DDB3D44B135EDF980097B98E /* Cameras */,
 				DDB3D481135EDF980097B98E /* CorePluginsIncludes.h */,
+				58DA913F139BE6B70006B665 /* Kinect */,
+				58DA9151139BE7AC0006B665 /* BlobTracker2d */,
+				58DA9152139BE7AC0006B665 /* BlobTracker3d */,
+				DDB3D44B135EDF980097B98E /* Cameras */,
 				DDB3D482135EDF980097B98E /* Keystoner */,
 				DDB3D494135EDF980097B98E /* Midi */,
 				DDB3D4B0135EDF980097B98E /* Tracker */,
@@ -1602,7 +1640,6 @@
 		DDC8EA5D113809B100574926 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
-				58D23E581386BD2D002E994A /* Kinect */,
 				DD947742135F6B2D0027F1CC /* RenderEngine */,
 				DD9AC4C713421D790059D4EC /* VideoPlayer */,
 				DDC8EA5E113809B100574926 /* PluginIncludes.h */,
@@ -1749,9 +1786,9 @@
 				DDB3D7BB135EDF9A0097B98E /* Trebuchet MS.ttf in Resources */,
 				DD62F864135F40A500465B2E /* MainMenu.xib in Resources */,
 				DD947747135F6B2D0027F1CC /* RenderEngine.xib in Resources */,
-				58D23E5E1386BD2E002E994A /* Kinect.xib in Resources */,
 				58D23F771386BD66002E994A /* README in Resources */,
-				58C07CA11386F3A800D95BB0 /* handle.png in Resources */,
+				58DA9146139BE6B70006B665 /* handle.png in Resources */,
+				58DA9148139BE6B70006B665 /* Kinect.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1852,7 +1889,6 @@
 				58EA46C71384611300CCB078 /* colorCorrectShader.frag in Sources */,
 				58EA46C81384611300CCB078 /* colorCorrectShader.vert in Sources */,
 				581F9D1D13856DF90091B02B /* ObjectTreeViewController.mm in Sources */,
-				58D23E5D1386BD2E002E994A /* Kinect.mm in Sources */,
 				58D23F781386BD66002E994A /* ofxDepthGenerator.cpp in Sources */,
 				58D23F791386BD66002E994A /* ofxImageGenerator.cpp in Sources */,
 				58D23F7A1386BD66002E994A /* ofxOpenNIContext.cpp in Sources */,
@@ -1861,6 +1897,10 @@
 				58D23F7D1386BD66002E994A /* ofxUserGenerator.cpp in Sources */,
 				58D23FB41386CCA0002E994A /* ofxIRGenerator.cpp in Sources */,
 				58A40E321387065000EC0A6A /* BeamSync.m in Sources */,
+				58DA9147139BE6B70006B665 /* Kinect.mm in Sources */,
+				58DA9155139BE7B70006B665 /* BlobTracker3d.mm in Sources */,
+				58DA9158139BE8C00006B665 /* BlobTrackerInstance3d.mm in Sources */,
+				58DA915B139BE92D0006B665 /* KinectInstance.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

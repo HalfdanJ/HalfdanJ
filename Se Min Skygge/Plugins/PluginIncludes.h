@@ -3,4 +3,3 @@
 
 #include "VideoPlayer.h"
 #include "RenderEngine.h"
-#include "Kinect.h"
