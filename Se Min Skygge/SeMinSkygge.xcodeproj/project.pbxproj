@@ -8,7 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		581F9D1D13856DF90091B02B /* ObjectTreeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 581F9D1C13856DF90091B02B /* ObjectTreeViewController.mm */; };
+		58748952139D8F1D00F5BA27 /* BlobTracker2d.mm in Sources */ = {isa = PBXBuildFile; fileRef = 58748951139D8F1D00F5BA27 /* BlobTracker2d.mm */; };
+		58748954139D8F4500F5BA27 /* BlobTracker2d.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58748953139D8F4500F5BA27 /* BlobTracker2d.xib */; };
+		5874895A139D935800F5BA27 /* BlobTrackerInstance2d.mm in Sources */ = {isa = PBXBuildFile; fileRef = 58748959139D935800F5BA27 /* BlobTrackerInstance2d.mm */; };
+		5874895C139D93D000F5BA27 /* BlobTrackerInstance2d.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5874895B139D93D000F5BA27 /* BlobTrackerInstance2d.xib */; };
+		5876F144139FB36D0051C56E /* Shadows.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5876F143139FB36D0051C56E /* Shadows.mm */; };
+		5876F146139FB3770051C56E /* Shadows.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5876F145139FB3770051C56E /* Shadows.xib */; };
+		5884568E13A0F45000716596 /* ofxQtVideoSaver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5884568C13A0F45000716596 /* ofxQtVideoSaver.cpp */; };
 		58A40E321387065000EC0A6A /* BeamSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A40E311387065000EC0A6A /* BeamSync.m */; };
+		58B5597713A12A5400B4FB6C /* QTKitMovieRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B5597513A12A5400B4FB6C /* QTKitMovieRenderer.m */; };
+		58C4F7AF139E3C600019982A /* BlobClasses2d.mm in Sources */ = {isa = PBXBuildFile; fileRef = 58C4F7AE139E3C600019982A /* BlobClasses2d.mm */; };
 		58D23F771386BD66002E994A /* README in Resources */ = {isa = PBXBuildFile; fileRef = 58D23F141386BD65002E994A /* README */; };
 		58D23F781386BD66002E994A /* ofxDepthGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58D23F161386BD65002E994A /* ofxDepthGenerator.cpp */; };
 		58D23F791386BD66002E994A /* ofxImageGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58D23F181386BD65002E994A /* ofxImageGenerator.cpp */; };
@@ -182,8 +191,23 @@
 /* Begin PBXFileReference section */
 		581F9D1B13856DF90091B02B /* ObjectTreeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectTreeViewController.h; sourceTree = "<group>"; };
 		581F9D1C13856DF90091B02B /* ObjectTreeViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ObjectTreeViewController.mm; sourceTree = "<group>"; };
+		58748950139D8F1D00F5BA27 /* BlobTracker2d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlobTracker2d.h; sourceTree = "<group>"; };
+		58748951139D8F1D00F5BA27 /* BlobTracker2d.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BlobTracker2d.mm; sourceTree = "<group>"; };
+		58748953139D8F4500F5BA27 /* BlobTracker2d.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BlobTracker2d.xib; sourceTree = "<group>"; };
+		58748958139D935800F5BA27 /* BlobTrackerInstance2d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlobTrackerInstance2d.h; sourceTree = "<group>"; };
+		58748959139D935800F5BA27 /* BlobTrackerInstance2d.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BlobTrackerInstance2d.mm; sourceTree = "<group>"; };
+		5874895B139D93D000F5BA27 /* BlobTrackerInstance2d.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BlobTrackerInstance2d.xib; sourceTree = "<group>"; };
+		5876F142139FB36D0051C56E /* Shadows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shadows.h; sourceTree = "<group>"; };
+		5876F143139FB36D0051C56E /* Shadows.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Shadows.mm; sourceTree = "<group>"; };
+		5876F145139FB3770051C56E /* Shadows.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Shadows.xib; sourceTree = "<group>"; };
+		5884568C13A0F45000716596 /* ofxQtVideoSaver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxQtVideoSaver.cpp; sourceTree = "<group>"; };
+		5884568D13A0F45000716596 /* ofxQtVideoSaver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxQtVideoSaver.h; sourceTree = "<group>"; };
 		58A40E301387065000EC0A6A /* BeamSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeamSync.h; sourceTree = "<group>"; };
 		58A40E311387065000EC0A6A /* BeamSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeamSync.m; sourceTree = "<group>"; };
+		58B5597413A12A5400B4FB6C /* QTKitMovieRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTKitMovieRenderer.h; sourceTree = "<group>"; };
+		58B5597513A12A5400B4FB6C /* QTKitMovieRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QTKitMovieRenderer.m; sourceTree = "<group>"; };
+		58C4F7AD139E3C5F0019982A /* BlobClasses2d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlobClasses2d.h; sourceTree = "<group>"; };
+		58C4F7AE139E3C600019982A /* BlobClasses2d.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BlobClasses2d.mm; sourceTree = "<group>"; };
 		58D23EC01386BD65002E994A /* IXnNodeAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXnNodeAllocator.h; sourceTree = "<group>"; };
 		58D23EC21386BD65002E994A /* XnPlatformLinux-Arm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XnPlatformLinux-Arm.h"; sourceTree = "<group>"; };
 		58D23EC41386BD65002E994A /* XnOSLinux-x86.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XnOSLinux-x86.h"; sourceTree = "<group>"; };
@@ -581,6 +605,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5876F141139FB3290051C56E /* Shadows */ = {
+			isa = PBXGroup;
+			children = (
+				5876F142139FB36D0051C56E /* Shadows.h */,
+				5876F143139FB36D0051C56E /* Shadows.mm */,
+				5876F145139FB3770051C56E /* Shadows.xib */,
+			);
+			path = Shadows;
+			sourceTree = "<group>";
+		};
+		58B5597113A12A5400B4FB6C /* ofxQTKitMoviePlayer */ = {
+			isa = PBXGroup;
+			children = (
+				58B5597413A12A5400B4FB6C /* QTKitMovieRenderer.h */,
+				58B5597513A12A5400B4FB6C /* QTKitMovieRenderer.m */,
+			);
+			path = ofxQTKitMoviePlayer;
+			sourceTree = "<group>";
+		};
 		58D23E601386BD65002E994A /* ofxOpenNI */ = {
 			isa = PBXGroup;
 			children = (
@@ -721,6 +764,7 @@
 		58DA914A139BE6C30006B665 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				58B5597113A12A5400B4FB6C /* ofxQTKitMoviePlayer */,
 				58DA914B139BE6C30006B665 /* Filter.h */,
 			);
 			path = Helpers;
@@ -729,6 +773,16 @@
 		58DA9151139BE7AC0006B665 /* BlobTracker2d */ = {
 			isa = PBXGroup;
 			children = (
+				5884568C13A0F45000716596 /* ofxQtVideoSaver.cpp */,
+				5884568D13A0F45000716596 /* ofxQtVideoSaver.h */,
+				58748950139D8F1D00F5BA27 /* BlobTracker2d.h */,
+				58748951139D8F1D00F5BA27 /* BlobTracker2d.mm */,
+				58748953139D8F4500F5BA27 /* BlobTracker2d.xib */,
+				58748958139D935800F5BA27 /* BlobTrackerInstance2d.h */,
+				58748959139D935800F5BA27 /* BlobTrackerInstance2d.mm */,
+				5874895B139D93D000F5BA27 /* BlobTrackerInstance2d.xib */,
+				58C4F7AD139E3C5F0019982A /* BlobClasses2d.h */,
+				58C4F7AE139E3C600019982A /* BlobClasses2d.mm */,
 			);
 			path = BlobTracker2d;
 			sourceTree = "<group>";
@@ -1640,6 +1694,7 @@
 		DDC8EA5D113809B100574926 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				5876F141139FB3290051C56E /* Shadows */,
 				DD947742135F6B2D0027F1CC /* RenderEngine */,
 				DD9AC4C713421D790059D4EC /* VideoPlayer */,
 				DDC8EA5E113809B100574926 /* PluginIncludes.h */,
@@ -1789,6 +1844,9 @@
 				58D23F771386BD66002E994A /* README in Resources */,
 				58DA9146139BE6B70006B665 /* handle.png in Resources */,
 				58DA9148139BE6B70006B665 /* Kinect.xib in Resources */,
+				58748954139D8F4500F5BA27 /* BlobTracker2d.xib in Resources */,
+				5874895C139D93D000F5BA27 /* BlobTrackerInstance2d.xib in Resources */,
+				5876F146139FB3770051C56E /* Shadows.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1901,6 +1959,12 @@
 				58DA9155139BE7B70006B665 /* BlobTracker3d.mm in Sources */,
 				58DA9158139BE8C00006B665 /* BlobTrackerInstance3d.mm in Sources */,
 				58DA915B139BE92D0006B665 /* KinectInstance.mm in Sources */,
+				58748952139D8F1D00F5BA27 /* BlobTracker2d.mm in Sources */,
+				5874895A139D935800F5BA27 /* BlobTrackerInstance2d.mm in Sources */,
+				58C4F7AF139E3C600019982A /* BlobClasses2d.mm in Sources */,
+				5876F144139FB36D0051C56E /* Shadows.mm in Sources */,
+				5884568E13A0F45000716596 /* ofxQtVideoSaver.cpp in Sources */,
+				58B5597713A12A5400B4FB6C /* QTKitMovieRenderer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
