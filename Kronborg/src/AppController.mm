@@ -30,16 +30,10 @@ extern ofAppBaseWindow * window;
 
 -(void) setupPlugins{
 	[pluginManagerController addHeader:@"Plugins"];
-
-    VideoPlayer * videoPlayer = [[VideoPlayer alloc] init];
-    [videoPlayer setFileName:@"0-"];
-    [videoPlayer setNumberVideos:10];
     
-    [pluginManagerController addPlugin:videoPlayer];
+	[pluginManagerController addPlugin:[[VideoPlayer alloc] init]];
     
-   // [pluginManagerController addPlugin:[[Globerummet alloc] init]];
-    
-    [pluginManagerController addPlugin:[[Keystoner alloc] initWithSurfaces:[NSArray arrayWithObjects:@"Screen", nil]]];
+	[pluginManagerController addPlugin:[[Keystoner alloc] initWithSurfaces:[NSArray arrayWithObjects:@"", nil]]];
 
 
 }
