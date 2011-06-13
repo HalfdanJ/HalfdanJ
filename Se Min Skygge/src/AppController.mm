@@ -33,9 +33,11 @@ extern ofAppBaseWindow * window;
 
 [pluginManagerController addPlugin:[[VideoPlayer alloc] init]];
 	[pluginManagerController addPlugin:[[RenderEngine alloc] init]];
-    
+    [pluginManagerController addPlugin:[[Shadows alloc] init]];
+
     [pluginManagerController addPlugin:[[Keystoner alloc] initWithSurfaces:[NSArray arrayWithObjects:@"Screen", nil]]];
     [pluginManagerController addPlugin:[[Kinect alloc] initWithNumberKinects:2]];
+    [pluginManagerController addPlugin:[[BlobTracker2d alloc] init]];
 
 
 }
