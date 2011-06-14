@@ -26,6 +26,8 @@
     [super dealloc];
 }
 
+
+
 -(BOOL) outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pasteboard{
     draggedNodes = items; // Don't retain since this is just holding temporaral drag information, and it is only used during a drag!  We could put this in the pboard actually.
     
@@ -57,7 +59,8 @@
 	// Check to see what we are proposed to be dropping on
 	NSTreeNode *targetNode = item;
 	// A target of "nil" means we are on the main root tree
-    
+    NSPasteboard *pboard = [info draggingPasteboard];
+
 	
 	if ([[info draggingPasteboard] availableTypeFromArray:[NSArray arrayWithObject:@"ObjectName"]] != nil) {
 		for (NSTreeNode *draggedNode in draggedNodes) {
@@ -68,17 +71,25 @@
 		}
 	}
 	
-	
-	if( [[info draggingSource] isKindOfClass:[outlineView class]]	)
-	{
+	if( [[info draggingSource] isKindOfClass:[outlineView class]]	){
 		if([info draggingSource] == outlineView){
 			return NSDragOperationMove;
 		} else {
 			return NSDragOperationCopy;			
 		}
-	}
-	else
-	{
+	} else if ( [[pboard types] containsObject:NSFilenamesPboardType] ) {
+        if(index ==  -1){
+            NSArray *files = [pboard propertyListForType:NSFilenamesPboardType];
+            int numberOfFiles = [files count];
+            if(numberOfFiles > 1)
+                return NSDragOperationNone;
+            newObject = NO;  
+            return NSDragOperationMove;
+          
+        } 
+        newObject = YES;
+        return NSDragOperationCopy;
+    } else {
 		return NSDragOperationNone;
 	}
 }
@@ -87,109 +98,79 @@
 
 
 - (BOOL)outlineView:(NSOutlineView *)ov acceptDrop:(id <NSDraggingInfo>)info item:(id)item childIndex:(NSInteger)childIndex {
+    NSPasteboard *pboard = [info draggingPasteboard];
+
     NSTreeNode *targetNode = item;
-    // A target of "nil" means we are on the main root tree
-    //	NSMutableArray * childNodeArray;
-	
 	if(targetNode != nil){
-        //	childNodeArray = [targetNode childNodes];
-		
 		if (childIndex == NSOutlineViewDropOnItemIndex) {
-			// Insert it at the start, if we were dropping on it
 			childIndex = 0;
 		}
-	} else {
-        //	childNodeArray = [[cueTreeController arrangedObjects] childNodes];
 	}
-	
+    
     NSTreeController * treeController = [renderEngine objectTreeController];
     
-	//int i=0;
-    //	NSTreeNode * lastNode = nil;
-	for(NSTreeNode * node in draggedNodes){
-        NSLog(@"Drop %@ on %@",[node representedObject], [item representedObject]);
-        
-        RenderObject * obj = [node representedObject];
-        RenderObject * target = [item representedObject];
-        
-        if([item representedObject] != nil){
-            if(target != [obj parent]){
-                [target  addSubObject:obj];
+    if([draggedNodes count] > 0){
+        for(NSTreeNode * node in draggedNodes){
+            NSLog(@"Drop %@ on %@",[node representedObject], [item representedObject]);
+            RenderObject * obj = [node representedObject];
+            RenderObject * target = [item representedObject];
+            
+            if([item representedObject] != nil){
+                if(target != [obj parent]){
+                    [target  addSubObject:obj];
+                    
+                    if([obj parent]){
+                        [[obj parent] removeSubObject:obj];
+                    } else {
+                        [[renderEngine objectsArray] removeObject:obj];
+                    }
+                    [obj setParent:target];
+                    [treeController rearrangeObjects];
+                }
+            } else if([obj parent]){
+                [[renderEngine objectsArray] addObject:obj];
                 
                 if([obj parent]){
-                    [[obj parent] removeSubObject:obj];
-                } else {
-                    [[renderEngine objectsArray] removeObject:obj];
-                }
-                [obj setParent:target];
+                    [[obj parent]  removeSubObject:obj];
+                } 
+                [obj setParent:nil];
                 [treeController rearrangeObjects];
+                
             }
-        } else if([obj parent]){
-            [[renderEngine objectsArray] addObject:obj];
-            
-            if([obj parent]){
-                [[obj parent]  removeSubObject:obj];
-            } 
-            [obj setParent:nil];
-            [treeController rearrangeObjects];
             
         }
+    } else if( [[pboard types] containsObject:NSFilenamesPboardType] ){
+        RenderObject * target = [item representedObject];
         
-        /*
-         NSTreeNode * previousNode = nil;
-         
-         if(lastNode == nil){
-         if(childIndex > 0 || targetNode != nil){
-         //Enten er det ikke den første node, eller det er en sub-node
-         if(targetNode == nil){
-         //Det er i roden
-         previousNode = [[[treeController arrangedObjects] childNodes] objectAtIndex:childIndex-1];
-         } else {
-         if(childIndex == 0){
-         //Øverst i en gruppe
-         previousNode = targetNode;
-         } else {
-         //Midt i en gruppe
-         previousNode = [[targetNode childNodes] objectAtIndex:childIndex-1];				
-         }
-         }
-         }
-         } else {
-         previousNode = lastNode;
-         }
-         
-         */
-		//NSLog(@"Previous cue %i",[(NSNumber*)[[previousNode representedObject] lineNumber] intValue]);
-		
-		//	if(previousNode != nil){
-		//		lineNumber = childIndex;	   
-		//}
-		
-		
-		/*if(([[node  representedObject] parent] == nil && targetNode == nil) || [[node  representedObject] parent] == [targetNode representedObject]){
-         if([[(LQCueModel*)[node representedObject] lineNumber] intValue] < childIndex){
-         childIndex --;
-         }
-         }
-         
-         if(previousNode != node){			
-         //	[[node representedObject] setParent:[targetNode representedObject]];
-         //	[self setLinenumber:lineNumber forCue:[node representedObject]];
-         if(targetNode != nil){
-         [[node representedObject] moveCueToGroup:[targetNode representedObject] atIndex:(int)childIndex];
-         } else {
-         [[node representedObject] moveCueToGroup:nil atIndex:(int)childIndex];				
-         }
-         }
-         childIndex ++;
-         
-         lastNode = node;*/
-	}
+        NSArray *files = [pboard propertyListForType:NSFilenamesPboardType];
+        int numberOfFiles = [files count];
+        NSLog(@"%@ %i",files, numberOfFiles);
+        
+        if(newObject){
+            for(int i=0;i<numberOfFiles;i++){
+                RenderObject * newRenderObject = [[RenderObject alloc] init];
+                [newRenderObject setEngine:renderEngine];
+                [newRenderObject setAssetString:[files objectAtIndex:i]];
+                [newRenderObject setAutoFill:YES]; 
+                [newRenderObject setName:[[files objectAtIndex:i] lastPathComponent]];
+
+                if(target != nil){
+                    [target  addSubObject:newRenderObject];
+                    [newRenderObject setParent:target];
+                } else {
+                    [renderEngine.objectTreeController addObject:newRenderObject];                    
+                }
+                [treeController rearrangeObjects];
+            }
+        } else {
+            [target setAssetString:[files objectAtIndex:0]];
+            if([[target name] isEqualToString:@""]){
+                [target setName:[[files objectAtIndex:0] lastPathComponent]];
+            }
+        }
+    }
 	
-	//[[self cueTreeController] rearrangeObjects];
-	
-	//	[self setLinenumber:[(NSNumber*)[[previousNode representedObject] lineNumber] intValue]+1 forCue:<#(CueModel *)cue#>
-	
+    draggedNodes = nil;
 	return YES;
     
     

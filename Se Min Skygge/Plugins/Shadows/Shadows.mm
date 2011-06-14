@@ -8,6 +8,7 @@
 
 #import "Shadows.h"
 
+#import "Keystoner.h"
 
 
 @implementation Shadows
@@ -26,8 +27,8 @@
 }
 
 -(void)setup{
-    tracker = [GetPlugin(BlobTracker2d) getInstance:1];
-    kinect = [GetPlugin(Kinect) getInstance:1];
+    tracker = [GetPlugin(BlobTracker2d) getInstance:0];
+    kinect = [GetPlugin(Kinect) getInstance:0];
     surface = [GetPlugin(Keystoner) getSurface:@"Screen" viewNumber:0 projectorNumber:0];
     
     for(int i=0;i<BUFFER_SIZE;i++){
@@ -69,6 +70,7 @@
 }
 
 -(void)controlDraw:(NSDictionary *)drawingInformation{
+    if([[GetPlugin(Kinect) enabled] boolValue]){
     ofBackground(0, 0, 0);
     ofEnableAlphaBlending();
     
@@ -142,10 +144,41 @@
             glEnd();
         }
     }*/
+        
+    }
 }
 
 -(void)draw:(NSDictionary *)drawingInformation{
-    
+    ApplySurfaceForProjector(@"Screen",1);{
+        if([[GetPlugin(Kinect) enabled] boolValue]){
+            ofBackground(0, 0, 0);
+            ofEnableAlphaBlending();
+            
+            ofxPoint3f corners[4];
+            corners[0] = [kinect convertSurfaceToWorld:ofxPoint3f(0,0,0)];
+            corners[1] = [kinect convertSurfaceToWorld:ofxPoint3f([kinect surfaceAspect],0,0)];
+            corners[2] = [kinect convertSurfaceToWorld:ofxPoint3f([kinect surfaceAspect],1,0)];
+            corners[3] = [kinect convertSurfaceToWorld:ofxPoint3f(0,1,0)];
+            for(int i=0;i<4;i++){
+                corners[i] = [kinect convertWorldToKinect:ofxPoint3f(corners[i])];
+            }
+            
+            float scaleX = (1024.0/640);
+            float scaleY = (768.0/480);
+            
+            int i = [self getCurrentBufferIndex];    
+            ofSetColor(255,255,255);
+            buffer[i]->getTextureReference().bind();
+            glBegin(GL_QUADS);
+            glTexCoord2f(corners[0].x*scaleX, corners[0].y*scaleY);   glVertex2d(0, 0);
+            glTexCoord2f(corners[1].x*scaleX, corners[1].y*scaleY);   glVertex2d(Aspect(@"Screen",1), 0);
+            glTexCoord2f(corners[2].x*scaleX, corners[2].y*scaleY);   glVertex2d(Aspect(@"Screen",1), 1);
+            glTexCoord2f(corners[3].x*scaleX, corners[3].y*scaleY);   glVertex2d(0, 1);
+            glEnd();
+            buffer[i]->getTextureReference().unbind();
+            
+        }
+    }PopSurfaceForProjector();
 }
 
 
