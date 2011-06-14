@@ -1,0 +1,119 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/111/trunk/Kronborg/Plugins/SamplePlugin
+END
+NetworkManager.m
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/111/trunk/Kronborg/Plugins/SamplePlugin/NetworkManager.m
+END
+MTMessageBroker.h
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/111/trunk/Kronborg/Plugins/SamplePlugin/MTMessageBroker.h
+END
+MTMessage.m
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/111/trunk/Kronborg/Plugins/SamplePlugin/MTMessage.m
+END
+AsyncSocket.m
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/111/trunk/Kronborg/Plugins/SamplePlugin/AsyncSocket.m
+END
+MTMessageBroker.m
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/111/trunk/Kronborg/Plugins/SamplePlugin/MTMessageBroker.m
+END
+ArduinoController.h
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/114/trunk/Kronborg/Plugins/SamplePlugin/ArduinoController.h
+END
+VideoPlayer.mm
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/116/trunk/Kronborg/Plugins/SamplePlugin/VideoPlayer.mm
+END
+BReceiver.h
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/111/trunk/Kronborg/Plugins/SamplePlugin/BReceiver.h
+END
+TestButton.h
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/111/trunk/Kronborg/Plugins/SamplePlugin/TestButton.h
+END
+BReceiver.m
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/111/trunk/Kronborg/Plugins/SamplePlugin/BReceiver.m
+END
+VideoPlayer.xib
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/113/trunk/Kronborg/Plugins/SamplePlugin/VideoPlayer.xib
+END
+TestButton.m
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/111/trunk/Kronborg/Plugins/SamplePlugin/TestButton.m
+END
+BSender.h
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/111/trunk/Kronborg/Plugins/SamplePlugin/BSender.h
+END
+VideoPlayer.h
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/116/trunk/Kronborg/Plugins/SamplePlugin/VideoPlayer.h
+END
+NetworkManager.h
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/111/trunk/Kronborg/Plugins/SamplePlugin/NetworkManager.h
+END
+MTMessage.h
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/111/trunk/Kronborg/Plugins/SamplePlugin/MTMessage.h
+END
+AsyncSocket.h
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/111/trunk/Kronborg/Plugins/SamplePlugin/AsyncSocket.h
+END
+BSender.m
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/112/trunk/Kronborg/Plugins/SamplePlugin/BSender.m
+END
+ArduinoController.mm
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/114/trunk/Kronborg/Plugins/SamplePlugin/ArduinoController.mm
+END
