@@ -15,7 +15,14 @@
     ofxCvGrayscaleImage * buffer[BUFFER_SIZE];
     
     ofxCvGrayscaleImage * grayOutputImage;
+    ofxCvGrayscaleImage * grayOutputImageTemp;
+  
+    ofxCvColorImage * lightImage;
+        ofImage * lightFlashImage;
+    ofxCvColorImage * output;;
     
+
+
     int bufferIndex;
     int bufferFill;
 }

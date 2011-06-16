@@ -136,6 +136,7 @@ const int fboBorder = 20;
 
 
 -(void) drawObject{
+    
     int flags = [engine updateFlags];
     glScaled([self aspect],1,1);
     
@@ -182,7 +183,9 @@ const int fboBorder = 20;
 
 
 -(void)drawWithAlpha:(float)alpha{
-    glColor4f(255,255,255,(float)alpha*opacity);    
+    glColor4f(255,255,255,(float)alpha*opacity);   
+  //  glScaled([self aspect]*0.5,1,1);
+    
     glPushMatrix();{
         [self transform];        
         [self drawObject];
@@ -194,13 +197,15 @@ const int fboBorder = 20;
 
 
 -(void) drawMaskWithAlpha:(float)alpha{
-    glColor4f(0,0,0,alpha*opacity);    
-     glPushMatrix();{
-         [self transform];        
-         [self drawObject];
-
-     
-     }glPopMatrix();
+    glColor4f(0,0,0,alpha*opacity);   
+  //  glScaled([self aspect]*0.5,1,1);
+    
+    glPushMatrix();{
+        [self transform];        
+        [self drawObject];
+        
+        
+    }glPopMatrix();
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -289,16 +294,16 @@ const int fboBorder = 20;
 
 
 -(GLuint) uploadAssetTexture{
-  //  NSLog(@"Upload asset %@",self);
+    //  NSLog(@"Upload asset %@",self);
     GLuint texture = 0;
     if(objectType == IMAGE){
         NSBitmapImageRep * rep = [[imageAsset representations] lastObject];
         glGenTextures( 1, &texture );            
         [rep uploadAsOpenGLTexture:texture];  
     } else if(objectType == VIDEO){
-       texture = CVOpenGLTextureGetName(currentVideoFrame);
+        texture = CVOpenGLTextureGetName(currentVideoFrame);
     }
-  //  [self allocateFBO];
+    //  [self allocateFBO];
     
     return texture;
 }
@@ -433,92 +438,104 @@ const int fboBorder = 20;
 
 
 -(void)update:(NSDictionary *)drawingInformation{		
-    int flags = [engine updateFlags];
-    NSSize size;
-    
-    GLuint texture = 0;
-    
-    if(objectType == VIDEO){
-        QTVisualContextTask(qtContext);
-        const CVTimeStamp * outputTime;
-        [[drawingInformation objectForKey:@"outputTime"] getValue:&outputTime];	
-        if (qtContext != NULL && QTVisualContextIsNewImageAvailable(qtContext, outputTime)) {
-            if (NULL != currentVideoFrame) {
-                CVOpenGLTextureRelease(currentVideoFrame);
-                currentVideoFrame = NULL;
-            }
+    if(visible){
+        int flags = [engine updateFlags];
+        NSSize size;
+        
+        GLuint texture = 0;
+        
+        if(objectType == VIDEO){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                if([engine isEnabled] && visible && [videoAsset rate] == 0){
+                    [videoAsset setRate:1.0];
+                }
+                if((![engine isEnabled] || !visible) && [videoAsset rate] != 0){
+                    [videoAsset setRate:0.0];
+                }
+            });
             
-            QTVisualContextCopyImageForTime(qtContext, NULL, outputTime, &currentVideoFrame);
-            assetTextureOutdated = YES;
-        }
-    }
-    
-    
-    
-    if(flags & USE_ASSET_TEXTURE){
-        if(assetTextureOutdated){
-            //Upload the texture to assetTexture
-            assetTexture = [self uploadAssetTexture];
-            assetTextureOutdated = NO;
-            borderedFBOOutdated = YES;
-            ciImageOutdated = YES;
-        }
-        texture = assetTexture;
-        size = NSMakeSize([self pixelsWide], [self pixelsHigh]);
-    }
-    
- //   cout<<"Update texture "<<texture<<endl;
-    
-    /*if(flags & USE_BORDERED_FBO){
-     if(borderedFBOOutdated){
-     //Create a bordered FBO
-     [self createBorderedFBOFromTexture:texture];
-     ciImageOutdated = YES;
-     borderedFBOOutdated = NO;
-     }
-     texture = borderFbo->texData.textureID;
-     size = NSMakeSize([self pixelsWide]+2*fboBorder, [self pixelsHigh]+2*fboBorder);
-     }*/
-    
-    
-    
-    if(flags & USE_CIIMAGE){
-        if(ciImageOutdated && texture){  
-            if(objectType == VIDEO){
-                ciImage = [CIImage imageWithCVImageBuffer:currentVideoFrame];
-            } else {
-                ciImage = [self createCIImageFromTexture:texture size:size];
-            }
-            ciImageOutdated = NO;
-            ciFilterOutdated = YES;
-            ciFBOOutdated = YES;
-        } else if(ciImageOutdated){
-            ciImage = nil;
-        }
-    }
-    CIImage * image = ciImage;
-    
-    if(flags & FILTER_CIIMAGE){
-        if(ciFilterOutdated && image != nil){
-            image = [self filterCIImage:ciImage];
-            ciFilterOutdated = NO;
-            ciFBOOutdated = YES;
-        }
-    }
-    
-    outputImage = image;
-    
-    
-    if(flags & USE_CI_FBO){
-        if(ciFBOOutdated){    
-            texture = 0;
-            if(outputImage){
-                texture = [self createFBOFromCIImage:outputImage];
-                ciFBOOutdated = NO;
+            
+            QTVisualContextTask(qtContext);
+            const CVTimeStamp * outputTime;
+            [[drawingInformation objectForKey:@"outputTime"] getValue:&outputTime];	
+            if (qtContext != NULL && QTVisualContextIsNewImageAvailable(qtContext, outputTime)) {
+                if (NULL != currentVideoFrame) {
+                    CVOpenGLTextureRelease(currentVideoFrame);
+                    currentVideoFrame = NULL;
+                }
+                
+                QTVisualContextCopyImageForTime(qtContext, NULL, outputTime, &currentVideoFrame);
+                assetTextureOutdated = YES;
             }
         }
+        
+        
+        
+        if(flags & USE_ASSET_TEXTURE){
+            if(assetTextureOutdated ){
+                //Upload the texture to assetTexture
+                assetTexture = [self uploadAssetTexture];
+                assetTextureOutdated = NO;
+                borderedFBOOutdated = YES;
+                ciImageOutdated = YES;
+            }
+            texture = assetTexture;
+            size = NSMakeSize([self pixelsWide], [self pixelsHigh]);
+        }
+        
+        //   cout<<"Update texture "<<texture<<endl;
+        
+        /*if(flags & USE_BORDERED_FBO){
+         if(borderedFBOOutdated){
+         //Create a bordered FBO
+         [self createBorderedFBOFromTexture:texture];
+         ciImageOutdated = YES;
+         borderedFBOOutdated = NO;
+         }
+         texture = borderFbo->texData.textureID;
+         size = NSMakeSize([self pixelsWide]+2*fboBorder, [self pixelsHigh]+2*fboBorder);
+         }*/
+        
+        
+        
+        if(flags & USE_CIIMAGE){
+            if(ciImageOutdated && texture){  
+                if(objectType == VIDEO){
+                    ciImage = [CIImage imageWithCVImageBuffer:currentVideoFrame];
+                } else {
+                    ciImage = [self createCIImageFromTexture:texture size:size];
+                }
+                ciImageOutdated = NO;
+                ciFilterOutdated = YES;
+                ciFBOOutdated = YES;
+            } else if(ciImageOutdated){
+                ciImage = nil;
+            }
+        }
+        CIImage * image = ciImage;
+        
+        if(flags & FILTER_CIIMAGE){
+            if(ciFilterOutdated && image != nil){
+                image = [self filterCIImage:ciImage];
+                ciFilterOutdated = NO;
+                ciFBOOutdated = YES;
+            }
+        }
+        
+        outputImage = image;
+        
+        
+        if(flags & USE_CI_FBO){
+            if(ciFBOOutdated){    
+                texture = 0;
+                if(outputImage){
+                    texture = [self createFBOFromCIImage:outputImage];
+                    ciFBOOutdated = NO;
+                }
+            }
+        }
     }
-    
     
 }
 
@@ -567,27 +584,25 @@ const int fboBorder = 20;
             if(objectType == VIDEO){
                 NSLog(@"Load as video");
                 NSError * error = [NSError alloc];			
-
+                
                 if (nil != videoAsset) [videoAsset release];                
                 videoAsset = [[QTMovie alloc] initWithURL:url error:&error];
                 if(error != nil){ 
                     NSLog(@"ERROR: Could not load movie: %@",error);
                 }
-
+                
                 QTOpenGLTextureContextCreate(kCFAllocatorDefault,  CGLContextObj(CGLGetCurrentContext()), CGLGetPixelFormat(CGLGetCurrentContext()), NULL, &qtContext);
                 
                 SetMovieVisualContext([videoAsset quickTimeMovie], qtContext);
-
+                
                 
                 [videoAsset setAttribute:[NSNumber numberWithBool:YES] forKey:QTMovieLoopsAttribute];
-                [videoAsset setRate:1.0];
-
+                
                 NSArray* vtracks = [videoAsset tracksOfMediaType:QTMediaTypeVideo];
 				QTTrack* track = [vtracks objectAtIndex:0];
 				videoSize = [track apertureModeDimensionsForMode:QTMovieApertureModeClean];
-				NSLog(@"Size: %@",NSStringFromSize(videoSize));
-				
-
+				NSLog(@"Size: %@",NSStringFromSize(videoSize));				
+                
             }
         }
         
@@ -655,11 +670,11 @@ const int fboBorder = 20;
 }
 
 -(float)aspect{
-  /*  if(imageAsset != nil){
-        return [imageAsset size].width / [imageAsset size].height;
-    }    
-    return 1;
-   */
+    /*  if(imageAsset != nil){
+     return [imageAsset size].width / [imageAsset size].height;
+     }    
+     return 1;
+     */
     float width = [self pixelsWide];
     float height = [self pixelsHigh];
     if(width != 0 && height != 0)
@@ -677,7 +692,7 @@ const int fboBorder = 20;
     if(parent)
         return [self visible] && [parent absoluteVisible];
     return [self visible];                
-
+    
 }
 
 
@@ -757,9 +772,9 @@ const int fboBorder = 20;
     [self setMaskOnBack:[aDecoder decodeBoolForKey:@"maskOnBack"]];
     [self setAutoFill:[aDecoder decodeBoolForKey:@"autoFill"]];
     [self setVisible:[aDecoder decodeBoolForKey:@"visible"]];
-
+    
     [self setBlendmodeAdd:[aDecoder decodeBoolForKey:@"blendmodeAdd"]];
-
+    
     
     [self setSubObjects:[aDecoder decodeObjectForKey:@"subObjects"]];
     
@@ -785,7 +800,7 @@ const int fboBorder = 20;
     [aCoder encodeBool:maskOnBack forKey:@"maskOnBack"];
     [aCoder encodeBool:autoFill forKey:@"autoFill"];   
     [aCoder encodeBool:visible forKey:@"visible"];   
-
+    
     [aCoder encodeBool:blendmodeAdd forKey:@"blendmodeAdd"];   
     
     [aCoder encodeObject:subObjects forKey:@"subObjects"];

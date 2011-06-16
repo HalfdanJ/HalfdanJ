@@ -135,7 +135,7 @@
     glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA, GL_ONE,GL_ONE);
     
     glPushMatrix();{
-        glScaled(1,1,PropF(@"camDepthScale"));        
+        glScaled(1.0/aspect,1,PropF(@"camDepthScale"));        
         ofxVec3f v = eyeCoord-camCoord;
         float a1 = ofxVec2f(0, 1).angle(ofxVec2f(eyeCoord.x, eyeCoord.z)-ofxVec2f(camCoord.x, camCoord.z));    
         v.rotate(a1, ofxVec3f(0,1,0));    
@@ -159,6 +159,7 @@
         glPushMatrix();{
             glTranslated(0, 0.5, 10.0/3.0);
             glTranslated(PropF(@"camPosX"),-PropF(@"camPosY"),-PropF(@"camPosZ"));
+            glScaled(aspect,1,1);
             
             glColor4f(1.0f,0.4f,0.3f,0.7f);
             glBegin(GL_LINES);
@@ -274,7 +275,10 @@
 //------------------------------------------------------------------------------------------------------------------------
 
 -(void) placeCamera{
-    glScaled(1,1,PropF(@"camDepthScale"));
+//    glScaled(1.0/aspect,1,PropF(@"camDepthScale"));        
+
+    
+    glScaled(1.0/aspect,1,PropF(@"camDepthScale"));
     glTranslated(-PropF(@"camPosX")+0.5,PropF(@"camPosY"),PropF(@"camPosZ"));
 }
 
