@@ -4,3 +4,4 @@
 #include "VideoPlayer.h"
 #include "RenderEngine.h"
 #include "Shadows.h"
+#include "InteractiveWall.h"

@@ -41,6 +41,7 @@ extern ofAppBaseWindow * window;
     [pluginManagerController addPlugin:[[VideoPlayer alloc] init]];	
     [pluginManagerController addPlugin:[[RenderEngine alloc] init]];
     [pluginManagerController addPlugin:[[Shadows alloc] init]];
+    [pluginManagerController addPlugin:[[InteractiveWall alloc] init]];
 
 
 
