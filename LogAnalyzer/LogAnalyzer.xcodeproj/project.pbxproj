@@ -1,0 +1,300 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DD0B4A5513A809FA005A7023 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD0B4A5413A809FA005A7023 /* Cocoa.framework */; };
+		DD0B4A5F13A809FA005A7023 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DD0B4A5D13A809FA005A7023 /* InfoPlist.strings */; };
+		DD0B4A6113A809FA005A7023 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0B4A6013A809FA005A7023 /* main.m */; };
+		DD0B4A6513A809FA005A7023 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = DD0B4A6313A809FA005A7023 /* Credits.rtf */; };
+		DD0B4A6813A809FA005A7023 /* LogAnalyzerAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0B4A6713A809FA005A7023 /* LogAnalyzerAppDelegate.m */; };
+		DD0B4A6B13A809FB005A7023 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD0B4A6913A809FB005A7023 /* MainMenu.xib */; };
+		DD0B4A8113A80A7A005A7023 /* DDFileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0B4A8013A80A7A005A7023 /* DDFileReader.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		DD0B4A5013A809FA005A7023 /* LogAnalyzer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LogAnalyzer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD0B4A5413A809FA005A7023 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		DD0B4A5713A809FA005A7023 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		DD0B4A5813A809FA005A7023 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		DD0B4A5913A809FA005A7023 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		DD0B4A5C13A809FA005A7023 /* LogAnalyzer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LogAnalyzer-Info.plist"; sourceTree = "<group>"; };
+		DD0B4A5E13A809FA005A7023 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		DD0B4A6013A809FA005A7023 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		DD0B4A6213A809FA005A7023 /* LogAnalyzer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LogAnalyzer-Prefix.pch"; sourceTree = "<group>"; };
+		DD0B4A6413A809FA005A7023 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		DD0B4A6613A809FA005A7023 /* LogAnalyzerAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LogAnalyzerAppDelegate.h; sourceTree = "<group>"; };
+		DD0B4A6713A809FA005A7023 /* LogAnalyzerAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LogAnalyzerAppDelegate.m; sourceTree = "<group>"; };
+		DD0B4A6A13A809FB005A7023 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		DD0B4A7F13A80A7A005A7023 /* DDFileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDFileReader.h; sourceTree = "<group>"; };
+		DD0B4A8013A80A7A005A7023 /* DDFileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDFileReader.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DD0B4A4D13A809FA005A7023 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD0B4A5513A809FA005A7023 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DD0B4A4513A809FA005A7023 = {
+			isa = PBXGroup;
+			children = (
+				DD0B4A5A13A809FA005A7023 /* LogAnalyzer */,
+				DD0B4A5313A809FA005A7023 /* Frameworks */,
+				DD0B4A5113A809FA005A7023 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DD0B4A5113A809FA005A7023 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DD0B4A5013A809FA005A7023 /* LogAnalyzer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DD0B4A5313A809FA005A7023 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DD0B4A5413A809FA005A7023 /* Cocoa.framework */,
+				DD0B4A5613A809FA005A7023 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DD0B4A5613A809FA005A7023 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DD0B4A5713A809FA005A7023 /* AppKit.framework */,
+				DD0B4A5813A809FA005A7023 /* CoreData.framework */,
+				DD0B4A5913A809FA005A7023 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		DD0B4A5A13A809FA005A7023 /* LogAnalyzer */ = {
+			isa = PBXGroup;
+			children = (
+				DD0B4A6613A809FA005A7023 /* LogAnalyzerAppDelegate.h */,
+				DD0B4A6713A809FA005A7023 /* LogAnalyzerAppDelegate.m */,
+				DD0B4A7F13A80A7A005A7023 /* DDFileReader.h */,
+				DD0B4A8013A80A7A005A7023 /* DDFileReader.m */,
+				DD0B4A6913A809FB005A7023 /* MainMenu.xib */,
+				DD0B4A5B13A809FA005A7023 /* Supporting Files */,
+			);
+			path = LogAnalyzer;
+			sourceTree = "<group>";
+		};
+		DD0B4A5B13A809FA005A7023 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DD0B4A5C13A809FA005A7023 /* LogAnalyzer-Info.plist */,
+				DD0B4A5D13A809FA005A7023 /* InfoPlist.strings */,
+				DD0B4A6013A809FA005A7023 /* main.m */,
+				DD0B4A6213A809FA005A7023 /* LogAnalyzer-Prefix.pch */,
+				DD0B4A6313A809FA005A7023 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DD0B4A4F13A809FA005A7023 /* LogAnalyzer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DD0B4A6E13A809FB005A7023 /* Build configuration list for PBXNativeTarget "LogAnalyzer" */;
+			buildPhases = (
+				DD0B4A4C13A809FA005A7023 /* Sources */,
+				DD0B4A4D13A809FA005A7023 /* Frameworks */,
+				DD0B4A4E13A809FA005A7023 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LogAnalyzer;
+			productName = LogAnalyzer;
+			productReference = DD0B4A5013A809FA005A7023 /* LogAnalyzer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DD0B4A4713A809FA005A7023 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = DD0B4A4A13A809FA005A7023 /* Build configuration list for PBXProject "LogAnalyzer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = DD0B4A4513A809FA005A7023;
+			productRefGroup = DD0B4A5113A809FA005A7023 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DD0B4A4F13A809FA005A7023 /* LogAnalyzer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DD0B4A4E13A809FA005A7023 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD0B4A5F13A809FA005A7023 /* InfoPlist.strings in Resources */,
+				DD0B4A6513A809FA005A7023 /* Credits.rtf in Resources */,
+				DD0B4A6B13A809FB005A7023 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DD0B4A4C13A809FA005A7023 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD0B4A6113A809FA005A7023 /* main.m in Sources */,
+				DD0B4A6813A809FA005A7023 /* LogAnalyzerAppDelegate.m in Sources */,
+				DD0B4A8113A80A7A005A7023 /* DDFileReader.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		DD0B4A5D13A809FA005A7023 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DD0B4A5E13A809FA005A7023 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		DD0B4A6313A809FA005A7023 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DD0B4A6413A809FA005A7023 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		DD0B4A6913A809FB005A7023 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DD0B4A6A13A809FB005A7023 /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		DD0B4A6C13A809FB005A7023 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_ENABLE_OBJC_GC = unsupported;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		DD0B4A6D13A809FB005A7023 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_ENABLE_OBJC_GC = unsupported;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		DD0B4A6F13A809FB005A7023 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LogAnalyzer/LogAnalyzer-Prefix.pch";
+				INFOPLIST_FILE = "LogAnalyzer/LogAnalyzer-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		DD0B4A7013A809FB005A7023 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LogAnalyzer/LogAnalyzer-Prefix.pch";
+				INFOPLIST_FILE = "LogAnalyzer/LogAnalyzer-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DD0B4A4A13A809FA005A7023 /* Build configuration list for PBXProject "LogAnalyzer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DD0B4A6C13A809FB005A7023 /* Debug */,
+				DD0B4A6D13A809FB005A7023 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DD0B4A6E13A809FB005A7023 /* Build configuration list for PBXNativeTarget "LogAnalyzer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DD0B4A6F13A809FB005A7023 /* Debug */,
+				DD0B4A7013A809FB005A7023 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DD0B4A4713A809FA005A7023 /* Project object */;
+}

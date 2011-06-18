@@ -36,7 +36,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 	}
 	
 	NSString *relativePath = [filePath substringFromIndex:[documentRoot length]];
-	NSLog(@"%@  %@", relativePath, globalVideoPlayer);
+	//NSLog(@"%@  %@", relativePath, globalVideoPlayer);
 	
 	if ([relativePath length] > 1)
 	{

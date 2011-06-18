@@ -254,7 +254,7 @@
 		DD7B14AB11A3CF38000D9775 /* ofxVec3f.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVec3f.h; sourceTree = "<group>"; };
 		DD7B14AC11A3CF38000D9775 /* ofxVec4f.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVec4f.h; sourceTree = "<group>"; };
 		DD7B14AD11A3CF38000D9775 /* ofxVectorMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVectorMath.h; sourceTree = "<group>"; };
-		DDB3CD97135DA3BC0097B98E /* SeMinSkyggeDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeMinSkyggeDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDB3CD97135DA3BC0097B98E /* GlobusrummetDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GlobusrummetDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDB3CDAB135DA71C0097B98E /* fmod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fmod.h; sourceTree = "<group>"; };
 		DDB3CDAC135DA71C0097B98E /* fmod.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = fmod.hpp; sourceTree = "<group>"; };
 		DDB3CDAD135DA71C0097B98E /* fmod_codec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fmod_codec.h; sourceTree = "<group>"; };
@@ -1298,17 +1298,17 @@
 				DDCB0FBA13A616E700BDD270 /* MTMessage.m */,
 				DDCB0FBB13A616E700BDD270 /* MTMessageBroker.h */,
 				DDCB0FBC13A616E700BDD270 /* MTMessageBroker.m */,
-				DDCB0FBD13A616E700BDD270 /* MyHTTPConnection.h */,
-				DDCB0FBE13A616E700BDD270 /* MyHTTPConnection.m */,
 				DDCB0FBF13A616E700BDD270 /* NetworkManager.h */,
 				DDCB0FC013A616E700BDD270 /* NetworkManager.m */,
+				DDCB0FC713A616E700BDD270 /* WebSocket.h */,
+				DDCB0FC813A616E700BDD270 /* WebSocket.m */,
 				DDCB0FC113A616E700BDD270 /* TestButton.h */,
 				DDCB0FC213A616E700BDD270 /* TestButton.m */,
+				DDCB0FBD13A616E700BDD270 /* MyHTTPConnection.h */,
+				DDCB0FBE13A616E700BDD270 /* MyHTTPConnection.m */,
 				DDCB0FC413A616E700BDD270 /* VideoPlayer.h */,
 				DDCB0FC513A616E700BDD270 /* VideoPlayer.mm */,
 				DDCB0FC613A616E700BDD270 /* VideoPlayer.xib */,
-				DDCB0FC713A616E700BDD270 /* WebSocket.h */,
-				DDCB0FC813A616E700BDD270 /* WebSocket.m */,
 			);
 			name = Videoplayer;
 			path = SamplePlugin;
@@ -1354,7 +1354,7 @@
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
 				E4C2422310CC54B6004149E2 /* openFrameworks */,
 				E45BE0360E8CC5DE009D7055 /* libs */,
-				DDB3CD97135DA3BC0097B98E /* SeMinSkyggeDebug.app */,
+				DDB3CD97135DA3BC0097B98E /* GlobusrummetDebug.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1382,9 +1382,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E4B69B5A0A3A1756003C02F2 /* SeMinSkygge */ = {
+		E4B69B5A0A3A1756003C02F2 /* Globusrummet */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "SeMinSkygge" */;
+			buildConfigurationList = E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "Globusrummet" */;
 			buildPhases = (
 				E4B69B580A3A1756003C02F2 /* Sources */,
 				E4B69B590A3A1756003C02F2 /* Frameworks */,
@@ -1397,9 +1397,9 @@
 			);
 			dependencies = (
 			);
-			name = SeMinSkygge;
+			name = Globusrummet;
 			productName = myOFApp;
-			productReference = DDB3CD97135DA3BC0097B98E /* SeMinSkyggeDebug.app */;
+			productReference = DDB3CD97135DA3BC0097B98E /* GlobusrummetDebug.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1407,7 +1407,7 @@
 /* Begin PBXProject section */
 		E4B69B4C0A3A1720003C02F2 /* Project object */ = {
 			isa = PBXProject;
-			buildConfigurationList = E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "Kronborg" */;
+			buildConfigurationList = E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "Globusrummet" */;
 			compatibilityVersion = "Xcode 2.4";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1428,7 +1428,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				E4B69B5A0A3A1756003C02F2 /* SeMinSkygge */,
+				E4B69B5A0A3A1756003C02F2 /* Globusrummet */,
 			);
 		};
 /* End PBXProject section */
@@ -1595,7 +1595,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_UNROLL_LOOPS = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1718,7 +1718,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PREPROCESSOR_DEFINITIONS = NS_BUILD_32_LIKE_64;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1763,7 +1763,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_UNROLL_LOOPS = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1865,7 +1865,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_8 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/poco/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_9 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/rtAudio/lib/osx\"";
 				PREBINDING = NO;
-				PRODUCT_NAME = SeMinSkyggeDebug;
+				PRODUCT_NAME = GlobusrummetDebug;
 				ZERO_LINK = NO;
 			};
 			name = Debug;
@@ -1951,7 +1951,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "Kronborg" */ = {
+		E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "Globusrummet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4B69B4E0A3A1720003C02F2 /* Debug */,
@@ -1961,7 +1961,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "SeMinSkygge" */ = {
+		E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "Globusrummet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4B69B600A3A1757003C02F2 /* Debug */,

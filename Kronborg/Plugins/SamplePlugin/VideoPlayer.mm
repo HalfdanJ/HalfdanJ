@@ -3,7 +3,7 @@
 
 #include <sys/sysctl.h> 
 
-#define V @"1.75 - HTTP"
+#define V @"1.77 - HTTP"
 
 #define LIGHT1 [NSNumber numberWithInt:1]
 #define LIGHT2 [NSNumber numberWithInt:2]
@@ -172,61 +172,25 @@ VideoPlayer * globalVideoPlayer;
 			[Prop(@"userbutton") setIntValue:[[object objectForKey:@"value"] intValue]];
 		}
 		if([(NSString*) context isEqualToString:@"power"] && [[object objectForKey:@"value"] intValue]){
+            [self log:@"Arduino asked computer to shutdown"];
 			[self sleepComputer];
-		}
-		if([(NSString*) context isEqualToString:@"light"]){
-			[[arduino property:0] setObject:[NSNumber numberWithInt:254*PropF(@"light")] forKey:@"value"];	
-			[lightText setStringValue:[NSString stringWithFormat:@"Lys %i%% og %i%%",int(100*PropF(@"light")),int(100*PropF(@"light2"))]];
-		}
-		if([(NSString*) context isEqualToString:@"light2"]){
-			[[arduino property:1] setObject:[NSNumber numberWithInt:254*PropF(@"light2")] forKey:@"value"];	
-			[lightText setStringValue:[NSString stringWithFormat:@"Lys %i%% og %i%%",int(100*PropF(@"light")),int(100*PropF(@"light2"))]];
 		}
 	}
 	
 	if(object == Prop(@"video")){
 		[videoText setStringValue:[NSString stringWithFormat:@"Video %i",PropI(@"video")]];
-
 	}
-	
-	/*if([keyPath isEqualToString:@"isConnected"]){
-	 if([bsender[2] isConnected]){
-	 [networkConnectionImage1 setImage:[NSImage imageNamed:@"tick"]];
-	 [networkConnectionText1 setStringValue:@"Globus2 forbundet"];
-	 [self log:@"Globus2 korrekt forbundet"];
-	 } else {
-	 [networkConnectionImage1 setImage:[NSImage imageNamed:@"cross"]];	
-	 [networkConnectionText1 setStringValue:@"Globus2 net-fejl"];
-	 [self log:@"!!!!!!!!!!!!!!!  Globus2 forbindelsesfejl  !!!!!!!!!!!!!!! "];
-	 }
-	 
-	 if([bsender[3] isConnected]){
-	 [networkConnectionImage2 setImage:[NSImage imageNamed:@"tick"]];
-	 [networkConnectionText2 setStringValue:@"Globus3 forbundet"];
-	 [self log:@"Globus3 korrekt forbundet"];
-	 } else {
-	 [networkConnectionImage2 setImage:[NSImage imageNamed:@"cross"]];	
-	 [networkConnectionText2 setStringValue:@"Globus3 net-fejl"];			
-	 [self log:@"!!!!!!!!!!!!!!!  Globus3 forbindelsesfejl  !!!!!!!!!!!!!!! "];
-	 }
-	 }*/
 }
 
 //
 //-----
 //
 
--(void) receiveStringMessage:(NSString *)message tag:(int)tag{
-}
-
 -(void) receiveMessage:(id)message tag:(int)tag{
 	if(tag == 0){
 		//Timecode
 		long long val = [message longLongValue] + double([movie[[Prop(@"video") intValue]] currentTime].timeScale) * 0.1 ;
-		//			float t = msg.getArgAsFloat(0)+40;
-		//			if(PropI(@"video") != msg.getArgAsInt32(1) && PropF(@"fade") == 0)
-		//				[Prop(@"video") setIntValue: msg.getArgAsInt32(1)];
-		
+
 		timecodeDifference = [movie[[Prop(@"video") intValue]] currentTime].timeValue - val;
 		if(fabs(timecodeDifference / double([movie[[Prop(@"video") intValue]] currentTime].timeScale)) > 0.07){
 			[movie[[Prop(@"video") intValue]] setCurrentTime:QTMakeTime(val, [movie[[Prop(@"video") intValue]] currentTime].timeScale)];
@@ -251,68 +215,20 @@ VideoPlayer * globalVideoPlayer;
 //
 
 -(void) sendTimecode{
-	{
-		dispatch_async(dispatch_get_main_queue(), ^{		
-			//			NSURLRequest *request = [ NSURLRequest requestWithURL: url cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:1 ];
-			//			NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
-
-			for(int i=2;i<=3;i++){
-			NSError * error;
-				NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"http://globus%i.local:1212/v%i",i,PropI(@"video")]];
-//				NSString * str = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];				
-				NSURLRequest *request = [ NSURLRequest requestWithURL: url cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:0.1];
-				NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
-				
-				url = [NSURL URLWithString:[NSString stringWithFormat:@"http://globus%i.local:1212/t%i",i,[movie[int(PropF(@"video"))] currentTime].timeValue]];
-			//	str = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
-				
-				request = [ NSURLRequest requestWithURL: url cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:0.1];
-				theConnection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
-
-
-
-			}
-
-		});
-
-		//		[bsender[2] sendMessage:[NSNumber numberWithLongLong:[movie[int(PropF(@"video"))] currentTime].timeValue] tag:0];
-		//		[bsender[3] sendMessage:[NSNumber numberWithLongLong:[movie[int(PropF(@"video"))] currentTime].timeValue] tag:0];
-		
-		/*for(int i = 0; i < tcpServer->getNumClients(); i++){
-			NSLog(@"Send timecode to client %i ip ",i);
-			cout<<tcpServer->getClientIP(i).c_str()<<endl;
-			tcpServer->send(i, "t"+ofToString([movie[int(PropF(@"video"))] currentTime].timeValue, 0) );
-			tcpServer->send(i, "v"+ofToString(PropI(@"video"), 0) );
-		}
-		*/
-		
-		/*
-		ofxOscMessage m2;
-		m2.setAddress( "/video/time" );
-		m2.addFloatArg([movie[int(PropF(@"video"))] currentTime].timeValue);
-		m2.addIntArg(PropI(@"video"));
-		
-		osender[3]->sendMessage( m2);
-		//});
-		
-		
-		ofxOscMessage m;
-		m.setAddress( "/video/time" );
-		m.addFloatArg([movie[int(PropF(@"video"))] currentTime].timeValue);
-		m.addIntArg(PropI(@"video"));
-		
-		
-		osender[2]->sendMessage( m );
-		*/
-		
-	}
-	{
-		//dispatch_async(dispatch_get_main_queue(), ^{			
-		//	[bsender[2] sendMessage:[NSNumber numberWithInt:PropI(@"video")] tag:1];
-		//	[bsender[3] sendMessage:[NSNumber numberWithInt:PropI(@"video")] tag:1];
-		//});
-	}
-	
+    dispatch_async(dispatch_get_main_queue(), ^{		
+        for(int i=2;i<=3;i++){
+            //Send video /v
+            NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"http://globus%i.local:1212/v%i",i,PropI(@"video")]];
+            NSURLRequest *request = [ NSURLRequest requestWithURL:url cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:0.1];
+            NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
+            
+            //Send timecode /t
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"http://globus%i.local:1212/t%i",i,[movie[int(PropF(@"video"))] currentTime].timeValue]];	
+            request = [ NSURLRequest requestWithURL:url cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:0.1];
+            theConnection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
+        }
+        
+    });
 	[timecodeSetterTimer release];
 	timecodeSetterTimer = [[NSDate date] retain];
 }
@@ -321,36 +237,15 @@ VideoPlayer * globalVideoPlayer;
 //-----
 //
 
--(void) setRemoteVideos:(int) video{
-	/*	dispatch_async(dispatch_get_main_queue(), ^{			
-	 [bsender[2] sendMessage:[NSNumber numberWithInt:video] tag:2];
-	 [bsender[3] sendMessage:[NSNumber numberWithInt:video] tag:2];
-	 });*/
-	/*ofxOscMessage m;
-	m.setAddress( "/video/video" );
-	m.addIntArg(PropI(@"video"));
-	osender[2]->sendMessage( m );
-	
-	ofxOscMessage m2;
-	m2.setAddress( "/video/video" );
-	m2.addIntArg(PropI(@"video"));
-	
-	osender[3]->sendMessage( m2 );	*/
-	
-	/*for(int i = 0; i < tcpServer->getNumClients(); i++){
-		tcpServer->send(i, "r"+ofToString(PropI(@"video"), 0) );
-	}*/
-	
+-(void) setRemoteVideos:(int) video{	
 	dispatch_async(dispatch_get_main_queue(), ^{			
-	for(int i=2;i<=3;i++){
-		NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"http://globus%i.local:1212/r%i",i,video]];
-		//				NSString * str = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];				
-		NSURLRequest *request = [ NSURLRequest requestWithURL: url cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:0.1];
-		NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
-	}
+        for(int i=2;i<=3;i++){
+            NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"http://globus%i.local:1212/r%i",i,video]];
+            NSURLRequest *request = [ NSURLRequest requestWithURL: url cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:0.1];
+            [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        }
 	});
 }
-
 
 
 //
