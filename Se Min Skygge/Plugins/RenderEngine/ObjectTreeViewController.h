@@ -12,6 +12,8 @@
 @interface ObjectTreeViewController : NSObject <NSOutlineViewDataSource> {
     RenderEngine * renderEngine;
     NSArray *draggedNodes;
+    
+    BOOL newObject;
 }
 
 -(id)initWithEngine:(RenderEngine*)engine 

@@ -17,6 +17,8 @@
 		5884568E13A0F45000716596 /* ofxQtVideoSaver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5884568C13A0F45000716596 /* ofxQtVideoSaver.cpp */; };
 		58A40E321387065000EC0A6A /* BeamSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A40E311387065000EC0A6A /* BeamSync.m */; };
 		58B5597713A12A5400B4FB6C /* QTKitMovieRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B5597513A12A5400B4FB6C /* QTKitMovieRenderer.m */; };
+		58C4B83313AA5985007265DA /* InteractiveWall.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58C4B83213AA5985007265DA /* InteractiveWall.xib */; };
+		58C4B83613AA5997007265DA /* InteractiveWall.mm in Sources */ = {isa = PBXBuildFile; fileRef = 58C4B83513AA5997007265DA /* InteractiveWall.mm */; };
 		58C4F7AF139E3C600019982A /* BlobClasses2d.mm in Sources */ = {isa = PBXBuildFile; fileRef = 58C4F7AE139E3C600019982A /* BlobClasses2d.mm */; };
 		58D23F771386BD66002E994A /* README in Resources */ = {isa = PBXBuildFile; fileRef = 58D23F141386BD65002E994A /* README */; };
 		58D23F781386BD66002E994A /* ofxDepthGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58D23F161386BD65002E994A /* ofxDepthGenerator.cpp */; };
@@ -206,6 +208,9 @@
 		58A40E311387065000EC0A6A /* BeamSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeamSync.m; sourceTree = "<group>"; };
 		58B5597413A12A5400B4FB6C /* QTKitMovieRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTKitMovieRenderer.h; sourceTree = "<group>"; };
 		58B5597513A12A5400B4FB6C /* QTKitMovieRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QTKitMovieRenderer.m; sourceTree = "<group>"; };
+		58C4B83213AA5985007265DA /* InteractiveWall.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InteractiveWall.xib; sourceTree = "<group>"; };
+		58C4B83413AA5997007265DA /* InteractiveWall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractiveWall.h; sourceTree = "<group>"; };
+		58C4B83513AA5997007265DA /* InteractiveWall.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = InteractiveWall.mm; sourceTree = "<group>"; };
 		58C4F7AD139E3C5F0019982A /* BlobClasses2d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlobClasses2d.h; sourceTree = "<group>"; };
 		58C4F7AE139E3C600019982A /* BlobClasses2d.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BlobClasses2d.mm; sourceTree = "<group>"; };
 		58D23EC01386BD65002E994A /* IXnNodeAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXnNodeAllocator.h; sourceTree = "<group>"; };
@@ -622,6 +627,16 @@
 				58B5597513A12A5400B4FB6C /* QTKitMovieRenderer.m */,
 			);
 			path = ofxQTKitMoviePlayer;
+			sourceTree = "<group>";
+		};
+		58C4B83113AA597B007265DA /* InteractiveWall */ = {
+			isa = PBXGroup;
+			children = (
+				58C4B83213AA5985007265DA /* InteractiveWall.xib */,
+				58C4B83413AA5997007265DA /* InteractiveWall.h */,
+				58C4B83513AA5997007265DA /* InteractiveWall.mm */,
+			);
+			path = InteractiveWall;
 			sourceTree = "<group>";
 		};
 		58D23E601386BD65002E994A /* ofxOpenNI */ = {
@@ -1694,6 +1709,7 @@
 		DDC8EA5D113809B100574926 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				58C4B83113AA597B007265DA /* InteractiveWall */,
 				5876F141139FB3290051C56E /* Shadows */,
 				DD947742135F6B2D0027F1CC /* RenderEngine */,
 				DD9AC4C713421D790059D4EC /* VideoPlayer */,
@@ -1847,6 +1863,7 @@
 				58748954139D8F4500F5BA27 /* BlobTracker2d.xib in Resources */,
 				5874895C139D93D000F5BA27 /* BlobTrackerInstance2d.xib in Resources */,
 				5876F146139FB3770051C56E /* Shadows.xib in Resources */,
+				58C4B83313AA5985007265DA /* InteractiveWall.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1965,6 +1982,7 @@
 				5876F144139FB36D0051C56E /* Shadows.mm in Sources */,
 				5884568E13A0F45000716596 /* ofxQtVideoSaver.cpp in Sources */,
 				58B5597713A12A5400B4FB6C /* QTKitMovieRenderer.m in Sources */,
+				58C4B83613AA5997007265DA /* InteractiveWall.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

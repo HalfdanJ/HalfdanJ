@@ -4,7 +4,7 @@
 
 @implementation RenderEngine
 @synthesize objectTreeController;
-@synthesize objectsArray, assetDir;
+@synthesize objectsArray, assetDir, aspect;
 @synthesize blurShader, ciContext, treeController;
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -35,7 +35,7 @@
 -(void)awakeFromNib{
     [super awakeFromNib];
     [objectOutlineView setDataSource:treeController];
-    [objectOutlineView registerForDraggedTypes:[NSArray arrayWithObjects:@"ObjectName", nil]];
+    [objectOutlineView registerForDraggedTypes:[NSArray arrayWithObjects:@"ObjectName",NSURLPboardType, nil]];
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -64,6 +64,9 @@
 //------------------------------------------------------------------------------------------------------------------------
 
 -(void)setup{
+    aspect = [[[GetPlugin(Keystoner) getSurface:@"Screen" viewNumber:0 projectorNumber:0] aspect] floatValue];
+    
+    
     CGLContextObj  contextGl = CGLContextObj([[[[[globalController viewManager] glViews] objectAtIndex:0] openGLContext] CGLContextObj]);
 	CGLPixelFormatObj pixelformatGl = CGLPixelFormatObj([[[[[globalController viewManager] glViews] objectAtIndex:0] pixelFormat] CGLPixelFormatObj]);
 	
@@ -73,8 +76,8 @@
     for(int i=0;i<2;i++){
         fboFront[i] = new ofxFBOTexture();
         fboBack[i] = new ofxFBOTexture();
-        fboFront[i]->allocate(1024, 768, GL_RGBA);
-        fboBack[i]->allocate(1024, 768, GL_RGBA);
+        fboFront[i]->allocate(1024, 1024*1.0/aspect, GL_RGBA);
+        fboBack[i]->allocate(1024, 1024*1.0/aspect, GL_RGBA);
         
         fboFront[i]->clear(0,0,0,0);
         fboBack[i]->clear(0,0,0,0);  
@@ -132,7 +135,7 @@
     glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA, GL_ONE,GL_ONE);
     
     glPushMatrix();{
-        glScaled(1,1,PropF(@"camDepthScale"));        
+        glScaled(1.0/aspect,1,PropF(@"camDepthScale"));        
         ofxVec3f v = eyeCoord-camCoord;
         float a1 = ofxVec2f(0, 1).angle(ofxVec2f(eyeCoord.x, eyeCoord.z)-ofxVec2f(camCoord.x, camCoord.z));    
         v.rotate(a1, ofxVec3f(0,1,0));    
@@ -156,6 +159,7 @@
         glPushMatrix();{
             glTranslated(0, 0.5, 10.0/3.0);
             glTranslated(PropF(@"camPosX"),-PropF(@"camPosY"),-PropF(@"camPosZ"));
+            glScaled(aspect,1,1);
             
             glColor4f(1.0f,0.4f,0.3f,0.7f);
             glBegin(GL_LINES);
@@ -223,12 +227,12 @@
     
     [GetPlugin(Keystoner)  applySurface:@"Screen" projectorNumber:0 viewNumber:ViewNumber];
     ofSetColor(255,255,255,255);
-    fboFront[pingpong]->draw(0,0,1,1);
+    fboFront[pingpong]->draw(0,0,Aspect(@"Screen",0),1);
     [GetPlugin(Keystoner)  popSurface];
     
     [GetPlugin(Keystoner)  applySurface:@"Screen" projectorNumber:1 viewNumber:ViewNumber];
     ofSetColor(255,255,255,255);
-    fboBack[pingpong]->draw(0,0,1,1);
+    fboBack[pingpong]->draw(0,0,Aspect(@"Screen",0),1);
     [GetPlugin(Keystoner)  popSurface];    
     glPopMatrix();   
     colorCorrectShader->setShaderActive(NO);
@@ -271,7 +275,10 @@
 //------------------------------------------------------------------------------------------------------------------------
 
 -(void) placeCamera{
-    glScaled(1,1,PropF(@"camDepthScale"));
+//    glScaled(1.0/aspect,1,PropF(@"camDepthScale"));        
+
+    
+    glScaled(1.0/aspect,1,PropF(@"camDepthScale"));
     glTranslated(-PropF(@"camPosX")+0.5,PropF(@"camPosY"),PropF(@"camPosZ"));
 }
 

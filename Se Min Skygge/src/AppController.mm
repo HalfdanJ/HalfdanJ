@@ -29,15 +29,21 @@ extern ofAppBaseWindow * window;
 }
 
 -(void) setupPlugins{
-	[pluginManagerController addHeader:@"Plugins"];
-
-[pluginManagerController addPlugin:[[VideoPlayer alloc] init]];
-	[pluginManagerController addPlugin:[[RenderEngine alloc] init]];
-    [pluginManagerController addPlugin:[[Shadows alloc] init]];
+	[pluginManagerController addHeader:@"Core Plugin"];
 
     [pluginManagerController addPlugin:[[Keystoner alloc] initWithSurfaces:[NSArray arrayWithObjects:@"Screen", nil]]];
     [pluginManagerController addPlugin:[[Kinect alloc] initWithNumberKinects:2]];
     [pluginManagerController addPlugin:[[BlobTracker2d alloc] init]];
+    [pluginManagerController addPlugin:[[Midi  alloc] init]];    
+    
+    [pluginManagerController addHeader:@"Plugins"];
+
+    [pluginManagerController addPlugin:[[VideoPlayer alloc] init]];	
+    [pluginManagerController addPlugin:[[RenderEngine alloc] init]];
+    [pluginManagerController addPlugin:[[Shadows alloc] init]];
+    [pluginManagerController addPlugin:[[InteractiveWall alloc] init]];
+
+
 
 
 }

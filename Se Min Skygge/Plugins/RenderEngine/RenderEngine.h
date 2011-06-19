@@ -40,6 +40,8 @@ enum UpdateFlags {
     
     IBOutlet NSOutlineView *objectOutlineView;
     ObjectTreeViewController * treeController;
+    
+    float aspect;
 }
 
 @property (retain) NSMutableArray * objectsArray;
@@ -48,7 +50,7 @@ enum UpdateFlags {
 @property (readwrite) ofxShader * blurShader;
 @property (readonly)  CIContext *ciContext;
 @property (readonly) ObjectTreeViewController * treeController;
-
+@property (readonly) float aspect;
 
 
 - (IBAction)addObject:(id)sender;
