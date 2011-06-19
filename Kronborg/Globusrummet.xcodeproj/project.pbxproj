@@ -1696,7 +1696,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_8 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/poco/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_9 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/rtAudio/lib/osx\"";
 				PREBINDING = NO;
-				PRODUCT_NAME = SeMinSkyggeUniversal;
+				PRODUCT_NAME = GlobusrummetUniversal;
 				ZERO_LINK = NO;
 			};
 			name = ReleaseUniversal;
@@ -1943,7 +1943,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_8 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/poco/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_9 = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT/libs/rtAudio/lib/osx\"";
 				PREBINDING = NO;
-				PRODUCT_NAME = SeMinSkygge;
+				PRODUCT_NAME = Globusrummet;
 				ZERO_LINK = NO;
 			};
 			name = Release;

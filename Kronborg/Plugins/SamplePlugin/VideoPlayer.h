@@ -21,7 +21,7 @@
 #define NUMDMX 2
 
 
-@interface VideoPlayer : ofPlugin <BReceiverDelegate>{
+@interface VideoPlayer : ofPlugin{
 	QTMovie     		*movie[NUMVIDEOS];
 	QTMovie				*activateSound[NUMVIDEOS];
 	QTVisualContextRef	textureContext[NUMVIDEOS];

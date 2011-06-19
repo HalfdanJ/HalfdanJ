@@ -3,7 +3,7 @@
 
 #include <sys/sysctl.h> 
 
-#define V @"1.77 - HTTP"
+#define V @"1.81 - HTTP"
 
 #define LIGHT1 [NSNumber numberWithInt:1]
 #define LIGHT2 [NSNumber numberWithInt:2]
@@ -65,14 +65,14 @@ VideoPlayer * globalVideoPlayer;
 	if(PropF(@"machine") == 1){
 		NSDictionary* errorDict;
 		NSAppleEventDescriptor* returnDescriptor = NULL;
-
+        
 		NSAppleScript*  scriptObject= [[NSAppleScript alloc] initWithSource:
 									   [NSString stringWithFormat:
 										@"tell application \"sluk\" to run"] 
 									   ];					
 		returnDescriptor = [scriptObject executeAndReturnError: &errorDict];	
 		
-	
+        
 		scriptObject= [[NSAppleScript alloc] initWithSource:
 					   [NSString stringWithFormat:
 						@"tell application \"Finder\" to shut down"] 
@@ -182,33 +182,6 @@ VideoPlayer * globalVideoPlayer;
 	}
 }
 
-//
-//-----
-//
-
--(void) receiveMessage:(id)message tag:(int)tag{
-	if(tag == 0){
-		//Timecode
-		long long val = [message longLongValue] + double([movie[[Prop(@"video") intValue]] currentTime].timeScale) * 0.1 ;
-
-		timecodeDifference = [movie[[Prop(@"video") intValue]] currentTime].timeValue - val;
-		if(fabs(timecodeDifference / double([movie[[Prop(@"video") intValue]] currentTime].timeScale)) > 0.07){
-			[movie[[Prop(@"video") intValue]] setCurrentTime:QTMakeTime(val, [movie[[Prop(@"video") intValue]] currentTime].timeScale)];
-		}			
-	}
-	
-	if(tag == 1){
-		if(PropI(@"video") != [message intValue] && PropF(@"fade") == 0)
-			[Prop(@"video") setIntValue: [message intValue]];
-	}
-	
-	if(tag == 2){
-		[Prop(@"fadeToVideo") setIntValue: [message intValue]];
-		[Prop(@"fadeTo") setIntValue:1];
-		[Prop(@"fade") setIntValue:0];
-		
-	}
-}
 
 //
 //-----
@@ -223,11 +196,10 @@ VideoPlayer * globalVideoPlayer;
             NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
             
             //Send timecode /t
-            url = [NSURL URLWithString:[NSString stringWithFormat:@"http://globus%i.local:1212/t%i",i,[movie[int(PropF(@"video"))] currentTime].timeValue]];	
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"http://globus%i.local:1212/t%i",i,[movie[int(PropF(@"video"))] currentTime].timeValue]];
             request = [ NSURLRequest requestWithURL:url cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:0.1];
             theConnection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
-        }
-        
+        }        
     });
 	[timecodeSetterTimer release];
 	timecodeSetterTimer = [[NSDate date] retain];
@@ -352,88 +324,34 @@ VideoPlayer * globalVideoPlayer;
 
 -(void) sleepComputer{
 	if(!alreadyShutdown){
-                alreadyShutdown = YES;
-	 dispatch_async(dispatch_get_main_queue(), ^{											
-	for(int i=2;i<=3;i++){
-		NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"http://globus%i.local:1212/s",i]];
-		//				NSString * str = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];				
-		NSURLRequest *request = [ NSURLRequest requestWithURL: url cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:0.1];
-		NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:request delegate:self];
-	}
-	 });
-	usleep(1000);
-	NSDictionary* errorDict;
-	NSAppleEventDescriptor* returnDescriptor = NULL;
-	
-	/*if ([bsender[2] receiverVisible:@"globus2"]){
-	 NSLog(@"Globus2 is reachable: %d", globus2flags);
-	 NSAppleScript*  scriptObject= [[NSAppleScript alloc] initWithSource:
-	 [NSString stringWithFormat:
-	 @"tell application \"Finder\" of machine \"eppc://globus2:kronborg@globus2.local\"  to shut down"] 
-	 ];					
-	 returnDescriptor = [scriptObject executeAndReturnError: &errorDict];		
-	 
-	 dispatch_async(dispatch_get_main_queue(), ^{											
-	 [self performSelector:@selector(sleepComputer) withObject:nil afterDelay:3];
-	 });
-	 } 
-	 if ([bsender[3] receiverVisible:@"globus3"]){
-	 NSLog(@"Globus3 is reachable: %d", globus3flags);
-	 NSAppleScript*  scriptObject= [[NSAppleScript alloc] initWithSource:
-	 [NSString stringWithFormat:
-	 @"tell application \"Finder\" of machine \"eppc://globus3:kronborg@globus3.local\"  to shut down"] 
-	 ];					
-	 returnDescriptor = [scriptObject executeAndReturnError: &errorDict];
-	 
-	 
-	 
-	 dispatch_async(dispatch_get_main_queue(), ^{											
-	 [self performSelector:@selector(sleepComputer) withObject:nil afterDelay:3];
-	 });
-	 }
-	 if(![bsender[2] receiverVisible:@"globus2"] && ![bsender[3] receiverVisible:@"globus3"]) {
-	 NSLog(@"Globus2 and 3 are not reachable. Shutting down");
-	 NSAppleScript*  scriptObject= [[NSAppleScript alloc] initWithSource:
-	 [NSString stringWithFormat:
-	 @"tell application \"Finder\" to shut down"] 
-	 ];					
-	 returnDescriptor = [scriptObject executeAndReturnError: &errorDict];	
-	 }*/
-	
-	
-	NSLog(@"Globus2 and 3 are not reachable. Shutting down");
-	
-	
-	NSAppleScript*  scriptObject= [[NSAppleScript alloc] initWithSource:
-								   [NSString stringWithFormat:
-									@"tell application \"sluk\" to run"] 
-								   ];					
-	returnDescriptor = [scriptObject executeAndReturnError: &errorDict];	
-	
-	
-	scriptObject= [[NSAppleScript alloc] initWithSource:
-				   [NSString stringWithFormat:
-					@"tell application \"Finder\" to shut down"] 
-				   ];					
-	returnDescriptor = [scriptObject executeAndReturnError: &errorDict];	
-	
-	
-	/*ofxOscMessage m2;
-	m2.setAddress( "/shutdown/now" );
-	osender[3]->sendMessage( m2);
-	
-	ofxOscMessage m;
-	m.setAddress( "/shutdown/now" );
-	osender[2]->sendMessage( m);
-	*/
-	
-	/*for(int i = 0; i < tcpServer->getNumClients(); i++){
-		tcpServer->send(i, "s" );
-	}*/
+        alreadyShutdown = YES;
+        
+        //Shutdown the slaves
+        dispatch_async(dispatch_get_main_queue(), ^{											
+            for(int i=2;i<=3;i++){
+                NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"http://globus%i.local:1212/s",i]];
+                NSURLRequest *request = [ NSURLRequest requestWithURL: url cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:0.1];
+                [[NSURLConnection alloc] initWithRequest:request delegate:self];
+            }
+        });
+        
+        //Let the HTTP requests work
+        usleep(2000);
 
+        //First run the projector shutdown script
+        NSDictionary* errorDict;
+        NSAppleEventDescriptor* returnDescriptor = NULL;        
+        NSAppleScript*  scriptObject= [[NSAppleScript alloc] initWithSource:
+                                       [NSString stringWithFormat:
+                                        @"tell application \"sluk\" to run"]];					
+        returnDescriptor = [scriptObject executeAndReturnError: &errorDict];	
+        
+        //Tell computer to shutdown
+        scriptObject= [[NSAppleScript alloc] initWithSource:
+                       [NSString stringWithFormat:
+                        @"tell application \"Finder\" to shut down"]];					
+        returnDescriptor = [scriptObject executeAndReturnError: &errorDict];	
     } 
-	
-	
 }
 
 
@@ -482,11 +400,14 @@ VideoPlayer * globalVideoPlayer;
 //-----
 //
 
--(void) setup{	
 
+
+//
+//-----
+//
+
+-(void) setup{	
 	NSLog(@"Setup start");
-	//[[[[globalController viewManager] glViews] lastObject] setBackingWidth:400 height:400];
-	
 	[Prop(@"video") setFloatValue:0];
 	[Prop(@"fade") setFloatValue:0];
 	[Prop(@"fadeTo") setFloatValue:0];
@@ -521,7 +442,13 @@ VideoPlayer * globalVideoPlayer;
 		
 		NSLog(@"PROBLEM: Could not understand the computername: %@, should be globus1, globus2 or globus3. Set it in Deling in Systemindstillinger",[VideoPlayer computerName]);
 	}
+    
+    //Some gui stuff
+	[versionText setStringValue:[NSString stringWithFormat:@"Version %@",V]];
+	[videoText setStringValue:[NSString stringWithFormat:@"Video %i",0]];
+
 	
+    //Setup log file
 	NSFileHandle *output ;
 	output = [NSFileHandle fileHandleForWritingAtPath:[[NSString stringWithFormat:@"~/Dropbox/GlobusFælles/globus%ilog.log",PropI(@"machine")] stringByExpandingTildeInPath]];
 	[output seekToEndOfFile];
@@ -530,26 +457,26 @@ VideoPlayer * globalVideoPlayer;
 	[self log:[NSString stringWithFormat:@"Version: %@",V]];	
 	[self log:[NSString stringWithFormat:@"Computer boot time: %@",[self boottime]]];	
 	
-	[versionText setStringValue:[NSString stringWithFormat:@"Version %@",V]];
-	[videoText setStringValue:[NSString stringWithFormat:@"Video %i",0]];
-
+    //Start http server
 	dispatch_async(dispatch_get_main_queue(), ^{				
 		httpServer = [[HTTPServer alloc] init];
 		[httpServer setType:@"_http._tcp."];
 		[httpServer setConnectionClass:[MyHTTPConnection class]];
-
-//		NSString *docRoot = [@"~/Sites" stringByExpandingTildeInPath];
-			NSString *webPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Web"];
+        
+        NSString *webPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Web"];
 		[httpServer setDocumentRoot:webPath];
 		[httpServer setPort:1212];
 		NSError *error;
 		BOOL success = [httpServer start:&error];
-		
-		
+        if (!success) {
+            [self log:@"Error in starting http server"];
+        }
 	});
 	
-	if(PropF(@"machine") <= 1){
-		
+    
+    //Server
+	if(PropF(@"machine") <= 1){		
+        //Arduino
 		[arduino setup];
 		[[arduino property:0] setObject:[NSNumber numberWithFloat:-1] forKey:@"pollInterval"];
 		[[arduino property:1] setObject:[NSNumber numberWithFloat:-1] forKey:@"pollInterval"];
@@ -559,10 +486,7 @@ VideoPlayer * globalVideoPlayer;
 		
 		[[arduino property:2] addObserver:self forKeyPath:@"value" options:nil context:@"button"];
 		[[arduino property:3] addObserver:self forKeyPath:@"value" options:nil context:@"power"];
-		
-		[Prop(@"light") addObserver:self forKeyPath:@"value" options:nil context:@"light"];		
-		[Prop(@"light2") addObserver:self forKeyPath:@"value" options:nil context:@"light2"];
-		
+				
 		[arduinoConnectionImage setHidden:NO];
 		[arduinoConnectionText setHidden:NO];
 		
@@ -573,72 +497,20 @@ VideoPlayer * globalVideoPlayer;
 		} else {
 			[arduinoConnectionText setStringValue:@"Ikke forbundet"];	
 			[self log:@"!!!!!!!!!!!!!!!  Arduino forbindelsesfejl  !!!!!!!!!!!!!!! "];
-			
 		}	
 		
-		/*dispatch_async(dispatch_get_main_queue(), ^{				
-		 for(int i=2;i<4;i++){
-		 bsender[i] = [[BSender alloc] init];
-		 
-		 [bsender[i] setReceiverName:[NSString stringWithFormat:@"globus%i",i]];
-		 [bsender[i] startSearchForType:@"_globus._tcp."];
-		 
-		 [bsender[i] addObserver:self forKeyPath:@"isConnected" options:nil context:nil];
-		 
-		 }			
-		 });
-		 */
-//		for(int i=2;i<4;i++){
-			/*tcpServer = new ofxTCPServer();
-			tcpServer->setup(12345, false);
-*/
-//			tcpClient[i]->setup("globus"+ofToString(i, 0)+".local", 1234);
-//			osender[i] = new ofxOscSender();			
-//			osender[i]->setup("globus"+ofToString(i, 0)+".local", 1234);
-//		}			
-		
+        //Reset slaves
 		[self setRemoteVideos:0];		
 	} else {
-		
-		/*dispatch_async(dispatch_get_main_queue(), ^{				
-		 breceiver = [[BReceiver alloc]initWithType:@"_globus._tcp."];
-		 [breceiver setDelegate:self];
-		 });*/
-		//oreceiver = new ofxOscReceiver();
-		//oreceiver->setup(1234);
-		
-		/*tcpClient = new ofxTCPClient();
-		weConnected = tcpClient->setup("10.43.1.8", 12345);
-//		weConnected = tcpClient->setup("halfdanj.local", 12345);
-		if(weConnected){
-			cout<<"Connected to the server"<<endl;
-						[self log:@"Connected to server at startup"];
-			dispatch_async(dispatch_get_main_queue(), ^{				
-				[networkConnectionImage1 setImage:[NSImage imageNamed:@"tick"]];
-				[networkConnectionImage1 setHidden:NO];
-				[networkConnectionText1 setHidden:NO];
-				[networkConnectionText1 setStringValue:@"Globus forbundet"];
-			});
-		} else {
-			cout<<"Could not connect to the server"<<endl;
-			[self log:@"Could not connect to server at startup"];
-			dispatch_async(dispatch_get_main_queue(), ^{				
-				[networkConnectionImage1 setImage:[NSImage imageNamed:@"cross"]];
-				[networkConnectionImage1 setHidden:NO];
-				[networkConnectionText1 setHidden:NO];
-				[networkConnectionText1 setStringValue:@"Globus ikke forbundet"];
-			});
-		}
-		connectTime = 0;
-		deltaTime = 0;*/
-
-
 		[styringbox setHidden:YES];
 		[kalibbox setHidden:YES];
 	}	
 	
+    
+   
+    
+    //Setup videos
 	dispatch_async(dispatch_get_main_queue(), ^{	
-		// /600
 		keys[0][0] = @"0:0:0:06.10/600";
 		keys[0][1] = @"0:0:0:010.00/600";
 		
@@ -685,23 +557,14 @@ VideoPlayer * globalVideoPlayer;
 									  [NSNumber numberWithBool:NO], QTMovieOpenAsyncOKAttribute,
 									  [NSNumber numberWithBool:NO], QTMovieLoopsAttribute, nil];		
 		
-		if(PropF(@"machine") != 1){
-			//		[dict setObject:[NSNumber numberWithBool:YES] forKey:QTMovieOpenForPlaybackAttribute];
-		} else {
-			[dict setObject:[NSNumber numberWithBool:YES] forKey:QTMovieEditableAttribute];
-			
+		if(PropF(@"machine") == 1){
+            //Server needs to be editable because it adds sound
+			[dict setObject:[NSNumber numberWithBool:YES] forKey:QTMovieEditableAttribute];			
 		}
 		
-		NSString * basePath = [@"~/Movies/" stringByExpandingTildeInPath];
-		
-		maske = new ofImage();
-		maske->loadImage([[NSString stringWithFormat:@"%@%@",basePath,@"/maske.png"] UTF8String]);
-		flashImage = new ofImage();
-		flashImage->loadImage([[NSString stringWithFormat:@"%@%@",basePath,@"/flash.png"] UTF8String]);
-		
-		
+        NSString * basePath = [@"~/Movies/" stringByExpandingTildeInPath];
+
 		for(int i=0;i<NUMVIDEOS;i++){
-			
 			NSString * fileNumber;
 			if(i<10)
 				fileNumber = [NSString stringWithFormat:@"0%i",i];
@@ -711,7 +574,7 @@ VideoPlayer * globalVideoPlayer;
 			[dict setObject:[NSString stringWithFormat:@"%@/%i-%@.mov",basePath, PropI(@"machine")-1,fileNumber] forKey:QTMovieFileNameAttribute];
 			movie[i] = [[QTMovie alloc] initWithAttributes:dict error:&error];
 			
-			
+            //If the movie could not be loaded
 			if(error != nil){ 
 				NSLog(@"ERROR: Could not load movie %i: %@ path: %@",i,error, [dict objectForKey:QTMovieFileNameAttribute]);
 				[self log:[NSString stringWithFormat:@"!!!!!!!!!!!!!!!  Kunne ikke loade film %i %@ !!!!!!!!!!!!!!! ",i, [dict objectForKey:QTMovieFileNameAttribute]]];
@@ -727,10 +590,10 @@ VideoPlayer * globalVideoPlayer;
 												  QTStringFromTime([movie[i] duration]),@"duration",
 												  nil]];				
 			} else {
+                //If movie was successfully loaded
 				char codecType[5];
 				OSType codecTypeNum;
-				NSString *codecTypeString = nil;
-				
+				NSString *codecTypeString = nil;				
 				
 				ImageDescriptionHandle videoTrackDescH =(ImageDescriptionHandle)NewHandleClear(sizeof(ImageDescription));				
 				
@@ -760,6 +623,8 @@ VideoPlayer * globalVideoPlayer;
 				
 				DisposeHandle((Handle)videoTrackDescH);			
 			}
+            
+            
 			[movie[i] retain];
 			
 			if(PropF(@"machine") == 1){
@@ -787,13 +652,11 @@ VideoPlayer * globalVideoPlayer;
 					NSLog(@"Found audio for %i", PropI(@"machine"));
 					NSArray *audioTracks = [audioMovie tracksOfMediaType:QTMediaTypeSound];
 					QTTrack *audioTrack = nil;
-					if( [audioTracks count] > 0 )
-					{
+					if([audioTracks count] > 0 ){
 						audioTrack = [audioTracks objectAtIndex:0];
 					}
 					
-					if( audioTrack )
-					{
+					if(audioTrack){
 						QTTimeRange totalRange;
 						totalRange.time = QTZeroTime;
 						if([movie[i] duration].timeValue > [audioMovie duration].timeValue){
@@ -802,7 +665,6 @@ VideoPlayer * globalVideoPlayer;
 							totalRange.duration = [[movie[i] attributeForKey:QTMovieDurationAttribute] QTTimeValue];
 						}
 						[movie[i] insertSegmentOfTrack:[audioTrack retain] timeRange:totalRange atTime:QTZeroTime];
-						//						[movie[i] setVolume:0.035];
 						[movie[i] setVolume:0.15];
 					}					
 				}
@@ -810,10 +672,8 @@ VideoPlayer * globalVideoPlayer;
 		}
 		
 		for(int i=0;i<NUMVIDEOS;i++){
-			
 			[movie[i] stop];
 			[movie[i] gotoBeginning];
-			//	[movie[i] setIdling:NO];
 			[movie[i] setAttribute:[NSNumber numberWithBool:NO] forKey:QTMovieLoopsAttribute];
 			
 			QTOpenGLTextureContextCreate(kCFAllocatorDefault,								
@@ -821,16 +681,14 @@ VideoPlayer * globalVideoPlayer;
 										 CGLGetPixelFormat(CGLGetCurrentContext()),
 										 nil,
 										 &textureContext[i]);
-			//SetMovieVisualContext([movie[i] quickTimeMovie], textureContext[i]);			
-			[movie[i] setVisualContext:textureContext[i]];
-			
+
+			[movie[i] setVisualContext:textureContext[i]];			
 		}
 		
+        //Loop video should loop, and play already
 		[movie[0] setAttribute:[NSNumber numberWithBool:YES] forKey:QTMovieLoopsAttribute];
 		[movie[0] play];
 		[movie[0] setRate:1.0];
-		//[movie[0] setVisualContext:textureContext[0]];
-		//				[movie[0] setIdling:YES];
 	});	
 	NSLog(@"Setup done");
 }
@@ -839,12 +697,18 @@ VideoPlayer * globalVideoPlayer;
 //-----
 //
 
+//Called from http server
 -(void) setVideo:(int)video{
 	if(PropI(@"video") != video && PropF(@"fade") == 0)
 		[Prop(@"video") setIntValue:video];			
 }
 
 
+//
+//-----
+//
+
+//Called from http server
 -(void) setTimecode:(long long)val{
 	timecodeDifference = [movie[[Prop(@"video") intValue]] currentTime].timeValue - val;
 	if(fabs(timecodeDifference / double([movie[[Prop(@"video") intValue]] currentTime].timeScale)) > 0.07){
@@ -854,21 +718,27 @@ VideoPlayer * globalVideoPlayer;
 	}	
 }
 
--(void) setVideoFade:(int)val{
+//
+//-----
+//
 
-        [Prop(@"fadeToVideo") setIntValue: val];
-        [Prop(@"fadeTo") setIntValue:1];
-        [Prop(@"fade") setIntValue:0];	
+//Called from http server
+-(void) setVideoFade:(int)val{    
+    [Prop(@"fadeToVideo") setIntValue: val];
+    [Prop(@"fadeTo") setIntValue:1];
+    [Prop(@"fade") setIntValue:0];	
     
     if(val == 0){
-                [Prop(@"fade") setFloatValue:0.99];	
+        [Prop(@"fade") setFloatValue:0.99];	
     }
 }
 
-
+//
+//-----
+//
 
 -(void) update:(NSDictionary *)drawingInformation{		
-	int i= PropI(@"video");	
+	int i = PropI(@"video");	
 	framerateAvg.push_back(ofGetFrameRate());
 	if(framerateAvg.size() > 200)
 		framerateAvg.erase(framerateAvg.begin());
@@ -882,56 +752,32 @@ VideoPlayer * globalVideoPlayer;
 	lowFramerateCounter--;	
 	lowFramerateCounter = ofClamp(lowFramerateCounter, 0, 2000);
 	
-	
-	/*if(lastMsgDate != nil && [lastMsgDate timeIntervalSinceNow] < -60 && PropF(@"machine") > 1){
-		[self log:[NSString stringWithFormat:@"No messages, will restart osc. Last msg was at %@",avg, lastMsgDate]];
-		NSLog(@"Restart OSC");
-		lastMsgDate = [[NSDate date]retain];
-
-		NSAppleEventDescriptor* returnDescriptor = NULL;
-		 NSDictionary* errorDict;
-		 
-		 NSAppleScript*  scriptObject= [[NSAppleScript alloc] initWithSource:
-		 [NSString stringWithFormat:
-		 @"tell application \"Finder\" to restart"] 
-		 ];					
-		 returnDescriptor = [scriptObject executeAndReturnError: &errorDict];	
-		
-		
-	}*/
-	
-	
-	
 	if(avg < 15 && framerateAvg.size() > 190 && lowFramerateCounter == 0){
 		[self log:[NSString stringWithFormat:@"Low avg framerate: %f",avg]];
 		cout<<"Low framerate"<<endl;
 		lowFramerateCounter = 1000;
 	}
 	
-	if(PropF(@"machine") <= 1){
-		//HOST
+	
+    if(PropF(@"machine") <= 1){
+		//Server
 		
-		if(PropF(@"userbutton")){// || ofRandom(0, 1) < 0.01){
+		if(PropF(@"userbutton")){
 			//Button is pressed
 			if(PropF(@"video") == 0){
 				//We are in video 0
 				for(int u=0;u<NUMVIDEOS-1;u++){					
 					if([movie[0] currentTime].timeValue > QTTimeFromString(keys[u][0]).timeValue && [movie[0] currentTime].timeValue < QTTimeFromString(keys[u][1]).timeValue + QTTimeFromString(postTimeBuffer).timeValue){	
 						//We are in a period where we can press the button
-						/*	if(PropF(@"latency") > 0){
-						 dispatch_async(dispatch_get_main_queue(), ^{											
-						 [self performSelector:@selector(setLocalVideo:) withObject:[NSNumber numberWithInt:u+1] afterDelay:PropF(@"latency")];						
-						 });
-						 } else {*/
 						[self setLocalVideo:[NSNumber numberWithInt:u+1]];
 						i = u+1;
-						//						}
-						
+
 						//Set the remote to that video aswell
-						[self setRemoteVideos:u+1];
+						[self setRemoteVideos:i];
 						
-						[activateSound[u+1] gotoBeginning];
-						[activateSound[u+1] play];
+                        //Play sound
+						[activateSound[i] gotoBeginning];
+						[activateSound[i] play];
 						
 						[Prop(@"userbutton") setBoolValue:NO];
 						
@@ -941,199 +787,14 @@ VideoPlayer * globalVideoPlayer;
 				}
 			}					
 		}	
-		
-		//Host receives OSC message
-		
-		//Send timecode to clients
+				
+		//Send timecode to clients every second
 		if(-[timecodeSetterTimer timeIntervalSinceNow] > 1){
 			[self sendTimecode];
 		}
 		
-		
-		//
-		//Light
-		//
-		float lightSpeed = PropF(@"lightSpeed")*0.02*60.0/ofGetFrameRate();
-		if(PropF(@"light") < PropF(@"lightGoal")){
-			[Prop(@"light") setFloatValue:PropF(@"light") + lightSpeed];
-			if(PropF(@"light") > PropF(@"lightGoal"))
-				[Prop(@"light") setFloatValue:PropF(@"lightGoal")];			
-		}
-		if(PropF(@"light") > PropF(@"lightGoal")){
-			[Prop(@"light") setFloatValue:PropF(@"light") - lightSpeed];
-			if(PropF(@"light") < PropF(@"lightGoal"))
-				[Prop(@"light") setFloatValue:PropF(@"lightGoal")];			
-		}
-		
-		lightSpeed = PropF(@"light2Speed")*0.02*60.0/ofGetFrameRate();
-		if(PropF(@"light2") < PropF(@"light2Goal")){
-			[Prop(@"light2") setFloatValue:PropF(@"light2") + lightSpeed];
-			if(PropF(@"light2") > PropF(@"light2Goal"))
-				[Prop(@"light2") setFloatValue:PropF(@"light2Goal")];			
-		}
-		if(PropF(@"light2") > PropF(@"light2Goal")){
-			[Prop(@"light2") setFloatValue:PropF(@"light2") - lightSpeed];
-			if(PropF(@"light2") < PropF(@"light2Goal"))
-				[Prop(@"light2") setFloatValue:PropF(@"light2Goal")];			
-		}
-		
-		//
-		//
-		//
-		
 	}else {
-		//Client
-		//we are connected - lets send our text and check what we get back
-		/*if(weConnected){
-						
-			if(tcpClient->send(ofToString(PropI(@"machine")))){
-				msgTime = ofGetElapsedTimeMillis();
-				//if data has been sent lets update our text
-				string str = tcpClient->receive();
-				if( str.length() > 0 ){
-					cout<<str<<endl;
-					if(str[0] == 't'){
-						NSString * nsstr = [NSString stringWithUTF8String:str.c_str()];
-						nsstr = [nsstr substringFromIndex:1];
-						NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
-						[f setNumberStyle:NSNumberFormatterDecimalStyle];
-						long long val = [[f numberFromString:nsstr] longValue];
-						
-						timecodeDifference = [movie[[Prop(@"video") intValue]] currentTime].timeValue - val;
-						if(fabs(timecodeDifference / double([movie[[Prop(@"video") intValue]] currentTime].timeScale)) > 0.07){
-							dispatch_sync(dispatch_get_main_queue(), ^{				
-								[movie[[Prop(@"video") intValue]] setCurrentTime:QTMakeTime(val, [movie[[Prop(@"video") intValue]] currentTime].timeScale)];
-							});
-						}								
-					}
-					if(str[0] == 'v'){
-						NSString * nsstr = [NSString stringWithUTF8String:str.c_str()];
-						nsstr = [nsstr substringFromIndex:1];
-						NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
-						[f setNumberStyle:NSNumberFormatterDecimalStyle];
-						int val = [[f numberFromString:nsstr] intValue];
-						
-						if(PropI(@"video") != val && PropF(@"fade") == 0)
-							[Prop(@"video") setIntValue:val];					
-					}
-					
-					if(str[0] == 'r'){
-						NSString * nsstr = [NSString stringWithUTF8String:str.c_str()];
-						nsstr = [nsstr substringFromIndex:1];
-						NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
-						[f setNumberStyle:NSNumberFormatterDecimalStyle];
-						int val = [[f numberFromString:nsstr] intValue];
-						
-						
-						[Prop(@"fadeToVideo") setIntValue: val];
-						[Prop(@"fadeTo") setIntValue:1];
-						[Prop(@"fade") setIntValue:0];
-					}
-					
-					if(str[0] == 's'){
-						[self log:@"Was told to shut down now"];
-
-						NSAppleEventDescriptor* returnDescriptor = NULL;
-						NSDictionary* errorDict;
-						
-						NSAppleScript*  scriptObject= [[NSAppleScript alloc] initWithSource:
-													   [NSString stringWithFormat:
-														@"tell application \"Finder\" to shut down"] 
-													   ];					
-						returnDescriptor = [scriptObject executeAndReturnError: &errorDict];	
-					}
-							
-				}
-			}
-			
-			float delta = ofGetElapsedTimeMillis() - msgTime;
-			if(msgTime < ofGetElapsedTimeMillis() && delta > 10000 ){
-				tcpClient->close();
-				[self log:@"MSG Timeout. Will disconnect"];
-				NSLog(@"MSG Timeout");
-			}
-
-			if(!tcpClient->isConnected()){
-				weConnected = false;
-				cout<<"Got disconnected"<<endl;
-				[self log:@"Server disconnected!"];
-				dispatch_async(dispatch_get_main_queue(), ^{				
-					[networkConnectionImage1 setImage:[NSImage imageNamed:@"cross"]];
-					[networkConnectionImage1 setHidden:NO];
-					[networkConnectionText1 setHidden:NO];
-					[networkConnectionText1 setStringValue:@"Globus ikke forbundet"];
-				});
-				
-			}
-		}else{
-			//if we are not connected lets try and reconnect every 5 seconds
-			deltaTime = ofGetElapsedTimeMillis() - connectTime;
-			
-			if( deltaTime > 5000 ){
-				cout<<"Reconnect"<<endl;
-				weConnected = tcpClient->setup("10.43.1.8", 12345);
-				if(!weConnected){
-					//weConnected = tcpClient->setup("halfdanj.local", 12345);
-				}
-				connectTime = ofGetElapsedTimeMillis();
-				if(weConnected){
-					[self log:@"Server reconnected"];
-					dispatch_async(dispatch_get_main_queue(), ^{				
-						[networkConnectionImage1 setImage:[NSImage imageNamed:@"tick"]];
-						[networkConnectionImage1 setHidden:NO];
-						[networkConnectionText1 setHidden:NO];
-						[networkConnectionText1 setStringValue:@"Globus forbundet"];
-					});					
-				}
-			}
-			
-		}*/		
-		
-	/*	while( oreceiver->hasWaitingMessages() )
-		{
-			lastMsgDate = [[NSDate date] retain];
-			NSLog(@"resc");
-			// get the next message
-			ofxOscMessage m;
-			oreceiver->getNextMessage( &m );
-			
-			if ( m.getAddress() == "/shutdown/now" ){
-				NSAppleEventDescriptor* returnDescriptor = NULL;
-				NSDictionary* errorDict;
-				
-				NSAppleScript*  scriptObject= [[NSAppleScript alloc] initWithSource:
-											   [NSString stringWithFormat:
-												@"tell application \"Finder\" to shut down"] 
-											   ];					
-				returnDescriptor = [scriptObject executeAndReturnError: &errorDict];	
-				
-			} else if ( m.getAddress() == "/video/time" ){
-				
-                dispatch_sync(dispatch_get_main_queue(), ^{				
-
-				float val = m.getArgAsFloat(0) + double([movie[[Prop(@"video") intValue]] currentTime].timeScale) * 0.1 ;
-				//			float t = msg.getArgAsFloat(0)+40;
-				//			if(PropI(@"video") != msg.getArgAsInt32(1) && PropF(@"fade") == 0)
-				//				[Prop(@"video") setIntValue: msg.getArgAsInt32(1)];
-				
-				timecodeDifference = [movie[[Prop(@"video") intValue]] currentTime].timeValue - val;
-				if(fabs(timecodeDifference / double([movie[[Prop(@"video") intValue]] currentTime].timeScale)) > 0.07){
-					[movie[[Prop(@"video") intValue]] setCurrentTime:QTMakeTime(val, [movie[[Prop(@"video") intValue]] currentTime].timeScale)];
-				}			
-				
-				
-				//if(tag == 1){
-				if(PropI(@"video") != m.getArgAsInt32(1) && PropF(@"fade") == 0)
-					[Prop(@"video") setIntValue:  m.getArgAsInt32(1)];
-				//		
-                });
-			} else if ( m.getAddress() == "/video/video" ){
-				
-				[Prop(@"fadeToVideo") setIntValue: m.getArgAsInt32(0)];
-				[Prop(@"fadeTo") setIntValue:1];
-				[Prop(@"fade") setIntValue:0];
-			}
-		}	*/		
+		//Client	
 	}
 	
 	
@@ -1165,26 +826,6 @@ VideoPlayer * globalVideoPlayer;
 		}
 	}
 	
-	if(lastLightTime.timeValue < [movie[i] currentTime].timeValue){
-		QTTimeRange timeRange;
-		timeRange.time = lastLightTime;
-		timeRange.duration = QTTimeDecrement([movie[i] currentTime], lastLightTime);
-		for(NSDictionary * dict in [lightCues objectAtIndex:i]){
-			if(QTTimeInTimeRange( QTTimeFromString([dict objectForKey:@"time"]), timeRange)){
-				int light = [[dict valueForKey:@"light"] intValue];
-				if(light & 1){
-					[Prop(@"lightSpeed") setFloatValue:[[dict valueForKey:@"speed"] floatValue]];
-					[Prop(@"lightGoal") setFloatValue:[[dict valueForKey:@"value"] floatValue]];
-				}	
-				if(light & 2){
-					[Prop(@"light2Speed") setFloatValue:[[dict valueForKey:@"speed"] floatValue]];
-					[Prop(@"light2Goal") setFloatValue:[[dict valueForKey:@"value"] floatValue]];
-				}				
-			}
-		}
-	}
-	lastLightTime = [movie[i] currentTime];
-	
 	
 	// check for new frame
 	const CVTimeStamp * outputTime;
@@ -1199,18 +840,13 @@ VideoPlayer * globalVideoPlayer;
 			NSLog(@"Change video %i to %i",lastFramesVideo, i);
 			[self log:[NSString stringWithFormat:@"Start video %i",i]];
 			
-			
 			if(i > 0){		
 				//Går til en historie
-				dispatch_sync(dispatch_get_main_queue(), ^{				
-					
+				dispatch_sync(dispatch_get_main_queue(), ^{						
 					[movie[i] setCurrentTime:QTTimeDecrement([movie[0] currentTime], QTTimeFromString(keys[i-1][0]))];
-					
-					
-					
+
 					//Gå til slutningen af historien i base videoen
-					[movie[0] setCurrentTime:QTTimeFromString(keys[i-1][1] )];				
-					
+					[movie[0] setCurrentTime:QTTimeFromString(keys[i-1][1] )];						
 				});
 				
 				if(PropF(@"machine") <= 1){						
@@ -1219,8 +855,6 @@ VideoPlayer * globalVideoPlayer;
 						ofEnableAlphaBlending();
 						ofSetColor(255,255,255, 255*whiteFlash);
 						ofRect(-2, -2, 4, 4);
-						
-						//	flashImage->draw(0.0, 0.0,1.0, 1.0);
 					} PopSurface();
 					
 					glFlush();
@@ -1231,24 +865,20 @@ VideoPlayer * globalVideoPlayer;
 				if(PropF(@"machine") <= 1){
 					[self setRemoteVideos:0];
 				}
-				dispatch_sync(dispatch_get_main_queue(), ^{				
-					
+				dispatch_sync(dispatch_get_main_queue(), ^{							
 					[movie[lastFramesVideo] gotoBeginning];		
 				});
 			}
-			dispatch_sync(dispatch_get_main_queue(), ^{				
-				
+            
+            //Start new video, and stop last
+			dispatch_sync(dispatch_get_main_queue(), ^{						
 				[movie[lastFramesVideo] setRate:0.0];	
-				//				[movie[lastFramesVideo] setIdling:NO];
-				//								[movie[i] setIdling:YES];
 				[movie[i] setRate:1.0];		
 			});
 			
 			lastFramesVideo = i;
-			lastLightTime = QTTimeFromString(@"0");			
 		}
 		
-		//NSLog(@"%lld  >= %lld ",[movie[i] currentTime].timeValue , [movie[i] duration].timeValue);
 		if(i > 0 && [movie[i] currentTime].timeValue >= [movie[i] duration].timeValue-80){
 			//Videoen er nået til ende, så gå til video 0
 			[Prop(@"video") setFloatValue:0];
@@ -1257,12 +887,9 @@ VideoPlayer * globalVideoPlayer;
 				[Prop(@"fadeTo") setIntValue:0];
 			}
 		}		
-		
-		
-		
-		//		QTVisualContextTask(textureContext[i]);
-		
-		if (textureContext[i] != NULL && QTVisualContextIsNewImageAvailable(textureContext[i], outputTime)) {
+
+		//Update texture
+        if (textureContext[i] != NULL && QTVisualContextIsNewImageAvailable(textureContext[i], outputTime)) {
 			// if we have a previous frame release it
 			if (NULL != currentFrame[i]) {
 				CVOpenGLTextureRelease(currentFrame[i]);
@@ -1273,14 +900,12 @@ VideoPlayer * globalVideoPlayer;
 			
 			// the above call may produce a null frame so check for this first
 			// if we have a frame, then draw it
-			if ( ( status != noErr ) && ( currentFrame[i] != NULL ) )
-			{
+			if ( ( status != noErr ) && ( currentFrame[i] != NULL ) ){
 				NSLog(@"Error: OSStatus: %d",status);
 				CFRelease( currentFrame[i] );
 				
 				currentFrame[i] = NULL;
-			} // if
-			
+			}
 		} else if  (textureContext[i] == NULL){
 			NSLog(@"No textureContext");
 			if (NULL != currentFrame[i]) {
@@ -1310,8 +935,7 @@ VideoPlayer * globalVideoPlayer;
 		ofSetColor(255,255, 255, 255);						
 		glPushMatrix();
 		
-		ApplySurface(@"");{
-			
+		ApplySurface(@"");{			
 			if(PropI(@"machine") > 1){
 				glBegin(GL_QUADS);{
 					glTexCoord2f(topLeft[0], topLeft[1]);  glVertex2f(0, 0);
@@ -1395,7 +1019,6 @@ VideoPlayer * globalVideoPlayer;
 			ofEnableAlphaBlending();
 			ofSetColor(255,255,255, 255*whiteFlash);
 			ofRect(-2, -2, 4, 4);
-			//flashImage->draw(0.0, 0.0,1.0, 1.0);
 		} PopSurface();
 	}
 	
@@ -1409,10 +1032,9 @@ VideoPlayer * globalVideoPlayer;
 	}
 	
 	
-	if(PropI(@"machine") == 2 && maske != nil){
+	if(PropI(@"machine") == 2){
 		ApplySurface(@"");{
 			ofSetColor(255,255,255, 255);
-			//			maske->draw(0,0,1,1);
 			
 			ofSetColor(0, 0, 0,255);
 			ofSetCircleResolution(100);
@@ -1424,39 +1046,19 @@ VideoPlayer * globalVideoPlayer;
 		} PopSurface();
 	}
 	
-	if(PropI(@"machine") == 3){
-		ofSetColor(255, 255, 255,255);
-		//		ofCircle(0, 0, 0.001);
-		ofCircle(0.9, 0, 0.001);
-		ofCircle(0.9, 0.9, 0.001);
-		//		ofCircle(0, 1, 0.001);
-	}
-	// if(currentFrame[i] != nil ){				
-	//	 ofDrawBitmapString("Timecode for "+ofToString(i)+": "+[QTStringFromTime([movie[i] currentTime]) cString], 0.01, 0.02);
-	//	 ofDrawBitmapString("Difference to host: "+ofToString(timecodeDifference/double([movie[[Prop(@"video") intValue]] currentTime].timeScale), 2)+" sec", 0.01, 0.04);
-	//	 }
-	//	 
-	//	 for(int u=0;u<NUMVIDEOS-1;u++){
-	//	 if([movie[0] currentTime].timeValue > QTTimeFromString(keys[u][0]).timeValue && [movie[0] currentTime].timeValue < QTTimeFromString(keys[u][1]).timeValue + QTTimeFromString(postTimeBuffer).timeValue){	
-	//	 ofSetColor(255, 0, 0);
-	//	 ofRect(0, 0.9, 1.0, 1);
-	//	 } 	
-	//	 
-	//	 }
     
+    //Helpers when keystoneing
     if([[GetPlugin(Keystoner) enabled] boolValue]){
-        ApplySurface(@"");{
-
-        if(PropI(@"machine") == 3){
-            
-            ofSetColor(255, 0, 0);
-            ofSetLineWidth(2);
-            ofLine(0, 0.9, 0, 1);
-            ofLine(0.333*Aspect(@"",0), 0.9, 0.33*Aspect(@"",0), 1);
-            ofLine(0.666*Aspect(@"",0), 0.9, 0.666*Aspect(@"",0), 1);
-            ofLine(1.0*Aspect(@"",0), 0.9, 1.0*Aspect(@"",0), 1);
-                        ofSetLineWidth(1);
-        }
+        ApplySurface(@"");{            
+            if(PropI(@"machine") == 3){                
+                ofSetColor(255, 0, 0);
+                ofSetLineWidth(2);
+                ofLine(0, 0.9, 0, 1);
+                ofLine(0.333*Aspect(@"",0), 0.9, 0.33*Aspect(@"",0), 1);
+                ofLine(0.666*Aspect(@"",0), 0.9, 0.666*Aspect(@"",0), 1);
+                ofLine(1.0*Aspect(@"",0), 0.9, 1.0*Aspect(@"",0), 1);
+                ofSetLineWidth(1);
+            }
         }PopSurface();
     }
 	
