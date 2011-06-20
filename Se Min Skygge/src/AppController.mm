@@ -42,6 +42,7 @@ extern ofAppBaseWindow * window;
     [pluginManagerController addPlugin:[[RenderEngine alloc] init]];
     [pluginManagerController addPlugin:[[Shadows alloc] init]];
     [pluginManagerController addPlugin:[[InteractiveWall alloc] init]];
+    [pluginManagerController addPlugin:[[ShadowFog alloc] init]];
 
 
 

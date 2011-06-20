@@ -14,13 +14,13 @@
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:1 maxValue:10] named:@"depth"];
     
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"topBars"];
-        [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"bottomBars"];
-        [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"leftBars"];
-        [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"rightBars"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"bottomBars"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"leftBars"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"rightBars"];
     
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0 maxValue:1] named:@"backgroundr"];
-        [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0 maxValue:1] named:@"backgroundg"];
-        [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0 maxValue:1] named:@"backgroundb"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0 maxValue:1] named:@"backgroundg"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0 maxValue:1] named:@"backgroundb"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0 maxValue:1] named:@"3dlines"];
     
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"portal"];
@@ -92,7 +92,7 @@
         }
     }
     
-  
+    
     
     for(int i=0;i<bars.size();i++){
         bars[i].val = bars[i].filter.filter(PropF(@"topBars")*bars[i].goal*1000);
@@ -100,7 +100,7 @@
     }
     leftBar.val = leftBar.filter.filter(PropF(@"leftBars")*leftBar.goal*1000);
     rightBar.val = rightBar.filter.filter((1-PropF(@"rightBars"))*1000*aspect + PropF(@"rightBars")*rightBar.goal*1000);
-
+    
 }
 
 -(void)draw:(NSDictionary *)drawingInformation{
@@ -126,22 +126,22 @@
                 for(int j=0;j<PropI(@"depth");j++){
                     ofSetColor(0, 0, 0, 255.0*(float)(j+1)/PropI(@"depth"));
                     float h = bars[i].val/1000.0;                    
-                  //  h = h*(float)(j+1)/PropI(@"depth") + 1-(float)(j+1)/PropI(@"depth");                    
+                    //  h = h*(float)(j+1)/PropI(@"depth") + 1-(float)(j+1)/PropI(@"depth");                    
                     
                     ofRect(i*w,0,w-PropF(@"edge")*0.05,h);
                     
                     h = bars2[i].val/1000.0;                    
-                   // h = h*(float)(j+1)/PropI(@"depth") + 1-(float)(j+1)/PropI(@"depth");                    
+                    // h = h*(float)(j+1)/PropI(@"depth") + 1-(float)(j+1)/PropI(@"depth");                    
                     
                     ofRect(i*w,h,w-PropF(@"edge")*0.05,1);
                 }
             }
-         /*   ofSetColor(255,0,0);
-            float h = leftBar.val/1000.0;                    
-            ofRect(0,0,h,1);
-            h = rightBar.val/1000.0;                    
-            ofRect(h,0,aspect,1);
-*/
+            /*   ofSetColor(255,0,0);
+             float h = leftBar.val/1000.0;                    
+             ofRect(0,0,h,1);
+             h = rightBar.val/1000.0;                    
+             ofRect(h,0,aspect,1);
+             */
             
             if(PropB(@"drawDebug")){
                 ofSetColor(255,0,0);
