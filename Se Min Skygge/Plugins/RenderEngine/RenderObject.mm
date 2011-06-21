@@ -31,10 +31,12 @@ const int fboBorder = 20;
     [NSGraphicsContext restoreGraphicsState];
     unsigned char *bitmapData = [bitmapWhoseFormatIKnow bitmapData];
     
+/*    glPushClientAttrib( GL_CLIENT_PIXEL_STORE_BIT );											// be nice to anyone else who might use pixelStore
     // Set memory alignment parameters for unpacking the bitmap.
     glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
-    glPixelStorei(GL_UNPACK_ROW_LENGTH, width);
-    
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, width);    
+    glPopClientAttrib();
+*/
     // Specify the texture's properties.
     glBindTexture( GL_TEXTURE_RECTANGLE_EXT, openGLName );
     glTexParameteri( GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_WRAP_S, GL_REPEAT );

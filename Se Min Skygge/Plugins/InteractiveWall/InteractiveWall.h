@@ -3,6 +3,8 @@
 //#include "BlobTracker2d.h"
 #include "Kinect.h"
 
+//Todo 
+
 struct bar {
     float val;
     Filter filter;
