@@ -53,6 +53,7 @@ enum RenderObjectType {
     BOOL autoFill;
     BOOL blendmodeAdd;
     BOOL visible;
+    BOOL play;
     
     ofxFBOTexture * borderFbo;
 //    ofxFBOTexture * tempFbo;
@@ -70,6 +71,7 @@ enum RenderObjectType {
     BOOL ciImageOutdated;
     BOOL ciFilterOutdated;
     BOOL ciFBOOutdated;
+    
     
     float depthBlurAmount;
     
@@ -97,6 +99,7 @@ enum RenderObjectType {
 @property (readwrite) BOOL autoFill;
 @property (readonly) BOOL isLeaf;
 @property (readwrite) BOOL visible;
+@property (readwrite) BOOL play;
 
 @property (readwrite) BOOL blendmodeAdd;
 

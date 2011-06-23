@@ -61,7 +61,7 @@ const int fboBorder = 20;
 
 @implementation RenderObject
 @synthesize engine, name, subObjects, parent, assetString, assetInfo;
-@synthesize posX, posY, posZ, scale,rotationZ,depthBlurAmount, opacity, maskOnBack, autoFill, blendmodeAdd, visible;
+@synthesize posX, posY, posZ, scale,rotationZ,depthBlurAmount, opacity, maskOnBack, autoFill, blendmodeAdd, visible, play;
 - (id)init
 {
     self = [super init];
@@ -81,6 +81,7 @@ const int fboBorder = 20;
         opacity = 1.0;
         scale = 1.0;
         visible = YES;
+        play = YES;
     }
     
     return self;
@@ -449,10 +450,10 @@ const int fboBorder = 20;
         if(objectType == VIDEO){
             dispatch_async(dispatch_get_main_queue(), ^{
                 
-                if([engine isEnabled] && visible && [videoAsset rate] == 0){
+                if([engine isEnabled] && visible && [videoAsset rate] == 0 && play){
                     [videoAsset setRate:1.0];
                 }
-                if((![engine isEnabled] || !visible) && [videoAsset rate] != 0){
+                if((![engine isEnabled] || !visible) && [videoAsset rate] != 0 || !play ){
                     [videoAsset setRate:0.0];
                 }
             });
@@ -864,5 +865,24 @@ const int fboBorder = 20;
     return isImageFile;
 }
 
+
+-(void)setPlay:(BOOL)_play{
+    play = _play;
+    if(play){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(videoAsset){
+                [videoAsset setRate:1.0];
+            }
+        });
+    }      
+    if(play){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(videoAsset){
+                [videoAsset setRate:0.0];
+            }
+        });
+    }
+
+}
 
 @end
