@@ -55,6 +55,10 @@ enum RenderObjectType {
     BOOL visible;
     BOOL play;
     
+    int chapterFrom;
+    int chapterTo;
+    int objId;
+    
     ofxFBOTexture * borderFbo;
 //    ofxFBOTexture * tempFbo;
     ofxFBOTexture * fbo;
@@ -100,6 +104,10 @@ enum RenderObjectType {
 @property (readonly) BOOL isLeaf;
 @property (readwrite) BOOL visible;
 @property (readwrite) BOOL play;
+@property (readwrite) int chapterFrom;
+@property (readwrite) int chapterTo;
+@property (readwrite) int objId;
+
 
 @property (readwrite) BOOL blendmodeAdd;
 

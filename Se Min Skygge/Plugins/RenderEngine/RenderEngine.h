@@ -42,6 +42,8 @@ enum UpdateFlags {
     ObjectTreeViewController * treeController;
     
     float aspect;
+    
+    RenderObject * selectedObject;
 }
 
 @property (retain) NSMutableArray * objectsArray;

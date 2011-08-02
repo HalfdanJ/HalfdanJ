@@ -1,6 +1,7 @@
 #import "RenderEngine.h"
 #import "Keystoner.h"
 #import "ObjectTreeViewController.h"
+#import "Midi.h"
 
 @implementation RenderEngine
 @synthesize objectTreeController;
@@ -27,7 +28,14 @@
     
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"levelsMin"];    
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0 maxValue:1] named:@"levelsMax"];    
-    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.5 minValue:0 maxValue:1] named:@"levelsMiddle"];    
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.5 minValue:0 maxValue:1] named:@"levelsMiddle"];
+    
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:127] named:@"objSelection"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:-5 maxValue:5] named:@"objX"];
+    
+    [Prop(@"objX") setMidiSmoothing:0.99];
+    
+    [self assignMidiChannel:10];
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -68,8 +76,7 @@
     
     
     CGLContextObj  contextGl = CGLContextObj([[[[[globalController viewManager] glViews] objectAtIndex:0] openGLContext] CGLContextObj]);
-	CGLPixelFormatObj pixelformatGl = CGLPixelFormatObj([[[[[globalController viewManager] glViews] objectAtIndex:0] pixelFormat] CGLPixelFormatObj]);
-	
+	CGLPixelFormatObj pixelformatGl = CGLPixelFormatObj([[[[[globalController viewManager] glViews] objectAtIndex:0] pixelFormat] CGLPixelFormatObj]);	
     ciContext = [CIContext contextWithCGLContext:contextGl pixelFormat:pixelformatGl  colorSpace:CGColorSpaceCreateDeviceRGB() options:nil];
     
     
@@ -92,10 +99,41 @@
     camCoord = ofxVec3f(0,0,-5);
     eyeCoord = ofxVec3f(0,0,1);
     
- //   glEnable(GL_DEPTH_TEST);
+    //   glEnable(GL_DEPTH_TEST);
+    
+    dispatch_async(dispatch_get_main_queue(), ^{		
+        NSArray * allObjects = [self allObjects];       
+        for(RenderObject * obj in allObjects){
+            [obj loadAsset];
+        }
+    });
+    
+    //Midi bindings
+    //[[[GetPlugin(Midi) midiData] objectAtIndex:[[self midiChannel] intValue]] addObserver:self forKeyPath:@"0" options:0 context:nil];
+    
     
 }
 
+//------------------------------------------------------------------------------------------------------------------------
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+    NSLog(@"%@ %@",object, keyPath);
+    if(object == Prop(@"objSelection")){
+        NSArray * allObjects = [self allObjectsOrderedByDepth];       
+        for(RenderObject * obj in allObjects){
+            if([obj objId] == [object intValue]){
+                selectedObject = obj;
+                break;
+            }
+        }
+    }
+    if(object == Prop(@"objX")){
+        if(selectedObject != nil){
+            [selectedObject setPosX:[object floatValue]];
+        }
+    }
+
+}
 
 //------------------------------------------------------------------------------------------------------------------------
 
@@ -135,14 +173,14 @@
     glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA, GL_ONE,GL_ONE);
     
     glPushMatrix();{
-        glScaled(1.0/aspect,1,PropF(@"camDepthScale"));        
+        glScaled(1.0/aspect,1,100);        
         ofxVec3f v = eyeCoord-camCoord;
         float a1 = ofxVec2f(0, 1).angle(ofxVec2f(eyeCoord.x, eyeCoord.z)-ofxVec2f(camCoord.x, camCoord.z));    
         v.rotate(a1, ofxVec3f(0,1,0));    
         float a2 = ofxVec2f(1, 0).angle(ofxVec2f(v.z,v.y));
         glRotated(a2, 1, 0, 0);
         glRotated(a1, 0, 1, 0);
-        glTranslated(camCoord.x-PropF(@"camPosX"), camCoord.y,camCoord.z);
+        glTranslated(camCoord.x, camCoord.y,camCoord.z);
         
         NSArray * allObjects = [self allObjectsOrderedByDepth];
         for(RenderObject * obj in allObjects){      
@@ -157,7 +195,7 @@
         
         //Cam:
         glPushMatrix();{
-            glTranslated(0, 0.5, 10.0/3.0);
+            glTranslated(1, 0.5, 10.0/3.0);
             glTranslated(PropF(@"camPosX"),-PropF(@"camPosY"),-PropF(@"camPosZ"));
             glScaled(aspect,1,1);
             
@@ -204,40 +242,142 @@
         }glPopMatrix();
         
     }glPopMatrix();
+    
+    
 }
+
+//------------------------------------------------------------------------------------------------------------------------
+
+-(void) placeCamera{
+    /* glScaled(1.0/aspect,1,PropF(@"camDepthScale"));        
+     
+     
+     glScaled(1.0/aspect,1,PropF(@"camDepthScale"));
+     glTranslated(-PropF(@"camPosX")+0.5,PropF(@"camPosY"),PropF(@"camPosZ"));
+     */
+    
+    float scale = PropF(@"camDepthScale")/100.0;
+    scale = 1.0/(1+PropF(@"camPosZ") * -0.3*scale);
+    
+    glTranslated(0.5*aspect,0.5,0);
+    glScaled(scale,scale,0);
+    glTranslated(-0.5*aspect,-0.5,0);
+    
+    glTranslated(-PropF(@"camPosX"),PropF(@"camPosY"),0);
+    
+    
+    
+    
+    
+}
+
 
 //------------------------------------------------------------------------------------------------------------------------
 
 
 -(void)draw:(NSDictionary *)drawingInformation{
-    [self renderFbo];
+    /*  [self renderFbo];
+     
+     
+     ofBackground(0,0,0);
+     glPushMatrix();
+     ofDisableAlphaBlending();
+     
+     colorCorrectShader->setShaderActive(YES);
+     colorCorrectShader->setUniformVariable1f((char*)"min", PropF(@"levelsMin") );
+     colorCorrectShader->setUniformVariable1f((char*)"max", PropF(@"levelsMax"));
+     
+     colorCorrectShader->setUniformVariable2f((char*)"start", 0.0, 0.0);
+     colorCorrectShader->setUniformVariable2f((char*)"middle",0.5, PropF(@"levelsMiddle"));    
+     colorCorrectShader->setUniformVariable2f((char*)"end", 1.0, 1.0);    
+     
+     [GetPlugin(Keystoner)  applySurface:@"Screen" projectorNumber:0 viewNumber:ViewNumber];
+     ofSetColor(255,255,255,255);
+     fboFront[pingpong]->draw(0,0,Aspect(@"Screen",0),1);
+     [GetPlugin(Keystoner)  popSurface];
+     
+     [GetPlugin(Keystoner)  applySurface:@"Screen" projectorNumber:1 viewNumber:ViewNumber];
+     ofSetColor(255,255,255,255);
+     fboBack[pingpong]->draw(0,0,Aspect(@"Screen",0),1);
+     [GetPlugin(Keystoner)  popSurface];    
+     glPopMatrix();   
+     colorCorrectShader->setShaderActive(NO);
+     
+     ofEnableAlphaBlending();
+     
+     */
     
-    
-    ofBackground(0,0,0);
     glPushMatrix();
-    ofDisableAlphaBlending();
     
-    colorCorrectShader->setShaderActive(YES);
-    colorCorrectShader->setUniformVariable1f((char*)"min", PropF(@"levelsMin") );
-    colorCorrectShader->setUniformVariable1f((char*)"max", PropF(@"levelsMax"));
-    
-    colorCorrectShader->setUniformVariable2f((char*)"start", 0.0, 0.0);
-    colorCorrectShader->setUniformVariable2f((char*)"middle",0.5, PropF(@"levelsMiddle"));    
-    colorCorrectShader->setUniformVariable2f((char*)"end", 1.0, 1.0);    
-    
-    [GetPlugin(Keystoner)  applySurface:@"Screen" projectorNumber:0 viewNumber:ViewNumber];
-    ofSetColor(255,255,255,255);
-    fboFront[pingpong]->draw(0,0,Aspect(@"Screen",0),1);
-    [GetPlugin(Keystoner)  popSurface];
+    //Back
+    NSArray * allObjects = [self allObjectsOrderedByDepth];       
     
     [GetPlugin(Keystoner)  applySurface:@"Screen" projectorNumber:1 viewNumber:ViewNumber];
-    ofSetColor(255,255,255,255);
-    fboBack[pingpong]->draw(0,0,Aspect(@"Screen",0),1);
-    [GetPlugin(Keystoner)  popSurface];    
-    glPopMatrix();   
-    colorCorrectShader->setShaderActive(NO);
+    glPushMatrix();
+    [self placeCamera];
     
-    ofEnableAlphaBlending();
+    for(RenderObject * obj in allObjects){
+        glPushMatrix();
+        if([obj absoluteVisible]){
+            if([obj blendmodeAdd]){
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+            } else {
+                glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA, GL_ONE,GL_ONE);        
+            }
+            
+            if([obj backAlpha] > 0){
+                [obj drawWithAlpha:[obj backAlpha]];
+            } else if([obj maskBack]) {
+                [obj drawMaskWithAlpha:1.0];
+            }
+        }
+        glPopMatrix();
+    }
+    glPopMatrix();
+    ofSetColor(0, 0, 0);
+    ofRect(-10, 0, 20, -10);
+    ofRect(-10, 1, 20, 10);
+    ofRect(0, -10, -10, 20);
+    ofRect(aspect, -10, 10, 20);
+    
+    [GetPlugin(Keystoner)  popSurface];    
+    
+    glPopMatrix();     
+    
+    
+    //Front
+    //    glPushMatrix();
+    
+    //    [self setupFboOpengl];
+    glPushMatrix();
+    
+    [GetPlugin(Keystoner)  applySurface:@"Screen" projectorNumber:0 viewNumber:ViewNumber];
+    glPushMatrix();
+    
+    [self placeCamera];
+    
+    for(RenderObject * obj in allObjects){
+        glPushMatrix();
+        
+        if([obj absoluteVisible]){
+            if([obj frontAlpha] > 0){
+                [obj drawWithAlpha:[obj frontAlpha]];
+            }
+        }
+        glPopMatrix();
+    }
+    
+    glPopMatrix();
+    ofSetColor(0, 0, 0);
+    ofRect(-10, 0, 20, -10);
+    ofRect(-10, 1, 20, 10);
+    ofRect(0, -10, -10, 20);
+    ofRect(aspect, -10, 10, 20);
+    [GetPlugin(Keystoner)  popSurface];    
+    
+    glPopMatrix();
+    
+    
     
 }
 
@@ -245,111 +385,100 @@
 
 
 -(void) setupFboOpengl{
-    int w = fboBack[0]->texData.width;
-    int h = fboBack[0]->texData.height;	
-    
-    glViewport(0, 0, w, h);    
-    float halfFov, theTan, screenFov, as;
-    screenFov 		= 60;    
-    float eyeX 		= (float)w / 2.0;
-    float eyeY 		= (float)h / 2.0;
-    halfFov 		= PI * screenFov / 360.0;
-    theTan 			= tanf(halfFov);
-    float dist 		= eyeY / theTan;
-    float nearDist 	= dist / 10.0;	// near / far clip plane
-    float farDist 	= dist * 10.0;
-    as 			= (float)w/(float)h;    
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(screenFov, as, nearDist, farDist);
-    
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(eyeX, eyeY, dist, eyeX, eyeY, 0.0, 0.0, 1.0, 0.0);
-    
-    glScalef(1, -1, 2);           // invert Y axis so increasing Y goes down.		    
-    glTranslatef(0, -h, 0);       // shift origin up to upper-left corner.    
-    glScaled(w,h,1);    
+    /*  int w = fboBack[0]->texData.width;
+     int h = fboBack[0]->texData.height;	
+     
+     glViewport(0, 0, w, h);    
+     float halfFov, theTan, screenFov, as;
+     screenFov 		= 60;    
+     float eyeX 		= (float)w / 2.0;
+     float eyeY 		= (float)h / 2.0;
+     halfFov 		= PI * screenFov / 360.0;
+     theTan 			= tanf(halfFov);
+     float dist 		= eyeY / theTan;
+     float nearDist 	= dist / 10.0;	// near / far clip plane
+     float farDist 	= dist * 10.0;
+     as 			= (float)w/(float)h;    
+     glMatrixMode(GL_PROJECTION);
+     glLoadIdentity();
+     gluPerspective(screenFov, as, nearDist, farDist);
+     
+     glMatrixMode(GL_MODELVIEW);
+     glLoadIdentity();
+     gluLookAt(eyeX, eyeY, dist, eyeX, eyeY, 0.0, 0.0, 1.0, 0.0);
+     
+     glScalef(1, -1, 2);           // invert Y axis so increasing Y goes down.		    
+     glTranslatef(0, -h, 0);       // shift origin up to upper-left corner.    
+     glScaled(w,h,1);   
+     */
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-
--(void) placeCamera{
-//    glScaled(1.0/aspect,1,PropF(@"camDepthScale"));        
-
-    
-    glScaled(1.0/aspect,1,PropF(@"camDepthScale"));
-    glTranslated(-PropF(@"camPosX")+0.5,PropF(@"camPosY"),PropF(@"camPosZ"));
-}
 
 //------------------------------------------------------------------------------------------------------------------------
 
 
 -(void) renderFbo{        
-    pingpong = !pingpong;
-    
-    NSArray * allObjects = [self allObjectsOrderedByDepth];       
-    //NSArray * rootsObjects = [self rootObjectsOrdredByDepth];       
-    
-    
-    ofEnableAlphaBlending();
-    
-    fboBack[pingpong]->clear(0,0,0,255);
-    fboBack[pingpong]->swapIn(); {           
-        glPushMatrix();
-        [self setupFboOpengl];
-        
-        glPushMatrix();
-        
-        [self placeCamera];
-        for(RenderObject * obj in allObjects){
-            if([obj absoluteVisible]){
-                if([obj blendmodeAdd]){
-                    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-                } else {
-                    glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA, GL_ONE,GL_ONE);        
-                }
-                
-                if([obj backAlpha] > 0){
-                    [obj drawWithAlpha:[obj backAlpha]];
-                } else if([obj maskBack]) {
-                    [obj drawMaskWithAlpha:1.0];
-                }
-            }
-        }
-        glPopMatrix();       
-        
-        //        ofSetColor(255,255,255,255.0*0.2);
-        //      fboBack[!pingpong]->draw(0,0,1,1);
-        glPopMatrix();        
-	}fboBack[pingpong]->swapOut();
-    
-    
-    fboFront[pingpong]->clear();
-    fboFront[pingpong]->swapIn();{
-        glPushMatrix();
-        
-        [self setupFboOpengl];
-        [self placeCamera];
-        
-        for(RenderObject * obj in allObjects){
-            if([obj absoluteVisible]){
-                if([obj frontAlpha] > 0){
-                    [obj drawWithAlpha:[obj frontAlpha]];
-                }
-            }
-        }
-        glPopMatrix();
-    }fboFront[pingpong]->swapOut();    
-    ofEnableAlphaBlending();
-    
-    /*   if(ofGetElapsedTimeMillis()-timer > 2){
-     cout<<"Render time: "<<ofGetElapsedTimeMillis()-timer<<endl;
-     }    
-     */ 
-    glViewport(0,0,ofGetWidth(),ofGetHeight());    
-    ofSetupScreen();
-    glScaled(ofGetWidth(), ofGetHeight(), 1);       
+    /* pingpong = !pingpong;
+     
+     NSArray * allObjects = [self allObjectsOrderedByDepth];       
+     //NSArray * rootsObjects = [self rootObjectsOrdredByDepth];       
+     
+     
+     ofEnableAlphaBlending();
+     
+     fboBack[pingpong]->clear(0,0,0,255);
+     fboBack[pingpong]->swapIn(); {           
+     glPushMatrix();
+     [self setupFboOpengl];
+     
+     glPushMatrix();
+     
+     [self placeCamera];
+     for(RenderObject * obj in allObjects){
+     if([obj absoluteVisible]){
+     if([obj blendmodeAdd]){
+     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+     } else {
+     glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA, GL_ONE,GL_ONE);        
+     }
+     
+     if([obj backAlpha] > 0){
+     [obj drawWithAlpha:[obj backAlpha]];
+     } else if([obj maskBack]) {
+     [obj drawMaskWithAlpha:1.0];
+     }
+     }
+     }
+     glPopMatrix();       
+     
+     //        ofSetColor(255,255,255,255.0*0.2);
+     //      fboBack[!pingpong]->draw(0,0,1,1);
+     glPopMatrix();        
+     }fboBack[pingpong]->swapOut();
+     
+     
+     fboFront[pingpong]->clear();
+     fboFront[pingpong]->swapIn();{
+     glPushMatrix();
+     
+     [self setupFboOpengl];
+     [self placeCamera];
+     
+     for(RenderObject * obj in allObjects){
+     if([obj absoluteVisible]){
+     if([obj frontAlpha] > 0){
+     [obj drawWithAlpha:[obj frontAlpha]];
+     }
+     }
+     }
+     glPopMatrix();
+     }fboFront[pingpong]->swapOut();    
+     ofEnableAlphaBlending();
+     
+     
+     glViewport(0,0,ofGetWidth(),ofGetHeight());    
+     ofSetupScreen();
+     glScaled(ofGetWidth(), ofGetHeight(), 1);       */
 }
 
 //------------------------------------------------------------------------------------------------------------------------

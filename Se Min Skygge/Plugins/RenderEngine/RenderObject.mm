@@ -61,7 +61,7 @@ const int fboBorder = 20;
 
 @implementation RenderObject
 @synthesize engine, name, subObjects, parent, assetString, assetInfo;
-@synthesize posX, posY, posZ, scale,rotationZ,depthBlurAmount, opacity, maskOnBack, autoFill, blendmodeAdd, visible, play;
+@synthesize posX, posY, posZ, scale,rotationZ,depthBlurAmount, opacity, maskOnBack, autoFill, blendmodeAdd, visible, play, chapterTo, chapterFrom, objId;
 - (id)init
 {
     self = [super init];
@@ -82,6 +82,9 @@ const int fboBorder = 20;
         scale = 1.0;
         visible = YES;
         play = YES;
+        
+        chapterFrom = 0;
+        chapterTo = 127;
     }
     
     return self;
@@ -100,7 +103,8 @@ const int fboBorder = 20;
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
     if([(NSString*)context isEqualToString:@"loadAsset"]){
-        [self loadAsset];
+        if(engine != nil)
+            [self loadAsset];
     }
     if([(NSString*)context isEqualToString:@"changedTexture"]){
         //changedFlag = YES;
@@ -116,23 +120,27 @@ const int fboBorder = 20;
 -(void) transform{
     if(parent)
         [parent transform];
-    
-    if(!autoFill){
-        glTranslatef(posX, posY, posZ);
-        glScaled(scale, scale,scale);
+   
+    float depthScale = [[[engine properties] objectForKey:@"camDepthScale"] floatValue] / 100.0;
+
+   // if(!autoFill){
+        float _scale = 1.0/(1+posZ * -0.3*depthScale);
+
+        glTranslatef(posX, posY, 0);
+        glTranslated([self aspect]*0.5, 0.5, 0);
+        glScaled(_scale*scale, _scale*scale,_scale*scale);
         glRotated(rotationZ, 0,0,1);
         glTranslated(-[self aspect]*0.5, -0.5, 0);
-    } else {
-        float depthScale = [[[engine properties] objectForKey:@"camDepthScale"] floatValue] / 100.0;
+    /*} else {
         
         float _scale = (1+posZ * -0.3*depthScale);
         
-        glTranslatef(0, 0.5, posZ);
+        glTranslatef(0, 0.5, -posZ);
         glScaled(_scale, _scale,_scale);
-        glRotated(rotationZ, 0,0,1);
-        glTranslated(-0.5, -0.5, 0);
+       // glRotated(rotationZ, 0,0,1);
+       // glTranslated(-0.5, -0.5, 0);
         
-    }
+    }*/
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -448,13 +456,39 @@ const int fboBorder = 20;
         GLuint texture = 0;
         
         if(objectType == VIDEO){
+            if(play && [videoAsset currentTime].timeValue >= [videoAsset duration].timeValue-0.1*[videoAsset duration].timeScale){
+                //Videoen er nået til ende
+                play = NO;
+            } else if([videoAsset hasChapters]){
+                int currentChapter = [videoAsset chapterIndexForTime:QTTimeIncrement([videoAsset currentTime],QTMakeTime(1, 30))];
+                int numberChapters = [videoAsset chapterCount];
+                int selectedChapter = chapterTo;
+                if(currentChapter == numberChapters)
+                    currentChapter --;
+                
+                
+                if(currentChapter >= selectedChapter){
+                    dispatch_async(dispatch_get_main_queue(), ^{                        
+                        if(selectedChapter + 1 < numberChapters){					
+                            [videoAsset setCurrentTime:QTTimeDecrement([videoAsset startTimeOfChapter:selectedChapter],QTMakeTime(2, 30))];
+                        }                        
+                        play = NO;
+                      //  NSLog(@"End of chapter.");
+                    });
+                } else {
+                    play = YES;
+                }
+            }
+            
             dispatch_async(dispatch_get_main_queue(), ^{
+                
                 
                 if([engine isEnabled] && visible && [videoAsset rate] == 0 && play){
                     [videoAsset setRate:1.0];
                 }
-                if((![engine isEnabled] || !visible) && [videoAsset rate] != 0 || !play ){
+                if((![engine isEnabled] || !visible) || ([videoAsset rate] != 0 && !play) ){
                     [videoAsset setRate:0.0];
+                  //  NSLog(@"Stop video");
                 }
             });
             
@@ -467,7 +501,6 @@ const int fboBorder = 20;
                     CVOpenGLTextureRelease(currentVideoFrame);
                     currentVideoFrame = NULL;
                 }
-                
                 QTVisualContextCopyImageForTime(qtContext, NULL, outputTime, &currentVideoFrame);
                 assetTextureOutdated = YES;
             }
@@ -555,7 +588,7 @@ const int fboBorder = 20;
     [self setAssetInfo:@"No asset"];
     
     if(![[self assetString] isEqualToString:@""]){
-        
+        NSLog(@"Load from %@",[engine assetDir]);
         NSURL * url = [[NSURL alloc] initFileURLWithPath:[NSString stringWithFormat:@"%@%@", [engine assetDir],[self assetString]] isDirectory:NO];
         
         
@@ -600,12 +633,22 @@ const int fboBorder = 20;
                 
                 
                 [videoAsset setAttribute:[NSNumber numberWithBool:YES] forKey:QTMovieLoopsAttribute];
+              //  [videoAsset setAttribute:[NSNumber numberWithBool:YES] forKey:QTMovieEditableAttribute];
                 
                 NSArray* vtracks = [videoAsset tracksOfMediaType:QTMediaTypeVideo];
 				QTTrack* track = [vtracks objectAtIndex:0];
 				videoSize = [track apertureModeDimensionsForMode:QTMovieApertureModeClean];
 				NSLog(@"Size: %@",NSStringFromSize(videoSize));				
                 
+                //Add start / end chapter
+
+                /* NSArray * chapters = [NSArray arrayWithObjects:
+                                       [NSDictionary dictionaryWithObjectsAndKeys:
+                                        @"Start",QTMovieChapterName, 
+                                        [NSValue valueWithQTTime:QTMakeTime(0, 0)], QTMovieChapterStartTime,nil]
+                                       , nil];
+                [videoAsset addChapters:chapters withAttributes:[NSDictionary dictionary] error:&error];
+                */
             }
         }
         
@@ -738,7 +781,8 @@ const int fboBorder = 20;
     [_e addObserver:self forKeyPath:@"properties.assetTextureMode.value" options:0 context:@"changedTexture"];
     [_e addObserver:self forKeyPath:@"properties.borderedRendering.value" options:0 context:@"changedTexture"];
     
-    [self loadAsset];
+//    if(assetString != nil)
+//        [self loadAsset];
 }
 
 -(BOOL)isLeaf{
@@ -775,7 +819,10 @@ const int fboBorder = 20;
     [self setMaskOnBack:[aDecoder decodeBoolForKey:@"maskOnBack"]];
     [self setAutoFill:[aDecoder decodeBoolForKey:@"autoFill"]];
     [self setVisible:[aDecoder decodeBoolForKey:@"visible"]];
-    
+    [self setChapterFrom:[aDecoder decodeIntForKey:@"chapterFrom"]];
+    [self setChapterTo:[aDecoder decodeIntForKey:@"chapterTo"]];
+    [self setObjId:[aDecoder decodeIntForKey:@"objId"]];
+
     [self setBlendmodeAdd:[aDecoder decodeBoolForKey:@"blendmodeAdd"]];
     
     
@@ -802,7 +849,11 @@ const int fboBorder = 20;
     [aCoder encodeFloat:opacity forKey:@"opacity"];
     [aCoder encodeBool:maskOnBack forKey:@"maskOnBack"];
     [aCoder encodeBool:autoFill forKey:@"autoFill"];   
-    [aCoder encodeBool:visible forKey:@"visible"];   
+    [aCoder encodeBool:visible forKey:@"visible"]; 
+    [aCoder encodeInt:objId forKey:@"objId"]; 
+
+    [aCoder encodeInt:chapterFrom forKey:@"chapterFrom"]; 
+    [aCoder encodeInt:chapterTo forKey:@"chapterTo"]; 
     
     [aCoder encodeBool:blendmodeAdd forKey:@"blendmodeAdd"];   
     
@@ -871,11 +922,18 @@ const int fboBorder = 20;
     if(play){
         dispatch_async(dispatch_get_main_queue(), ^{
             if(videoAsset){
+                if(chapterFrom != 0 && [videoAsset chapterCount] >= chapterFrom){
+                    [videoAsset setCurrentTime:[videoAsset startTimeOfChapter:chapterFrom]];
+                } else {
+                    [videoAsset setCurrentTime:QTMakeTime(0, 0)];
+
+                }
                 [videoAsset setRate:1.0];
+
             }
         });
     }      
-    if(play){
+    if(!play){
         dispatch_async(dispatch_get_main_queue(), ^{
             if(videoAsset){
                 [videoAsset setRate:0.0];
