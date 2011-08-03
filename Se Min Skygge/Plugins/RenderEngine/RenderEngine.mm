@@ -1,12 +1,11 @@
 #import "RenderEngine.h"
 #import "Keystoner.h"
 #import "ObjectTreeViewController.h"
-#import "Midi.h"
 
 @implementation RenderEngine
 @synthesize objectTreeController;
 @synthesize objectsArray, assetDir, aspect;
-@synthesize blurShader, ciContext, treeController;
+@synthesize blurShader, ciContext, treeController, midi;
 
 //------------------------------------------------------------------------------------------------------------------------
 
@@ -30,10 +29,24 @@
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0 maxValue:1] named:@"levelsMax"];    
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.5 minValue:0 maxValue:1] named:@"levelsMiddle"];
     
+    float p = 10.0;
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:127] named:@"objSelection"];
-    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:-5 maxValue:5] named:@"objX"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:-63/p maxValue:64/p] named:@"objX"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:-63/64.0 maxValue:64/64.0] named:@"objY"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:-63/6.0 maxValue:64/6.0] named:@"objZ"];
     
-    [Prop(@"objX") setMidiSmoothing:0.99];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"objPlay"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"objLoop"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:127] named:@"objChapterStart"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:127] named:@"objChapterStop"];
+    
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"objOpacity"];
+
+    
+    [Prop(@"objX") setMidiSmoothing:0.90];
+    [Prop(@"objY") setMidiSmoothing:0.9];
+    [Prop(@"objZ") setMidiSmoothing:0.95];
+    [Prop(@"objOpacity") setMidiSmoothing:0.99];
     
     [self assignMidiChannel:10];
 }
@@ -72,6 +85,7 @@
 //------------------------------------------------------------------------------------------------------------------------
 
 -(void)setup{
+    midi = GetPlugin(Midi);
     aspect = [[[GetPlugin(Keystoner) getSurface:@"Screen" viewNumber:0 projectorNumber:0] aspect] floatValue];
     
     
@@ -117,7 +131,6 @@
 //------------------------------------------------------------------------------------------------------------------------
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
-    NSLog(@"%@ %@",object, keyPath);
     if(object == Prop(@"objSelection")){
         NSArray * allObjects = [self allObjectsOrderedByDepth];       
         for(RenderObject * obj in allObjects){
@@ -127,12 +140,39 @@
             }
         }
     }
-    if(object == Prop(@"objX")){
-        if(selectedObject != nil){
+    if(selectedObject != nil){
+        if(object == Prop(@"objX")){            
             [selectedObject setPosX:[object floatValue]];
         }
+        if(object == Prop(@"objY")){            
+            [selectedObject setPosY:[object floatValue]];
+        }
+        if(object == Prop(@"objZ")){            
+            [selectedObject setPosZ:[object floatValue]];
+        }
+        if(object == Prop(@"objPlay")){            
+            [selectedObject setPlay:[object boolValue]];
+        }
+        if(object == Prop(@"objLoop")){            
+            [selectedObject setLoop:[object boolValue]];
+        }
+        if(object == Prop(@"objChapterStart")){            
+            [selectedObject setChapterFrom:[object intValue]];
+        }
+        if(object == Prop(@"objChapterStop")){            
+            [selectedObject setChapterTo:[object intValue]];
+        }
+        if(object == Prop(@"objOpacity")){            
+            float op = [object floatValue];
+            if(op == 0){
+                [selectedObject setVisible:NO];
+            } else {
+                [selectedObject setVisible:YES];
+                [selectedObject setOpacity:op];
+            }
+        }
     }
-
+    
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -326,7 +366,7 @@
             }
             
             if([obj backAlpha] > 0){
-                [obj drawWithAlpha:[obj backAlpha]];
+                [obj drawWithAlpha:[obj backAlpha] front:NO];
             } else if([obj maskBack]) {
                 [obj drawMaskWithAlpha:1.0];
             }
@@ -334,6 +374,8 @@
         glPopMatrix();
     }
     glPopMatrix();
+    ofDisableAlphaBlending();
+    ofFill();
     ofSetColor(0, 0, 0);
     ofRect(-10, 0, 20, -10);
     ofRect(-10, 1, 20, 10);
@@ -361,13 +403,15 @@
         
         if([obj absoluteVisible]){
             if([obj frontAlpha] > 0){
-                [obj drawWithAlpha:[obj frontAlpha]];
+                [obj drawWithAlpha:[obj frontAlpha] front:YES];
             }
         }
         glPopMatrix();
     }
     
     glPopMatrix();
+    ofDisableAlphaBlending();
+    ofFill();
     ofSetColor(0, 0, 0);
     ofRect(-10, 0, 20, -10);
     ofRect(-10, 1, 20, 10);
@@ -385,32 +429,7 @@
 
 
 -(void) setupFboOpengl{
-    /*  int w = fboBack[0]->texData.width;
-     int h = fboBack[0]->texData.height;	
-     
-     glViewport(0, 0, w, h);    
-     float halfFov, theTan, screenFov, as;
-     screenFov 		= 60;    
-     float eyeX 		= (float)w / 2.0;
-     float eyeY 		= (float)h / 2.0;
-     halfFov 		= PI * screenFov / 360.0;
-     theTan 			= tanf(halfFov);
-     float dist 		= eyeY / theTan;
-     float nearDist 	= dist / 10.0;	// near / far clip plane
-     float farDist 	= dist * 10.0;
-     as 			= (float)w/(float)h;    
-     glMatrixMode(GL_PROJECTION);
-     glLoadIdentity();
-     gluPerspective(screenFov, as, nearDist, farDist);
-     
-     glMatrixMode(GL_MODELVIEW);
-     glLoadIdentity();
-     gluLookAt(eyeX, eyeY, dist, eyeX, eyeY, 0.0, 0.0, 1.0, 0.0);
-     
-     glScalef(1, -1, 2);           // invert Y axis so increasing Y goes down.		    
-     glTranslatef(0, -h, 0);       // shift origin up to upper-left corner.    
-     glScaled(w,h,1);   
-     */
+ 
 }
 
 
@@ -418,68 +437,7 @@
 
 
 -(void) renderFbo{        
-    /* pingpong = !pingpong;
-     
-     NSArray * allObjects = [self allObjectsOrderedByDepth];       
-     //NSArray * rootsObjects = [self rootObjectsOrdredByDepth];       
-     
-     
-     ofEnableAlphaBlending();
-     
-     fboBack[pingpong]->clear(0,0,0,255);
-     fboBack[pingpong]->swapIn(); {           
-     glPushMatrix();
-     [self setupFboOpengl];
-     
-     glPushMatrix();
-     
-     [self placeCamera];
-     for(RenderObject * obj in allObjects){
-     if([obj absoluteVisible]){
-     if([obj blendmodeAdd]){
-     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-     } else {
-     glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA, GL_ONE,GL_ONE);        
-     }
-     
-     if([obj backAlpha] > 0){
-     [obj drawWithAlpha:[obj backAlpha]];
-     } else if([obj maskBack]) {
-     [obj drawMaskWithAlpha:1.0];
-     }
-     }
-     }
-     glPopMatrix();       
-     
-     //        ofSetColor(255,255,255,255.0*0.2);
-     //      fboBack[!pingpong]->draw(0,0,1,1);
-     glPopMatrix();        
-     }fboBack[pingpong]->swapOut();
-     
-     
-     fboFront[pingpong]->clear();
-     fboFront[pingpong]->swapIn();{
-     glPushMatrix();
-     
-     [self setupFboOpengl];
-     [self placeCamera];
-     
-     for(RenderObject * obj in allObjects){
-     if([obj absoluteVisible]){
-     if([obj frontAlpha] > 0){
-     [obj drawWithAlpha:[obj frontAlpha]];
-     }
-     }
-     }
-     glPopMatrix();
-     }fboFront[pingpong]->swapOut();    
-     ofEnableAlphaBlending();
-     
-     
-     glViewport(0,0,ofGetWidth(),ofGetHeight());    
-     ofSetupScreen();
-     glScaled(ofGetWidth(), ofGetHeight(), 1);       */
-}
+  }
 
 //------------------------------------------------------------------------------------------------------------------------
 

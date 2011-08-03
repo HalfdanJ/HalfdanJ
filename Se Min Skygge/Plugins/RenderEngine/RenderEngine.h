@@ -5,6 +5,7 @@
 #import "ofxFBOTexture.h"
 #import "ofxShader.h"
 #import "ofxVectorMath.h"
+#import "Midi.h"
 
 enum UpdateFlags {
     USE_ASSET_TEXTURE = 1,
@@ -17,6 +18,7 @@ enum UpdateFlags {
 @class ObjectTreeViewController;
 
 @interface RenderEngine : ofPlugin {
+    Midi * midi;
     NSMutableArray * objectsArray;
     NSTreeController *objectTreeController;
     
@@ -53,6 +55,7 @@ enum UpdateFlags {
 @property (readonly)  CIContext *ciContext;
 @property (readonly) ObjectTreeViewController * treeController;
 @property (readonly) float aspect;
+@property (readonly) Midi * midi;
 
 
 - (IBAction)addObject:(id)sender;
