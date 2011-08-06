@@ -31,10 +31,12 @@ const int fboBorder = 20;
     [NSGraphicsContext restoreGraphicsState];
     unsigned char *bitmapData = [bitmapWhoseFormatIKnow bitmapData];
     
-    // Set memory alignment parameters for unpacking the bitmap.
-    glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
-    glPixelStorei(GL_UNPACK_ROW_LENGTH, width);
-    
+    /*    glPushClientAttrib( GL_CLIENT_PIXEL_STORE_BIT );											// be nice to anyone else who might use pixelStore
+     // Set memory alignment parameters for unpacking the bitmap.
+     glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
+     glPixelStorei(GL_UNPACK_ROW_LENGTH, width);    
+     glPopClientAttrib();
+     */
     // Specify the texture's properties.
     glBindTexture( GL_TEXTURE_RECTANGLE_EXT, openGLName );
     glTexParameteri( GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_WRAP_S, GL_REPEAT );
@@ -59,7 +61,7 @@ const int fboBorder = 20;
 
 @implementation RenderObject
 @synthesize engine, name, subObjects, parent, assetString, assetInfo;
-@synthesize posX, posY, posZ, scale,rotationZ,depthBlurAmount, opacity, maskOnBack, autoFill, blendmodeAdd, visible;
+@synthesize posX, posY, posZ, scale,rotationZ,depthBlurAmount, opacity, maskOnBack, autoFill, blendmodeAdd, visible, play, chapterTo, chapterFrom, objId, loop, stackMode;
 - (id)init
 {
     self = [super init];
@@ -79,6 +81,11 @@ const int fboBorder = 20;
         opacity = 1.0;
         scale = 1.0;
         visible = YES;
+        play = YES;
+        sendMidiChapter = -1;
+        
+        chapterFrom = 0;
+        chapterTo = 127;
     }
     
     return self;
@@ -97,7 +104,8 @@ const int fboBorder = 20;
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
     if([(NSString*)context isEqualToString:@"loadAsset"]){
-        [self loadAsset];
+        if(engine != nil)
+            [self loadAsset];
     }
     if([(NSString*)context isEqualToString:@"changedTexture"]){
         //changedFlag = YES;
@@ -114,22 +122,26 @@ const int fboBorder = 20;
     if(parent)
         [parent transform];
     
-    if(!autoFill){
-        glTranslatef(posX, posY, posZ);
-        glScaled(scale, scale,scale);
-        glRotated(rotationZ, 0,0,1);
-        glTranslated(-[self aspect]*0.5, -0.5, 0);
-    } else {
-        float depthScale = [[[engine properties] objectForKey:@"camDepthScale"] floatValue] / 100.0;
-        
-        float _scale = (1+posZ * -0.3*depthScale);
-        
-        glTranslatef(0, 0.5, posZ);
-        glScaled(_scale, _scale,_scale);
-        glRotated(rotationZ, 0,0,1);
-        glTranslated(-0.5, -0.5, 0);
-        
-    }
+    float depthScale = [[[engine properties] objectForKey:@"camDepthScale"] floatValue] / 100.0;
+    
+    // if(!autoFill){
+    float _scale = 1.0/(1+posZ * -0.3*depthScale);
+    
+    glTranslatef(posX, posY, 0);
+    glTranslated([self aspect]*0.5, 0.5, 0);
+    glScaled(_scale*scale, _scale*scale,_scale*scale);
+    glRotated(rotationZ, 0,0,1);
+    glTranslated(-[self aspect]*0.5, -0.5, 0);
+    /*} else {
+     
+     float _scale = (1+posZ * -0.3*depthScale);
+     
+     glTranslatef(0, 0.5, -posZ);
+     glScaled(_scale, _scale,_scale);
+     // glRotated(rotationZ, 0,0,1);
+     // glTranslated(-0.5, -0.5, 0);
+     
+     }*/
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -138,7 +150,7 @@ const int fboBorder = 20;
 -(void) drawObject{
     
     int flags = [engine updateFlags];
-    glScaled([self aspect],1,1);
+
     
     if(flags & USE_BORDERED_FBO){
         glScaled(1.0/([self pixelsWide]+2*fboBorder),1.0/([self pixelsHigh]+2*fboBorder),1); 
@@ -148,7 +160,7 @@ const int fboBorder = 20;
     
     if(flags & USE_CI_FBO){
         if(flags & USE_BORDERED_FBO){
-            [self drawTexture:fbo->texData.textureID size:NSMakeSize([self pixelsWide]+2*fboBorder, [self pixelsHigh]+2*fboBorder)];        
+            [self drawTexture:fbo->texData.textureID size:NSMakeRect(0,0,[self pixelsWide]+2*fboBorder, [self pixelsHigh]+2*fboBorder)];        
         } else {
             if(fbo){
                 CGRect rect = filteredRect;
@@ -157,7 +169,7 @@ const int fboBorder = 20;
                 glTranslated(rect.origin.x, rect.origin.y,0);
                 glScaled(rect.size.width, rect.size.height, 1);
                 
-                [self drawTexture:fbo->texData.textureID size:NSMakeSize(rect.size.width, rect.size.height)];                    
+                [self drawTexture:fbo->texData.textureID size:NSMakeRect(0,0,rect.size.width, rect.size.height)];                    
             }
         }
     } else if(flags & USE_CIIMAGE){
@@ -167,9 +179,9 @@ const int fboBorder = 20;
                              fromRect:[outputImage extent]];
     }
     else if(flags & USE_BORDERED_FBO){   
-        [self drawTexture:borderFbo->texData.textureID size:NSMakeSize([self pixelsWide]+2*fboBorder, [self pixelsHigh]+2*fboBorder)];        
+        [self drawTexture:borderFbo->texData.textureID size:NSMakeRect(0,0,[self pixelsWide]+2*fboBorder, [self pixelsHigh]+2*fboBorder)];        
     } else if(flags & USE_ASSET_TEXTURE){
-        [self drawTexture:assetTexture size:NSMakeSize([self pixelsWide], [self pixelsHigh])];
+        [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])];
     } else {
         ofSetColor(200,255,255,200);
         ofRect(0,0,1,1);
@@ -182,13 +194,43 @@ const int fboBorder = 20;
 //------------------------------------------------------------------------------------------------------------------------
 
 
--(void)drawWithAlpha:(float)alpha{
-    glColor4f(255,255,255,(float)alpha*opacity);   
-  //  glScaled([self aspect]*0.5,1,1);
-    
+-(void)drawWithAlpha:(float)alpha front:(BOOL)front{
+    ofEnableAlphaBlending();
+    glColor4f(255,255,255,(float)alpha*[self opacity]);   
     glPushMatrix();{
         [self transform];        
-        [self drawObject];
+        glScaled([self aspect],1,1);
+        
+        if(stackMode > 0){
+            switch (stackMode) {
+                case 1: //Front + back
+                    if(front)
+                        [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])]; 
+                    else
+                        [self drawTexture:assetTexture size:NSMakeRect(0,[self pixelsHigh],[self pixelsWide], [self pixelsHigh])]; 
+                    break;
+                case 2: //Front + back + alpha
+                
+                    if(front)
+                        [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])]; 
+                    else{
+//                        glBlendFunc(GL_SRC_COLOR, GL_ONE);
+                        glBlendFuncSeparate(GL_ZERO,GL_SRC_COLOR, GL_SRC_COLOR,GL_ZERO);        
+
+                        [self drawTexture:assetTexture size:NSMakeRect(0,2*[self pixelsHigh],[self pixelsWide], [self pixelsHigh])];
+
+                        glBlendFuncSeparate(GL_DST_ALPHA,GL_DST_COLOR, GL_SRC_ALPHA,GL_DST_ALPHA);        
+
+                        [self drawTexture:assetTexture size:NSMakeRect(0,[self pixelsHigh],[self pixelsWide], [self pixelsHigh])]; 
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        } else {
+            [self drawObject];            
+        }    
         
     }glPopMatrix();
 }
@@ -198,7 +240,7 @@ const int fboBorder = 20;
 
 -(void) drawMaskWithAlpha:(float)alpha{
     glColor4f(0,0,0,alpha*opacity);   
-  //  glScaled([self aspect]*0.5,1,1);
+    //  glScaled([self aspect]*0.5,1,1);
     
     glPushMatrix();{
         [self transform];        
@@ -231,7 +273,7 @@ const int fboBorder = 20;
             glScaled([self aspect],1,1);
             //  [self drawImageAsset];
             if([engine updateFlags] & USE_ASSET_TEXTURE){
-                [self drawTexture:assetTexture size:NSMakeSize([self pixelsWide], [self pixelsHigh])];
+                [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])];
             }
             glPopMatrix();
         }
@@ -265,15 +307,15 @@ const int fboBorder = 20;
 //------------------------------------------------------------------------------------------------------------------------
 
 
--(void) drawTexture:(GLuint)tex size:(NSSize)size{
+-(void) drawTexture:(GLuint)tex size:(NSRect)size{
     glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
     glEnable( GL_TEXTURE_RECTANGLE_EXT );
     glBindTexture( GL_TEXTURE_RECTANGLE_EXT, tex );    
     glBegin(GL_QUADS);
-    glTexCoord2f(0, 0); glVertex3f(0,0,0);
-    glTexCoord2f(size.width, 0); glVertex3f(1,0,0);
-    glTexCoord2f(size.width, size.height);glVertex3f(1,1,0);
-    glTexCoord2f(0, size.height); glVertex3f(0,1,0);
+    glTexCoord2f(size.origin.x, size.origin.y); glVertex3f(0,0,0);
+    glTexCoord2f(size.origin.x+size.size.width, size.origin.y); glVertex3f(1,0,0);
+    glTexCoord2f(size.origin.x+size.size.width, size.origin.y+size.size.height);glVertex3f(1,1,0);
+    glTexCoord2f(size.origin.x, size.origin.y+size.size.height); glVertex3f(0,1,0);
     glEnd();    
     glDisable(GL_TEXTURE_RECTANGLE_EXT);         
 }
@@ -445,13 +487,50 @@ const int fboBorder = 20;
         GLuint texture = 0;
         
         if(objectType == VIDEO){
+            if(play && [videoAsset currentTime].timeValue >= [videoAsset duration].timeValue-0.1*[videoAsset duration].timeScale){
+                //Videoen er nået til ende
+                if(!loop){
+                    play = NO;
+                }
+            } else if([videoAsset hasChapters] && play){
+                int currentChapter = [videoAsset chapterIndexForTime:QTTimeIncrement([videoAsset currentTime],QTMakeTime(1, 30))];
+                int numberChapters = [videoAsset chapterCount];
+                int selectedChapter = chapterTo;
+                if(currentChapter == numberChapters)
+                    currentChapter --;
+                
+                
+                if(currentChapter >= selectedChapter){
+                    dispatch_async(dispatch_get_main_queue(), ^{     
+                        if(!loop){
+                            if(selectedChapter + 1 < numberChapters){					
+                                [videoAsset setCurrentTime:QTTimeDecrement([videoAsset startTimeOfChapter:selectedChapter],QTMakeTime(2, 30))];
+                            }                        
+                            play = NO;
+                        } else {
+                            [videoAsset setCurrentTime:QTTimeDecrement([videoAsset startTimeOfChapter:chapterFrom],QTMakeTime(0, 30))];
+                        }
+                        //  NSLog(@"End of chapter.");
+                    });
+                } else {
+                    
+                    if(currentChapter != sendMidiChapter){
+                        sendMidiChapter = currentChapter;
+                        [[engine midi] sendValue:currentChapter forNote:objId onChannel:1];
+                    }
+                    play = YES;
+                }
+            }
+            
             dispatch_async(dispatch_get_main_queue(), ^{
                 
-                if([engine isEnabled] && visible && [videoAsset rate] == 0){
+                
+                if([engine isEnabled] && visible && [videoAsset rate] == 0 && play){
                     [videoAsset setRate:1.0];
                 }
-                if((![engine isEnabled] || !visible) && [videoAsset rate] != 0){
+                if((![engine isEnabled] || !visible) || ([videoAsset rate] != 0 && !play) ){
                     [videoAsset setRate:0.0];
+                    //  NSLog(@"Stop video");
                 }
             });
             
@@ -464,7 +543,6 @@ const int fboBorder = 20;
                     CVOpenGLTextureRelease(currentVideoFrame);
                     currentVideoFrame = NULL;
                 }
-                
                 QTVisualContextCopyImageForTime(qtContext, NULL, outputTime, &currentVideoFrame);
                 assetTextureOutdated = YES;
             }
@@ -552,7 +630,7 @@ const int fboBorder = 20;
     [self setAssetInfo:@"No asset"];
     
     if(![[self assetString] isEqualToString:@""]){
-        
+        NSLog(@"Load from %@",[engine assetDir]);
         NSURL * url = [[NSURL alloc] initFileURLWithPath:[NSString stringWithFormat:@"%@%@", [engine assetDir],[self assetString]] isDirectory:NO];
         
         
@@ -597,12 +675,22 @@ const int fboBorder = 20;
                 
                 
                 [videoAsset setAttribute:[NSNumber numberWithBool:YES] forKey:QTMovieLoopsAttribute];
+                //  [videoAsset setAttribute:[NSNumber numberWithBool:YES] forKey:QTMovieEditableAttribute];
                 
                 NSArray* vtracks = [videoAsset tracksOfMediaType:QTMediaTypeVideo];
 				QTTrack* track = [vtracks objectAtIndex:0];
 				videoSize = [track apertureModeDimensionsForMode:QTMovieApertureModeClean];
 				NSLog(@"Size: %@",NSStringFromSize(videoSize));				
                 
+                //Add start / end chapter
+                
+                /* NSArray * chapters = [NSArray arrayWithObjects:
+                 [NSDictionary dictionaryWithObjectsAndKeys:
+                 @"Start",QTMovieChapterName, 
+                 [NSValue valueWithQTTime:QTMakeTime(0, 0)], QTMovieChapterStartTime,nil]
+                 , nil];
+                 [videoAsset addChapters:chapters withAttributes:[NSDictionary dictionary] error:&error];
+                 */
             }
         }
         
@@ -636,12 +724,16 @@ const int fboBorder = 20;
 }
 
 -(float)backAlpha{
+    if(stackMode > 0)
+        return 1;
     if([self absolutePosZ] <= 0)
         return 1;
     return 0;
 }
 
 -(float)frontAlpha{
+    if(stackMode > 0)
+        return 1;
     if([self absolutePosZ] <= 0)
         return 0;
     return 1;
@@ -659,14 +751,21 @@ const int fboBorder = 20;
 }
 
 -(int) pixelsHigh{
+    int ret = 0;
     if(objectType == IMAGE){
         NSBitmapImageRep * rep = [[imageAsset representations] lastObject];
-        return [rep pixelsHigh];    
+        ret = [rep pixelsHigh];    
     } else if(objectType == VIDEO){
-        return videoSize.height;
-    } else {
-        return 0;
+        ret = videoSize.height;
+    } 
+    if(stackMode == 1){
+        ret /= 2;
     }
+    if(stackMode == 2){
+        ret /= 3;
+    }
+
+    return ret;
 }
 
 -(float)aspect{
@@ -735,7 +834,8 @@ const int fboBorder = 20;
     [_e addObserver:self forKeyPath:@"properties.assetTextureMode.value" options:0 context:@"changedTexture"];
     [_e addObserver:self forKeyPath:@"properties.borderedRendering.value" options:0 context:@"changedTexture"];
     
-    [self loadAsset];
+    //    if(assetString != nil)
+    //        [self loadAsset];
 }
 
 -(BOOL)isLeaf{
@@ -772,6 +872,11 @@ const int fboBorder = 20;
     [self setMaskOnBack:[aDecoder decodeBoolForKey:@"maskOnBack"]];
     [self setAutoFill:[aDecoder decodeBoolForKey:@"autoFill"]];
     [self setVisible:[aDecoder decodeBoolForKey:@"visible"]];
+    [self setLoop:[aDecoder decodeBoolForKey:@"loop"]];
+    [self setChapterFrom:[aDecoder decodeIntForKey:@"chapterFrom"]];
+    [self setChapterTo:[aDecoder decodeIntForKey:@"chapterTo"]];
+    [self setObjId:[aDecoder decodeIntForKey:@"objId"]];
+    [self setStackMode:[aDecoder decodeIntForKey:@"stackMode"]];
     
     [self setBlendmodeAdd:[aDecoder decodeBoolForKey:@"blendmodeAdd"]];
     
@@ -799,7 +904,13 @@ const int fboBorder = 20;
     [aCoder encodeFloat:opacity forKey:@"opacity"];
     [aCoder encodeBool:maskOnBack forKey:@"maskOnBack"];
     [aCoder encodeBool:autoFill forKey:@"autoFill"];   
-    [aCoder encodeBool:visible forKey:@"visible"];   
+    [aCoder encodeBool:visible forKey:@"visible"]; 
+    [aCoder encodeBool:loop forKey:@"loop"]; 
+    [aCoder encodeInt:objId forKey:@"objId"]; 
+    [aCoder encodeInt:stackMode forKey:@"stackMode"]; 
+    
+    [aCoder encodeInt:chapterFrom forKey:@"chapterFrom"]; 
+    [aCoder encodeInt:chapterTo forKey:@"chapterTo"]; 
     
     [aCoder encodeBool:blendmodeAdd forKey:@"blendmodeAdd"];   
     
@@ -862,5 +973,31 @@ const int fboBorder = 20;
     return isImageFile;
 }
 
+
+-(void)setPlay:(BOOL)_play{
+    play = _play;
+    if(play){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(videoAsset){
+                if(chapterFrom != 0 && [videoAsset chapterCount] >= chapterFrom){
+                    [videoAsset setCurrentTime:[videoAsset startTimeOfChapter:chapterFrom]];
+                } else {
+                    [videoAsset setCurrentTime:QTMakeTime(0, 0)];
+                    
+                }
+                [videoAsset setRate:1.0];
+                
+            }
+        });
+    }      
+    if(!play){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(videoAsset){
+                [videoAsset setRate:0.0];
+            }
+        });
+    }
+    
+}
 
 @end

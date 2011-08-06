@@ -11,8 +11,8 @@
     KinectInstance * kinect;
     KeystoneSurface * surface;
     
-    ofxCvGrayscaleImage * grayOutputImage;
-    ofxCvGrayscaleImage * grayOutputImageTemp;
+    ofxCvGrayscaleImage * grayOutputImage, * grayOutputImageFront;
+    ofxCvGrayscaleImage * grayOutputImageTemp, * grayOutputImageFrontTemp;
     ofxCvGrayscaleImage * grayOutputImageTemp2;
 }
 

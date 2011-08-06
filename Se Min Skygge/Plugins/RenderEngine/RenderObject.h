@@ -53,7 +53,16 @@ enum RenderObjectType {
     BOOL autoFill;
     BOOL blendmodeAdd;
     BOOL visible;
+    BOOL play;
+    BOOL loop;
+
+    int chapterFrom;
+    int chapterTo;
+    int objId;
     
+    int stackMode;
+    
+    int sendMidiChapter;
     ofxFBOTexture * borderFbo;
 //    ofxFBOTexture * tempFbo;
     ofxFBOTexture * fbo;
@@ -70,6 +79,7 @@ enum RenderObjectType {
     BOOL ciImageOutdated;
     BOOL ciFilterOutdated;
     BOOL ciFBOOutdated;
+    
     
     float depthBlurAmount;
     
@@ -97,14 +107,22 @@ enum RenderObjectType {
 @property (readwrite) BOOL autoFill;
 @property (readonly) BOOL isLeaf;
 @property (readwrite) BOOL visible;
+@property (readwrite) BOOL play;
+@property (readwrite) BOOL loop;
+
+@property (readwrite) int chapterFrom;
+@property (readwrite) int chapterTo;
+@property (readwrite) int objId;
+@property (readwrite) int stackMode;
+
 
 @property (readwrite) BOOL blendmodeAdd;
 
 -(void) loadAsset;
 
--(void) drawTexture:(GLuint)tex size:(NSSize)size;
+-(void) drawTexture:(GLuint)tex size:(NSRect)size;
 
--(void) drawWithAlpha:(float)alpha;
+-(void) drawWithAlpha:(float)alpha  front:(BOOL)front;
 -(void) drawControlsWithColor:(NSColor*)color;
 -(void) drawMaskWithAlpha:(float)alpha;
 
