@@ -3,7 +3,7 @@
 
 #include <sys/sysctl.h> 
 
-#define V @"1.81 - HTTP"
+#define V @"1.82 - HTTP"
 
 #define LIGHT1 [NSNumber numberWithInt:1]
 #define LIGHT2 [NSNumber numberWithInt:2]
@@ -66,7 +66,7 @@ VideoPlayer * globalVideoPlayer;
 		NSDictionary* errorDict;
 		NSAppleEventDescriptor* returnDescriptor = NULL;
         
-		NSAppleScript*  scriptObject= [[NSAppleScript alloc] initWithSource:
+		/*NSAppleScript*  scriptObject= [[NSAppleScript alloc] initWithSource:
 									   [NSString stringWithFormat:
 										@"tell application \"sluk\" to run"] 
 									   ];					
@@ -77,7 +77,7 @@ VideoPlayer * globalVideoPlayer;
 					   [NSString stringWithFormat:
 						@"tell application \"Finder\" to shut down"] 
 					   ];					
-		returnDescriptor = [scriptObject executeAndReturnError: &errorDict];		
+		returnDescriptor = [scriptObject executeAndReturnError: &errorDict];		*/
 	}
 	
 }

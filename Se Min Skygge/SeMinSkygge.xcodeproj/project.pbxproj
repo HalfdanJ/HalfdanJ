@@ -2012,12 +2012,13 @@
 					ppc,
 					i386,
 				);
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CONFIGURATION_BUILD_DIR = "$(SRCROOT)/bin/";
 				COPY_PHASE_STRIP = YES;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_OPENMP_SUPPORT = NO;
 				GCC_AUTO_VECTORIZATION = YES;
-				GCC_ENABLE_OBJC_GC = required;
+				GCC_ENABLE_OBJC_GC = NO;
 				GCC_ENABLE_SSE3_EXTENSIONS = YES;
 				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
@@ -2049,7 +2050,7 @@
 				OTHER_LDFLAGS = "";
 				OpenframeworksPath = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT\"";
 				PRODUCT_NAME = "";
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.7.sdk";
 			};
 			name = ReleaseUniversal;
 		};
@@ -2137,12 +2138,13 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CONFIGURATION_BUILD_DIR = "$(SRCROOT)/bin/";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_OPENMP_SUPPORT = NO;
 				GCC_AUTO_VECTORIZATION = YES;
-				GCC_ENABLE_OBJC_GC = required;
+				GCC_ENABLE_OBJC_GC = NO;
 				GCC_ENABLE_SSE3_EXTENSIONS = YES;
 				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
@@ -2173,7 +2175,7 @@
 				OTHER_LDFLAGS = "";
 				OpenframeworksPath = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT\"";
 				PRODUCT_NAME = "";
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.7.sdk";
 			};
 			name = Debug;
 		};
@@ -2181,12 +2183,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CONFIGURATION_BUILD_DIR = "$(SRCROOT)/bin/";
 				COPY_PHASE_STRIP = YES;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_OPENMP_SUPPORT = NO;
 				GCC_AUTO_VECTORIZATION = YES;
-				GCC_ENABLE_OBJC_GC = required;
+				GCC_ENABLE_OBJC_GC = NO;
 				GCC_ENABLE_SSE3_EXTENSIONS = YES;
 				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
@@ -2218,7 +2221,7 @@
 				OTHER_LDFLAGS = "";
 				OpenframeworksPath = "\"$(DEVELOPER_DIR)/Development/Library/of_preRelease_v0062_osxSL_FAT\"";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.7.sdk";
 			};
 			name = Release;
 		};
