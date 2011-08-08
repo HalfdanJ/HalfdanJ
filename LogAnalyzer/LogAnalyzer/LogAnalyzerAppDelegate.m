@@ -22,7 +22,7 @@
     for(int i=1;i<4;i++){
         [array addObject:[NSMutableArray array]];
         
-        DDFileReader * reader = [[DDFileReader alloc] initWithFilePath:[NSString stringWithFormat:@"/Users/jonas/Dropbox/Kronborg/Globus/GlobusFælles/_globus%ilog.backup.log",i]];
+        DDFileReader * reader = [[DDFileReader alloc] initWithFilePath:[NSString stringWithFormat:@"/Users/jonas/Dropbox/Kronborg/Globus/GlobusFælles/globus%ilog.log",i]];
         
         
         NSString * line = nil;
@@ -94,8 +94,10 @@
                     
                     dict = [NSMutableDictionary dictionary];
                     NSString * d = [date descriptionWithCalendarFormat:@"%m/%d/%Y" timeZone:nil locale:nil];
+                    if(date != nil){
                     [dict setObject:d forKey:@"dateDesc"];
-                    [dict setObject:date forKey:@"date"];
+                        [dict setObject:date forKey:@"date"];
+                    }
                     
                     
                     for(int j=0;j<12;j++)
