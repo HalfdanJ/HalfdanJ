@@ -61,7 +61,7 @@ const int fboBorder = 20;
 
 @implementation RenderObject
 @synthesize engine, name, subObjects, parent, assetString, assetInfo;
-@synthesize posX, posY, posZ, scale,rotationZ,depthBlurAmount, opacity, maskOnBack, autoFill, blendmodeAdd, visible, play, chapterTo, chapterFrom, objId, loop, stackMode;
+@synthesize posX, posY, posZ, scale,rotationZ,depthBlurAmount, opacity, maskOnBack, autoFill, blendmodeAdd, visible, play, chapterTo, chapterFrom, objId, loop, stackMode, depth;
 - (id)init
 {
     self = [super init];
@@ -211,20 +211,39 @@ const int fboBorder = 20;
                     break;
                 case 2: //Front + back + alpha
                 
-                    if(front)
-                        [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])]; 
-                    else{
-//                        glBlendFunc(GL_SRC_COLOR, GL_ONE);
+                    if(front){
                         glBlendFuncSeparate(GL_ZERO,GL_SRC_COLOR, GL_SRC_COLOR,GL_ZERO);        
+                    
+                        [self drawTexture:assetTexture size:NSMakeRect(0,2*[self pixelsHigh],[self pixelsWide], [self pixelsHigh])];
+                        glBlendFuncSeparate(GL_DST_ALPHA,GL_DST_COLOR, GL_SRC_ALPHA,GL_DST_ALPHA);        
+
+                        [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])]; 
+                    }else{
+//                        glBlendFunc(GL_SRC_COLOR, GL_ONE);
+                        glBlendFuncSeparate(GL_ZERO, GL_ONE, GL_SRC_COLOR,GL_ZERO);        
 
                         [self drawTexture:assetTexture size:NSMakeRect(0,2*[self pixelsHigh],[self pixelsWide], [self pixelsHigh])];
 
-                        glBlendFuncSeparate(GL_DST_ALPHA,GL_DST_COLOR, GL_SRC_ALPHA,GL_DST_ALPHA);        
+                        glBlendFuncSeparate(GL_ONE,GL_ONE, GL_DST_ALPHA, GL_ZERO);        
 
                         [self drawTexture:assetTexture size:NSMakeRect(0,[self pixelsHigh],[self pixelsWide], [self pixelsHigh])]; 
+                        ofEnableAlphaBlending();
                     }
                     break;
 
+                case 3: //Front + back + frontalpha
+                    
+                    if(front){
+                        glBlendFuncSeparate(GL_ZERO,GL_SRC_COLOR, GL_SRC_COLOR,GL_ZERO);        
+                        
+                        [self drawTexture:assetTexture size:NSMakeRect(0,2*[self pixelsHigh],[self pixelsWide], [self pixelsHigh])];
+                        glBlendFuncSeparate(GL_DST_ALPHA,GL_DST_COLOR, GL_SRC_ALPHA,GL_DST_ALPHA);        
+                    
+                        [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])]; 
+                    } else {
+                        [self drawTexture:assetTexture size:NSMakeRect(0,[self pixelsHigh],[self pixelsWide], [self pixelsHigh])]; 
+                    }
+                    break;
                 default:
                     break;
             }
@@ -239,16 +258,42 @@ const int fboBorder = 20;
 
 
 -(void) drawMaskWithAlpha:(float)alpha{
-    glColor4f(0,0,0,alpha*opacity);   
-    //  glScaled([self aspect]*0.5,1,1);
-    
+    ofEnableAlphaBlending();
+    glColor4f(255,255,255,(float)alpha*[self opacity]);   
     glPushMatrix();{
         [self transform];        
-        [self drawObject];
+        glScaled([self aspect],1,1);
         
+        if(stackMode > 0){
+            switch (stackMode) {
+                case 1: //Front + back
+                    break;
+                case 2: //Front + back + alpha
+                        glBlendFuncSeparate(GL_ZERO,GL_SRC_COLOR, GL_SRC_COLOR,GL_ZERO);        
+                        
+                        [self drawTexture:assetTexture size:NSMakeRect(0,2*[self pixelsHigh],[self pixelsWide], [self pixelsHigh])];
+/*                        glBlendFuncSeparate(GL_DST_ALPHA,GL_DST_COLOR, GL_SRC_ALPHA,GL_DST_ALPHA);        
+                        
+                        [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])]; */
+
+                    break;
+                    
+                case 3: //Front + back + frontalpha
+                    
+                        glBlendFuncSeparate(GL_ZERO,GL_SRC_COLOR, GL_SRC_COLOR,GL_ZERO);        
+                        
+                        [self drawTexture:assetTexture size:NSMakeRect(0,2*[self pixelsHigh],[self pixelsWide], [self pixelsHigh])];
+                     /*   glBlendFuncSeparate(GL_DST_ALPHA,GL_DST_COLOR, GL_SRC_ALPHA,GL_DST_ALPHA);        
+                        
+                        [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])]; */
+                    break;
+                default:
+                    break;
+            }
+        }    
         
     }glPopMatrix();
-}
+ }
 
 //------------------------------------------------------------------------------------------------------------------------
 
@@ -487,7 +532,7 @@ const int fboBorder = 20;
         GLuint texture = 0;
         
         if(objectType == VIDEO){
-            if(play && [videoAsset currentTime].timeValue >= [videoAsset duration].timeValue-0.1*[videoAsset duration].timeScale){
+            if(play && [videoAsset currentTime].timeValue >= [videoAsset duration].timeValue-0.05*[videoAsset duration].timeScale){
                 //Videoen er nået til ende
                 if(!loop){
                     play = NO;
@@ -535,7 +580,7 @@ const int fboBorder = 20;
             });
             
             
-            QTVisualContextTask(qtContext);
+           QTVisualContextTask(qtContext);
             const CVTimeStamp * outputTime;
             [[drawingInformation objectForKey:@"outputTime"] getValue:&outputTime];	
             if (qtContext != NULL && QTVisualContextIsNewImageAvailable(qtContext, outputTime)) {
@@ -761,7 +806,7 @@ const int fboBorder = 20;
     if(stackMode == 1){
         ret /= 2;
     }
-    if(stackMode == 2){
+    if(stackMode >= 2){
         ret /= 3;
     }
 
@@ -785,6 +830,9 @@ const int fboBorder = 20;
     if(parent)
         return [self posZ] + [parent absolutePosZ];
     return [self posZ];                
+}
+-(float) absolutePosZBack{
+    return [self absolutePosZ] - depth;                
 }
 
 -(BOOL) absoluteVisible{
@@ -866,6 +914,7 @@ const int fboBorder = 20;
     [self setPosX:[aDecoder decodeFloatForKey:@"posX"]];
     [self setPosY:[aDecoder decodeFloatForKey:@"posY"]];
     [self setPosZ:[aDecoder decodeFloatForKey:@"posZ"]];    
+    [self setDepth:[aDecoder decodeFloatForKey:@"depth"]];    
     [self setScale:[aDecoder decodeFloatForKey:@"scale"]];
     [self setRotationZ:[aDecoder decodeFloatForKey:@"rotationZ"]];
     [self setOpacity:[aDecoder decodeFloatForKey:@"opacity"]];
@@ -899,6 +948,7 @@ const int fboBorder = 20;
     [aCoder encodeFloat:posX forKey:@"posX"];
     [aCoder encodeFloat:posY forKey:@"posY"];
     [aCoder encodeFloat:posZ forKey:@"posZ"];
+    [aCoder encodeFloat:depth forKey:@"depth"];
     [aCoder encodeFloat:scale forKey:@"scale"];
     [aCoder encodeFloat:rotationZ forKey:@"rotationZ"];
     [aCoder encodeFloat:opacity forKey:@"opacity"];

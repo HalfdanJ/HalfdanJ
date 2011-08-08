@@ -41,6 +41,9 @@
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:127] named:@"objChapterStop"];
     
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"objOpacity"];
+    [self addProperty:[BoolProperty boolPropertyWithDefaultvalue:NO] named:@"resetAll"];
+    
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"switchProjector"];
 
     
     [Prop(@"objX") setMidiSmoothing:0.90];
@@ -139,7 +142,26 @@
                 break;
             }
         }
+        
+        [Prop(@"objX") clearSmoothing];
+        [Prop(@"objY") clearSmoothing];
+        [Prop(@"objZ") clearSmoothing];
+        [Prop(@"objOpacity") clearSmoothing];
+        
     }
+    if(object == Prop(@"resetAll") && [object boolValue]){   
+        [object setBoolValue:NO];
+        NSArray * a = [self allObjects];
+        for(RenderObject * obj in a){
+            if([obj objId] != 0){
+                [obj setVisible:NO];
+                [obj setPlay:NO];
+                [obj setChapterFrom:0];
+                [obj setChapterTo:127];
+            }
+        }
+    }
+    
     if(selectedObject != nil){
         if(object == Prop(@"objX")){            
             [selectedObject setPosX:[object floatValue]];
@@ -350,13 +372,14 @@
     glPushMatrix();
     
     //Back
+    NSArray * allObjectsBack = [self allObjectsOrderedByDepthBack];       
     NSArray * allObjects = [self allObjectsOrderedByDepth];       
     
     [GetPlugin(Keystoner)  applySurface:@"Screen" projectorNumber:1 viewNumber:ViewNumber];
     glPushMatrix();
     [self placeCamera];
     
-    for(RenderObject * obj in allObjects){
+    for(RenderObject * obj in allObjectsBack){
         glPushMatrix();
         if([obj absoluteVisible]){
             if([obj blendmodeAdd]){
@@ -372,6 +395,22 @@
             }
         }
         glPopMatrix();
+        
+        //Draw any front mask now
+        for(RenderObject * frontObj in allObjects){
+            //All the objects closer the obj
+            if(frontObj != obj && [frontObj stackMode] == 3 && [frontObj absolutePosZ] > [obj absolutePosZBack]){
+                glPushMatrix();
+                if([frontObj absoluteVisible]){
+                    if([frontObj frontAlpha] > 0){
+                        [frontObj drawMaskWithAlpha:[frontObj frontAlpha]];
+                    }
+
+                }
+                glPopMatrix();
+            }
+        }
+        
     }
     glPopMatrix();
     ofDisableAlphaBlending();
@@ -429,7 +468,7 @@
 
 
 -(void) setupFboOpengl{
- 
+    
 }
 
 
@@ -437,7 +476,7 @@
 
 
 -(void) renderFbo{        
-  }
+}
 
 //------------------------------------------------------------------------------------------------------------------------
 
@@ -483,6 +522,14 @@
 - (NSArray*) allObjectsOrderedByDepth{
     NSArray * allObjects = [self allObjects];
     NSSortDescriptor * descriptor =[[[NSSortDescriptor alloc] initWithKey:@"absolutePosZ" ascending:YES] autorelease];
+    
+    NSArray * descriptors = [NSArray arrayWithObjects:descriptor, nil];
+    return [allObjects sortedArrayUsingDescriptors:descriptors];
+}
+
+- (NSArray*) allObjectsOrderedByDepthBack{
+    NSArray * allObjects = [self allObjects];
+    NSSortDescriptor * descriptor =[[[NSSortDescriptor alloc] initWithKey:@"absolutePosZBack" ascending:YES] autorelease];
     
     NSArray * descriptors = [NSArray arrayWithObjects:descriptor, nil];
     return [allObjects sortedArrayUsingDescriptors:descriptors];

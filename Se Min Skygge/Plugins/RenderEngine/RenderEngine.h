@@ -65,6 +65,7 @@ enum UpdateFlags {
 
 - (NSArray*) allObjects;
 - (NSArray*) allObjectsOrderedByDepth;
+- (NSArray*) allObjectsOrderedByDepthBack;
 - (NSArray*) rootObjectsOrdredByDepth;
 
 - (RenderObject*) selectedObject;

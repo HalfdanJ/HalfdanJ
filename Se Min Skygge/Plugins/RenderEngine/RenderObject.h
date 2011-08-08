@@ -44,6 +44,7 @@ enum RenderObjectType {
     float posX;
     float posY;
     float posZ;
+    float depth;
     
     float scale;
     float rotationZ;
@@ -99,6 +100,7 @@ enum RenderObjectType {
 @property (readwrite) float posX;
 @property (readwrite) float posY;
 @property (readwrite) float posZ;
+@property (readwrite) float depth;
 @property (readwrite) float scale;
 @property (readwrite) float rotationZ;
 @property (readwrite) float depthBlurAmount;
@@ -140,6 +142,7 @@ enum RenderObjectType {
 -(int) pixelsHigh;
 
 -(float) absolutePosZ;
+-(float) absolutePosZBack;
 -(BOOL) absoluteVisible;
 
 -(void) addSubObject:(RenderObject*)obj;
