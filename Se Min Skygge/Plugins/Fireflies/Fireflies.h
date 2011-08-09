@@ -9,6 +9,7 @@
 @interface Fireflies : ofPlugin{
     KinectInstance * kinect;
     KeystoneSurface * surface;
+    ofImage * img;
 
     vector<Firefly> fireflies;
     
@@ -17,6 +18,16 @@
     ofxPerlin *noise;
     
     int frameNum;
+    
+    float gravityForce;
+    float perlinForce;
+    float perlinGridsize;
+    float perlinSpeed;
+    float opacitySpeed;
+    float opacityNoise;
+    float wortexForce;
+    float damping;
+
 }
 
 @end

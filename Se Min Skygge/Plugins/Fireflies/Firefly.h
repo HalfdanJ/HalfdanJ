@@ -17,6 +17,18 @@ public:
     ofxVec3f v;
     
     ofxPerlin *noise;
+    ofImage * img;
 
+    float opacity;
     
+    int i;
+    
+    float * gravityForce;
+    float * perlinForce;
+    float * perlinGridsize;
+    float * perlinSpeed;
+    float * opacitySpeed;
+    float * opacityNoise;
+    float * wortexForce;
+    float * damping;
 };
