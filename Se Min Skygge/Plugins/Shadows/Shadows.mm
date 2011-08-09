@@ -53,15 +53,16 @@
     grayOutputImageTemp->set(255);
     
     
+    lightImage = new ofxCvColorImage();
+    lightImage->allocate(1024,768);
+
     NSString * file = [NSString stringWithFormat:@"%@/LightSources/Light1.jpg",[GetPlugin(RenderEngine) assetDir]];
     ofImage img;
     img.setUseTexture(false);
-    img.loadImage([file cStringUsingEncoding:NSUTF8StringEncoding]);
-    
-    lightImage = new ofxCvColorImage();
-    lightImage->allocate(1024,768);
+    if(img.loadImage([file cStringUsingEncoding:NSUTF8StringEncoding])){
     lightImage->setFromPixels(img.getPixels(),1024, 768);
     lightImage->updateTexture();
+    }
     
     file = [NSString stringWithFormat:@"%@/LightSources/LightFlash.jpg",[GetPlugin(RenderEngine) assetDir]];
     lightFlashImage = new ofImage();
