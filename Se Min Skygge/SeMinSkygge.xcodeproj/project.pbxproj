@@ -8,10 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		581F9D1D13856DF90091B02B /* ObjectTreeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 581F9D1C13856DF90091B02B /* ObjectTreeViewController.mm */; };
+		5836E3D913F1548800725221 /* Fireflies.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5836E3D813F1548800725221 /* Fireflies.mm */; };
+		5836E3DC13F1556000725221 /* Firefly.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5836E3DA13F1556000725221 /* Firefly.cpp */; };
 		5876F144139FB36D0051C56E /* Shadows.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5876F143139FB36D0051C56E /* Shadows.mm */; };
 		5876F146139FB3770051C56E /* Shadows.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5876F145139FB3770051C56E /* Shadows.xib */; };
 		58A40E321387065000EC0A6A /* BeamSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A40E311387065000EC0A6A /* BeamSync.m */; };
 		58B5597713A12A5400B4FB6C /* QTKitMovieRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B5597513A12A5400B4FB6C /* QTKitMovieRenderer.m */; };
+		58BC462C13F15A8500C7D760 /* ofxPerlin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58BC462613F15A8500C7D760 /* ofxPerlin.cpp */; };
+		58BC462D13F15A8500C7D760 /* ofxSimplex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58BC462813F15A8500C7D760 /* ofxSimplex.cpp */; };
 		58C4B83313AA5985007265DA /* InteractiveWall.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58C4B83213AA5985007265DA /* InteractiveWall.xib */; };
 		58C4B83613AA5997007265DA /* InteractiveWall.mm in Sources */ = {isa = PBXBuildFile; fileRef = 58C4B83513AA5997007265DA /* InteractiveWall.mm */; };
 		58D23F771386BD66002E994A /* README in Resources */ = {isa = PBXBuildFile; fileRef = 58D23F141386BD65002E994A /* README */; };
@@ -196,6 +200,10 @@
 /* Begin PBXFileReference section */
 		581F9D1B13856DF90091B02B /* ObjectTreeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectTreeViewController.h; sourceTree = "<group>"; };
 		581F9D1C13856DF90091B02B /* ObjectTreeViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ObjectTreeViewController.mm; sourceTree = "<group>"; };
+		5836E3D713F1548800725221 /* Fireflies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fireflies.h; sourceTree = "<group>"; };
+		5836E3D813F1548800725221 /* Fireflies.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Fireflies.mm; sourceTree = "<group>"; };
+		5836E3DA13F1556000725221 /* Firefly.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Firefly.cpp; sourceTree = "<group>"; };
+		5836E3DB13F1556000725221 /* Firefly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Firefly.h; sourceTree = "<group>"; };
 		5876F142139FB36D0051C56E /* Shadows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shadows.h; sourceTree = "<group>"; };
 		5876F143139FB36D0051C56E /* Shadows.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Shadows.mm; sourceTree = "<group>"; };
 		5876F145139FB3770051C56E /* Shadows.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Shadows.xib; sourceTree = "<group>"; };
@@ -203,6 +211,13 @@
 		58A40E311387065000EC0A6A /* BeamSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeamSync.m; sourceTree = "<group>"; };
 		58B5597413A12A5400B4FB6C /* QTKitMovieRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTKitMovieRenderer.h; sourceTree = "<group>"; };
 		58B5597513A12A5400B4FB6C /* QTKitMovieRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QTKitMovieRenderer.m; sourceTree = "<group>"; };
+		58BC462513F15A8500C7D760 /* ofxNoise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxNoise.h; sourceTree = "<group>"; };
+		58BC462613F15A8500C7D760 /* ofxPerlin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxPerlin.cpp; sourceTree = "<group>"; };
+		58BC462713F15A8500C7D760 /* ofxPerlin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxPerlin.h; sourceTree = "<group>"; };
+		58BC462813F15A8500C7D760 /* ofxSimplex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSimplex.cpp; sourceTree = "<group>"; };
+		58BC462913F15A8500C7D760 /* ofxSimplex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSimplex.h; sourceTree = "<group>"; };
+		58BC462A13F15A8500C7D760 /* ofxSimplexTables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSimplexTables.h; sourceTree = "<group>"; };
+		58BC462B13F15A8500C7D760 /* ofxSinCosLUT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSinCosLUT.h; sourceTree = "<group>"; };
 		58C4B83213AA5985007265DA /* InteractiveWall.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InteractiveWall.xib; sourceTree = "<group>"; };
 		58C4B83413AA5997007265DA /* InteractiveWall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractiveWall.h; sourceTree = "<group>"; };
 		58C4B83513AA5997007265DA /* InteractiveWall.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = InteractiveWall.mm; sourceTree = "<group>"; };
@@ -615,6 +630,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5836E3D613F1548800725221 /* Fireflies */ = {
+			isa = PBXGroup;
+			children = (
+				58BC462413F15A8500C7D760 /* src */,
+				5836E3D713F1548800725221 /* Fireflies.h */,
+				5836E3D813F1548800725221 /* Fireflies.mm */,
+				5836E3DB13F1556000725221 /* Firefly.h */,
+				5836E3DA13F1556000725221 /* Firefly.cpp */,
+			);
+			path = Fireflies;
+			sourceTree = "<group>";
+		};
 		5876F141139FB3290051C56E /* Shadows */ = {
 			isa = PBXGroup;
 			children = (
@@ -632,6 +659,20 @@
 				58B5597513A12A5400B4FB6C /* QTKitMovieRenderer.m */,
 			);
 			path = ofxQTKitMoviePlayer;
+			sourceTree = "<group>";
+		};
+		58BC462413F15A8500C7D760 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				58BC462513F15A8500C7D760 /* ofxNoise.h */,
+				58BC462613F15A8500C7D760 /* ofxPerlin.cpp */,
+				58BC462713F15A8500C7D760 /* ofxPerlin.h */,
+				58BC462813F15A8500C7D760 /* ofxSimplex.cpp */,
+				58BC462913F15A8500C7D760 /* ofxSimplex.h */,
+				58BC462A13F15A8500C7D760 /* ofxSimplexTables.h */,
+				58BC462B13F15A8500C7D760 /* ofxSinCosLUT.h */,
+			);
+			path = src;
 			sourceTree = "<group>";
 		};
 		58C4B83113AA597B007265DA /* InteractiveWall */ = {
@@ -1724,6 +1765,7 @@
 		DDC8EA5D113809B100574926 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				5836E3D613F1548800725221 /* Fireflies */,
 				DDC3B80813AE3BD600F605A7 /* ShadowFog */,
 				58C4B83113AA597B007265DA /* InteractiveWall */,
 				5876F141139FB3290051C56E /* Shadows */,
@@ -1999,6 +2041,10 @@
 				DD624C9F13AE24A8004EAB00 /* ofxQtVideoSaver.cpp in Sources */,
 				DDC3B80613AE3A8C00F605A7 /* VideoPlayer.mm in Sources */,
 				DDC3B80B13AE3BF800F605A7 /* ShadowFog.mm in Sources */,
+				5836E3D913F1548800725221 /* Fireflies.mm in Sources */,
+				5836E3DC13F1556000725221 /* Firefly.cpp in Sources */,
+				58BC462C13F15A8500C7D760 /* ofxPerlin.cpp in Sources */,
+				58BC462D13F15A8500C7D760 /* ofxSimplex.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

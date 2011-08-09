@@ -219,7 +219,6 @@ const int fboBorder = 20;
 
                         [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])]; 
                     }else{
-//                        glBlendFunc(GL_SRC_COLOR, GL_ONE);
                         glBlendFuncSeparate(GL_ZERO, GL_SRC_COLOR,GL_SRC_COLOR,GL_ZERO);  //Draw black in the mask      
 
                         [self drawTexture:assetTexture size:NSMakeRect(0,2*[self pixelsHigh],[self pixelsWide], [self pixelsHigh])];
