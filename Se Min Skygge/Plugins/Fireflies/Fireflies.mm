@@ -106,7 +106,7 @@
         //[GetPlugin(Keystoner)  applySurface:@"Screen" projectorNumber:1 viewNumber:ViewNumber];
         
         glPushMatrix();
-        glTranslated(0.5, 0.5, 0.0);
+        glTranslated(Aspect(@"Screen",0)*0.5, 0.5, 0.0);
         for(int i=0;i<fireflies.size();i++){
             fireflies[i].draw(1-appliedProjector);
         }

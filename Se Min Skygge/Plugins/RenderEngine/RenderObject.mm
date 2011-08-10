@@ -215,7 +215,7 @@ const int fboBorder = 20;
                         glBlendFuncSeparate(GL_ZERO,GL_SRC_COLOR, GL_SRC_COLOR,GL_ZERO);        
                     
                         [self drawTexture:assetTexture size:NSMakeRect(0,2*[self pixelsHigh],[self pixelsWide], [self pixelsHigh])];
-                        glBlendFuncSeparate(GL_ONE,GL_DST_ALPHA, GL_ONE,GL_ZERO);        
+                        glBlendFuncSeparate(GL_SRC_ALPHA,GL_DST_ALPHA, GL_ONE,GL_ZERO);        
 
                         [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])]; 
                     }else{
@@ -223,7 +223,7 @@ const int fboBorder = 20;
 
                         [self drawTexture:assetTexture size:NSMakeRect(0,2*[self pixelsHigh],[self pixelsWide], [self pixelsHigh])];
 
-                        glBlendFuncSeparate(GL_ONE,GL_DST_ALPHA, GL_ONE, GL_ZERO);        
+                        glBlendFuncSeparate(GL_SRC_ALPHA,GL_DST_ALPHA, GL_ONE, GL_ZERO);        
 
                         [self drawTexture:assetTexture size:NSMakeRect(0,[self pixelsHigh],[self pixelsWide], [self pixelsHigh])]; 
                         ofEnableAlphaBlending();

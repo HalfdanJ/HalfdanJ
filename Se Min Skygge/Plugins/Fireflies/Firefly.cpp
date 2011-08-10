@@ -42,7 +42,7 @@ void Firefly::update(float step, int frameNum){
 
 void Firefly::draw(bool front){
     float aa = pos.z*5;
-    if(front){
+    if(!front){
         aa = -pos.z*5;
     }
     aa = ofClamp(aa, 0, 1);
