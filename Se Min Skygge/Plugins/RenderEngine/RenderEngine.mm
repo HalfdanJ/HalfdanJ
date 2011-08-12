@@ -110,7 +110,7 @@
     colorCorrectShader = new ofxShader();
     NSString *fragpath = [[NSBundle mainBundle] pathForResource:@"colorCorrectShader" ofType:@"frag"];
     NSString *vertpath = [[NSBundle mainBundle] pathForResource:@"colorCorrectShader" ofType:@"vert"];
-    colorCorrectShader->loadShader([fragpath cStringUsingEncoding:NSUTF8StringEncoding],[vertpath cStringUsingEncoding:NSUTF8StringEncoding]); 
+   // colorCorrectShader->setup([fragpath cStringUsingEncoding:NSUTF8StringEncoding],[vertpath cStringUsingEncoding:NSUTF8StringEncoding]); 
     
     
     camCoord = ofxVec3f(0,0,-5);

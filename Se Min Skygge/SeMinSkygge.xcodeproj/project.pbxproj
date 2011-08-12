@@ -13,6 +13,7 @@
 		5876F144139FB36D0051C56E /* Shadows.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5876F143139FB36D0051C56E /* Shadows.mm */; };
 		5876F146139FB3770051C56E /* Shadows.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5876F145139FB3770051C56E /* Shadows.xib */; };
 		58A40E321387065000EC0A6A /* BeamSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A40E311387065000EC0A6A /* BeamSync.m */; };
+		58A48C1413F57623007C409D /* ofxShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58A48C1213F57623007C409D /* ofxShader.cpp */; };
 		58B5597713A12A5400B4FB6C /* QTKitMovieRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B5597513A12A5400B4FB6C /* QTKitMovieRenderer.m */; };
 		58BC462C13F15A8500C7D760 /* ofxPerlin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58BC462613F15A8500C7D760 /* ofxPerlin.cpp */; };
 		58BC462D13F15A8500C7D760 /* ofxSimplex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58BC462813F15A8500C7D760 /* ofxSimplex.cpp */; };
@@ -68,7 +69,6 @@
 		DD947747135F6B2D0027F1CC /* RenderEngine.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD947745135F6B2D0027F1CC /* RenderEngine.xib */; };
 		DD9ABFAD1341E1F20059D4EC /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD9ABFAC1341E1F20059D4EC /* ScriptingBridge.framework */; };
 		DDAD0A71136D6595006562A3 /* ofxFBOTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDAD0A6D136D6595006562A3 /* ofxFBOTexture.cpp */; };
-		DDAD0A72136D6595006562A3 /* ofxShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDAD0A6F136D6595006562A3 /* ofxShader.cpp */; };
 		DDB3CDC4135DA71C0097B98E /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CDBA135DA71C0097B98E /* AGL.framework */; };
 		DDB3CDC5135DA71C0097B98E /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CDBB135DA71C0097B98E /* ApplicationServices.framework */; };
 		DDB3CDC6135DA71C0097B98E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CDBC135DA71C0097B98E /* AudioToolbox.framework */; };
@@ -209,6 +209,8 @@
 		5876F145139FB3770051C56E /* Shadows.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Shadows.xib; sourceTree = "<group>"; };
 		58A40E301387065000EC0A6A /* BeamSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeamSync.h; sourceTree = "<group>"; };
 		58A40E311387065000EC0A6A /* BeamSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeamSync.m; sourceTree = "<group>"; };
+		58A48C1213F57623007C409D /* ofxShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxShader.cpp; sourceTree = "<group>"; };
+		58A48C1313F57623007C409D /* ofxShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxShader.h; sourceTree = "<group>"; };
 		58B5597413A12A5400B4FB6C /* QTKitMovieRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTKitMovieRenderer.h; sourceTree = "<group>"; };
 		58B5597513A12A5400B4FB6C /* QTKitMovieRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QTKitMovieRenderer.m; sourceTree = "<group>"; };
 		58BC462513F15A8500C7D760 /* ofxNoise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxNoise.h; sourceTree = "<group>"; };
@@ -394,8 +396,6 @@
 		DD9ABFAC1341E1F20059D4EC /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		DDAD0A6D136D6595006562A3 /* ofxFBOTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxFBOTexture.cpp; sourceTree = "<group>"; };
 		DDAD0A6E136D6595006562A3 /* ofxFBOTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxFBOTexture.h; sourceTree = "<group>"; };
-		DDAD0A6F136D6595006562A3 /* ofxShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxShader.cpp; sourceTree = "<group>"; };
-		DDAD0A70136D6595006562A3 /* ofxShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxShader.h; sourceTree = "<group>"; };
 		DDAD0A75136DC0D9006562A3 /* simpleBlurHorizontal.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = simpleBlurHorizontal.frag; sourceTree = "<group>"; };
 		DDAD0A76136DC0D9006562A3 /* simpleBlurHorizontal.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = simpleBlurHorizontal.vert; sourceTree = "<group>"; };
 		DDAD0A77136DC0D9006562A3 /* simpleBlurVertical.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = simpleBlurVertical.frag; sourceTree = "<group>"; };
@@ -1102,10 +1102,10 @@
 		DDAD0A73136D6599006562A3 /* ofxShader */ = {
 			isa = PBXGroup;
 			children = (
+				58A48C1213F57623007C409D /* ofxShader.cpp */,
+				58A48C1313F57623007C409D /* ofxShader.h */,
 				DDAD0A6D136D6595006562A3 /* ofxFBOTexture.cpp */,
 				DDAD0A6E136D6595006562A3 /* ofxFBOTexture.h */,
-				DDAD0A6F136D6595006562A3 /* ofxShader.cpp */,
-				DDAD0A70136D6595006562A3 /* ofxShader.h */,
 			);
 			name = ofxShader;
 			sourceTree = "<group>";
@@ -2016,7 +2016,6 @@
 				DD947746135F6B2D0027F1CC /* RenderEngine.mm in Sources */,
 				DD42F5FE1366BC9E0022FD52 /* RenderObject.mm in Sources */,
 				DDAD0A71136D6595006562A3 /* ofxFBOTexture.cpp in Sources */,
-				DDAD0A72136D6595006562A3 /* ofxShader.cpp in Sources */,
 				58EA46C71384611300CCB078 /* colorCorrectShader.frag in Sources */,
 				58EA46C81384611300CCB078 /* colorCorrectShader.vert in Sources */,
 				581F9D1D13856DF90091B02B /* ObjectTreeViewController.mm in Sources */,
@@ -2045,6 +2044,7 @@
 				5836E3DC13F1556000725221 /* Firefly.cpp in Sources */,
 				58BC462C13F15A8500C7D760 /* ofxPerlin.cpp in Sources */,
 				58BC462D13F15A8500C7D760 /* ofxSimplex.cpp in Sources */,
+				58A48C1413F57623007C409D /* ofxShader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

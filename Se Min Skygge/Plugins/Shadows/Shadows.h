@@ -3,6 +3,8 @@
 #include "Plugin.h"
 #import "Kinect.h"
 #import "Keystoner.h"
+#include "ofxShader.h"
+#include "ofxFBOTexture.h"
 
 #define BUFFER_SIZE 500
 
@@ -25,6 +27,11 @@
 
     int bufferIndex;
     int bufferFill;
+    
+    ofxShader * shader;
+    ofxFBOTexture * fbo1;
+    ofImage * rampImg;
+    
 }
 
 -(int) getCurrentBufferIndex;
