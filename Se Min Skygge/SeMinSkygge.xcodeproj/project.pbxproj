@@ -67,6 +67,7 @@
 		DD7B158811A3CFDE000D9775 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7B158711A3CFDE000D9775 /* CoreMIDI.framework */; };
 		DD947746135F6B2D0027F1CC /* RenderEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = DD947744135F6B2D0027F1CC /* RenderEngine.mm */; };
 		DD947747135F6B2D0027F1CC /* RenderEngine.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD947745135F6B2D0027F1CC /* RenderEngine.xib */; };
+		DD9ABEE813F85A8600E9254F /* shaderBlur.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD9ABEE613F85A8600E9254F /* shaderBlur.cpp */; };
 		DD9ABFAD1341E1F20059D4EC /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD9ABFAC1341E1F20059D4EC /* ScriptingBridge.framework */; };
 		DDAD0A71136D6595006562A3 /* ofxFBOTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DDAD0A6D136D6595006562A3 /* ofxFBOTexture.cpp */; };
 		DDB3CDC4135DA71C0097B98E /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB3CDBA135DA71C0097B98E /* AGL.framework */; };
@@ -393,6 +394,8 @@
 		DD947743135F6B2D0027F1CC /* RenderEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderEngine.h; sourceTree = "<group>"; };
 		DD947744135F6B2D0027F1CC /* RenderEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RenderEngine.mm; sourceTree = "<group>"; };
 		DD947745135F6B2D0027F1CC /* RenderEngine.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RenderEngine.xib; sourceTree = "<group>"; };
+		DD9ABEE613F85A8600E9254F /* shaderBlur.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shaderBlur.cpp; sourceTree = "<group>"; };
+		DD9ABEE713F85A8600E9254F /* shaderBlur.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shaderBlur.h; sourceTree = "<group>"; };
 		DD9ABFAC1341E1F20059D4EC /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		DDAD0A6D136D6595006562A3 /* ofxFBOTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxFBOTexture.cpp; sourceTree = "<group>"; };
 		DDAD0A6E136D6595006562A3 /* ofxFBOTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxFBOTexture.h; sourceTree = "<group>"; };
@@ -1102,6 +1105,8 @@
 		DDAD0A73136D6599006562A3 /* ofxShader */ = {
 			isa = PBXGroup;
 			children = (
+				DD9ABEE613F85A8600E9254F /* shaderBlur.cpp */,
+				DD9ABEE713F85A8600E9254F /* shaderBlur.h */,
 				58A48C1213F57623007C409D /* ofxShader.cpp */,
 				58A48C1313F57623007C409D /* ofxShader.h */,
 				DDAD0A6D136D6595006562A3 /* ofxFBOTexture.cpp */,
@@ -2045,6 +2050,7 @@
 				58BC462C13F15A8500C7D760 /* ofxPerlin.cpp in Sources */,
 				58BC462D13F15A8500C7D760 /* ofxSimplex.cpp in Sources */,
 				58A48C1413F57623007C409D /* ofxShader.cpp in Sources */,
+				DD9ABEE813F85A8600E9254F /* shaderBlur.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

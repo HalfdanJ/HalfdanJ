@@ -5,6 +5,7 @@
 #import "Keystoner.h"
 #include "ofxShader.h"
 #include "ofxFBOTexture.h"
+#include "shaderBlur.h"
 
 #define BUFFER_SIZE 500
 
@@ -27,9 +28,12 @@
 
     int bufferIndex;
     int bufferFill;
+    bool pingpong;
     
     ofxShader * shader;
-    ofxFBOTexture * fbo1;
+    ofxFBOTexture * motionblurFbo[2];
+    shaderBlur * blur;
+    shaderBlur * blurHist;
     ofImage * rampImg;
     
 }

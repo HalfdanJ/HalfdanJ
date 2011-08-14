@@ -22,12 +22,17 @@
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.0 minValue:0.0 maxValue:1] named:@"currentIndex"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:-1 maxValue:1] named:@"playbackSpeed"];
     
-    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"motionBlur"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:10] named:@"motionBlur"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:10] named:@"motionBlurPasses"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"frontAlpha"];
     
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"flash"];
     
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"frontFakeShadow"];
+    
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:1 maxValue:10] named:@"blurPass"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:10] named:@"blurAm"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"motionBlurFade"];
     
     
     [self addProperty:[BoolProperty boolPropertyWithDefaultvalue:0.0] named:@"useOpenCV"];
@@ -82,10 +87,18 @@
     [Prop(@"reloadShaders") setBoolValue:1];
     [Prop(@"reloadImages") setBoolValue:1];
     
-    fbo1 = new ofxFBOTexture();
-    fbo1->allocate(1024,768);
-
-
+    motionblurFbo[0] = new ofxFBOTexture();
+    motionblurFbo[0]->allocate(1024,768);
+    motionblurFbo[0]->clear(0,0,0,1);
+    motionblurFbo[1] = new ofxFBOTexture();
+    motionblurFbo[1]->allocate(1024,768);
+    motionblurFbo[1]->clear(0,0,0,1);
+    
+    blur = new shaderBlur();
+    blur->setup(400,300);
+    
+    blurHist = new shaderBlur();
+    blurHist->setup(400,300);
     
 }
 
@@ -228,106 +241,170 @@
 
 -(void)draw:(NSDictionary *)drawingInformation{
     
-    ofxPoint3f corners[4];
-    for(int i=0;i<4;i++){
-        corners[i] = [kinect surfaceCorner:i];
-    }
+    //Blur input
+    blur->setBlurParams(PropI(@"blurPass"), PropF(@"blurAm"));
+    blur->beginRender();{
+        glPushMatrix();
+        
+        ofSetColor(0, 0,0);
+        ofRect(0,0,1,1);
+        
+        ofSetColor(0, 255, 255);
+        ofRect(0.3+sin(ofGetElapsedTimeMillis()/1000.0)*0.3 ,0.1,0.4,0.8);        
+        
+        
+        glPopMatrix();
+    }  blur->endRender();
+    ofEnableAlphaBlending();
     
-    fbo1->clear(255,0,0,255);
-    fbo1->swapIn();
-    
-    ofTexture * tex = [kinect getIRGenerator]->getTexture();
-    ofSetColor(255,255,255);
-    
-    if(PropB(@"useShaders")){
-        shader->begin();
-    }
+    //Blur history
+    blurHist->setBlurParams(PropI(@"motionBlurPasses"), PropF(@"motionBlur"));
+    blurHist->beginRender();{
+        motionblurFbo[pingpong]->draw(0,0,1,1);
+    }  blurHist->endRender();
+    ofEnableAlphaBlending();
     
     
-    shader->setTexture("texRamp", rampImg->getTextureReference() , 1);
-    shader->setTexture("texBG", ([tracker grayBg]->getTextureReference()) , 2);
+    //Motion blur
+    pingpong = !pingpong;
     
+    motionblurFbo[pingpong]->clear(0,0,0,1);
+    motionblurFbo[pingpong]->swapIn();{
+        motionblurFbo[pingpong]->setupScreenForThem();
+        
+        //ofDisableAlphaBlending();
+        
+        ofSetColor(255,255,255,255);
+        //motionblurFbo[!pingpong]->draw(0,0,1,1);
+        blurHist->draw(0,0,1,1,false);
+        
+        glBlendFunc(GL_ZERO, GL_SRC_COLOR);
+        ofSetColor(255.0*(1-PropF(@"motionBlurFade")), 255.0*(1-PropF(@"motionBlurFade")), 255.0*(1-PropF(@"motionBlurFade")));
+        ofRect(0,0, 1, 1);
+        
+        glEnable(GL_BLEND);
+        ofEnableAlphaBlending();
+        glBlendFunc(GL_ONE, GL_ONE);
+        ofSetColor(255, 255, 255,255);
+        //        blur->draw(0.0,0,1,1,true);
+        // ofRect(0.1, 0.1, 0.8, 0.8);
+        blur->draw(0,0,1,1,false);
+        
+    }motionblurFbo[pingpong]->swapOut();    
+    ofEnableAlphaBlending();
+    motionblurFbo[pingpong]->setupScreenForMe();
     
-    tex->bind();
-    glBegin(GL_QUADS);
-    glTexCoord2f(corners[0].x, corners[0].y);   glVertex2d(0, 0);
-    glTexCoord2f(corners[1].x, corners[1].y);   glVertex2d(Aspect(@"Screen",1), 0);
-    glTexCoord2f(corners[2].x, corners[2].y);   glVertex2d(Aspect(@"Screen",1), 1);
-    glTexCoord2f(corners[3].x, corners[3].y);   glVertex2d(0, 1);
-  /*  glTexCoord2f(corners[0].x, corners[0].y);   glVertex2d(0, 0);
-    glTexCoord2f(corners[1].x, corners[1].y);   glVertex2d(1024, 0);
-    glTexCoord2f(corners[2].x, corners[2].y);   glVertex2d(1024, 768);
-    glTexCoord2f(corners[3].x, corners[3].y);   glVertex2d(0, 768);*/
-    glEnd();
-    tex->unbind();
-    if(PropB(@"useShaders")){
-        shader->end();
-    }
-    
-    fbo1->swapOut();
-
     
     
     
     ApplySurface(@"Screen");{
-        if([[GetPlugin(Kinect) enabled] boolValue] && [kinect kinectConnected]){
-            ofEnableAlphaBlending();
-            
-
-            float scaleX = (1024.0/640);
-            float scaleY = (768.0/480);
-            
-            if(appliedProjector == 0){
-                ofSetColor(255,255,255,PropF(@"frontAlpha")*255.0*powf(1- PropF(@"back"),1.0/2.2));                
-            } else {
-                ofSetColor(255,255,255,255.0*powf(PropF(@"back"),1.0/2.2));                
-            }
-            
-            
-            if(PropB(@"useOpenCV")){
-                
-                
-                ofxCvImage * img;
-                img = output;
-                
-                img->getTextureReference().bind();
-                glBegin(GL_QUADS);
-                glTexCoord2f(corners[0].x*scaleX, corners[0].y*scaleY);   glVertex2d(0, 0);
-                glTexCoord2f(corners[1].x*scaleX, corners[1].y*scaleY);   glVertex2d(Aspect(@"Screen",1), 0);
-                glTexCoord2f(corners[2].x*scaleX, corners[2].y*scaleY);   glVertex2d(Aspect(@"Screen",1), 1);
-                glTexCoord2f(corners[3].x*scaleX, corners[3].y*scaleY);   glVertex2d(0, 1);
-                glEnd();
-                img->getTextureReference().unbind();
-                
-                if(appliedProjector == 0){
-                    img = lightImage;
-                    float a = PropF(@"frontAlpha")*255.0*powf(1- PropF(@"back"),1.0/2.2);              
-                    ofSetColor(a,a,a, 255.0*(1-PropF(@"frontFakeShadow")));                
-                    
-                    
-                    img->getTextureReference().bind();
-                    glBegin(GL_QUADS);
-                    glTexCoord2f(corners[0].x*scaleX, corners[0].y*scaleY);   glVertex2d(0, 0);
-                    glTexCoord2f(corners[1].x*scaleX, corners[1].y*scaleY);   glVertex2d(Aspect(@"Screen",1), 0);
-                    glTexCoord2f(corners[2].x*scaleX, corners[2].y*scaleY);   glVertex2d(Aspect(@"Screen",1), 1);
-                    glTexCoord2f(corners[3].x*scaleX, corners[3].y*scaleY);   glVertex2d(0, 1);
-                    glEnd();
-                    img->getTextureReference().unbind();
-                }
-                
-            } else {       
-                                
-                fbo1->draw(0,0,1,1);
-            }
-            
-            ofSetColor(255,255,255,255.0*PropF(@"flash"));
-            lightFlashImage->draw(0,0,Aspect(@"Screen",1),1);
-            
-            ofSetColor(255,255,255,255.0);
-
-            
-        }
-    }PopSurface();
+        ofFill();
+        ofSetColor(255, 255, 255);
+        ofRect(0,0,1,1);
+        motionblurFbo[pingpong]->draw(0,0,1,1);
+    } PopSurface();
+    
+    /* 
+     ofxPoint3f corners[4];
+     for(int i=0;i<4;i++){
+     corners[i] = [kinect surfaceCorner:i];
+     }
+     
+     fbo1->clear(255,0,0,255);
+     fbo1->swapIn();
+     
+     ofTexture * tex = [kinect getIRGenerator]->getTexture();
+     ofSetColor(255,255,255);
+     
+     if(PropB(@"useShaders")){
+     shader->begin();
+     }
+     
+     
+     shader->setTexture("texRamp", rampImg->getTextureReference() , 1);
+     shader->setTexture("texBG", ([tracker grayBg]->getTextureReference()) , 2);
+     
+     
+     tex->bind();
+     glBegin(GL_QUADS);
+     glTexCoord2f(corners[0].x, corners[0].y);   glVertex2d(0, 0);
+     glTexCoord2f(corners[1].x, corners[1].y);   glVertex2d(Aspect(@"Screen",1), 0);
+     glTexCoord2f(corners[2].x, corners[2].y);   glVertex2d(Aspect(@"Screen",1), 1);
+     glTexCoord2f(corners[3].x, corners[3].y);   glVertex2d(0, 1);
+     //    glTexCoord2f(corners[0].x, corners[0].y);   glVertex2d(0, 0);
+     //    glTexCoord2f(corners[1].x, corners[1].y);   glVertex2d(1024, 0);
+     //    glTexCoord2f(corners[2].x, corners[2].y);   glVertex2d(1024, 768);
+     //    glTexCoord2f(corners[3].x, corners[3].y);   glVertex2d(0, 768);
+     glEnd();
+     tex->unbind();
+     if(PropB(@"useShaders")){
+     shader->end();
+     }
+     
+     fbo1->swapOut();
+     
+     
+     
+     
+     ApplySurface(@"Screen");{
+     if([[GetPlugin(Kinect) enabled] boolValue] && [kinect kinectConnected]){
+     ofEnableAlphaBlending();
+     
+     
+     float scaleX = (1024.0/640);
+     float scaleY = (768.0/480);
+     
+     if(appliedProjector == 0){
+     ofSetColor(255,255,255,PropF(@"frontAlpha")*255.0*powf(1- PropF(@"back"),1.0/2.2));                
+     } else {
+     ofSetColor(255,255,255,255.0*powf(PropF(@"back"),1.0/2.2));                
+     }
+     
+     
+     if(PropB(@"useOpenCV")){
+     
+     
+     ofxCvImage * img;
+     img = output;
+     
+     img->getTextureReference().bind();
+     glBegin(GL_QUADS);
+     glTexCoord2f(corners[0].x*scaleX, corners[0].y*scaleY);   glVertex2d(0, 0);
+     glTexCoord2f(corners[1].x*scaleX, corners[1].y*scaleY);   glVertex2d(Aspect(@"Screen",1), 0);
+     glTexCoord2f(corners[2].x*scaleX, corners[2].y*scaleY);   glVertex2d(Aspect(@"Screen",1), 1);
+     glTexCoord2f(corners[3].x*scaleX, corners[3].y*scaleY);   glVertex2d(0, 1);
+     glEnd();
+     img->getTextureReference().unbind();
+     
+     if(appliedProjector == 0){
+     img = lightImage;
+     float a = PropF(@"frontAlpha")*255.0*powf(1- PropF(@"back"),1.0/2.2);              
+     ofSetColor(a,a,a, 255.0*(1-PropF(@"frontFakeShadow")));                
+     
+     
+     img->getTextureReference().bind();
+     glBegin(GL_QUADS);
+     glTexCoord2f(corners[0].x*scaleX, corners[0].y*scaleY);   glVertex2d(0, 0);
+     glTexCoord2f(corners[1].x*scaleX, corners[1].y*scaleY);   glVertex2d(Aspect(@"Screen",1), 0);
+     glTexCoord2f(corners[2].x*scaleX, corners[2].y*scaleY);   glVertex2d(Aspect(@"Screen",1), 1);
+     glTexCoord2f(corners[3].x*scaleX, corners[3].y*scaleY);   glVertex2d(0, 1);
+     glEnd();
+     img->getTextureReference().unbind();
+     }
+     
+     } else {       
+     
+     fbo1->draw(0,0,1,1);
+     }
+     
+     ofSetColor(255,255,255,255.0*PropF(@"flash"));
+     lightFlashImage->draw(0,0,Aspect(@"Screen",1),1);
+     
+     ofSetColor(255,255,255,255.0);
+     
+     
+     }
+     }PopSurface();*/
 }
 
 

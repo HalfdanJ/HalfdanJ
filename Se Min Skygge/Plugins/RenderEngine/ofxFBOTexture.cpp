@@ -253,77 +253,38 @@ void ofxFBOTexture::allocate(int w, int h, int internalGlDataType, int numSample
 
 void ofxFBOTexture::setupScreenForMe(){
 	
-	int w = texData.width;
-	int h = texData.height;
-	
-	float halfFov, theTan, aspect;
-	
-	float eyeX              = (float)w / 2.0;
-	float eyeY              = (float)h / 2.0;
-	halfFov                 = PI * screenFov / 360.0;
-	theTan                  = tanf(halfFov);
-	float dist              = eyeY / theTan;
-	float nearDist  = dist / 10.0;  // near / far clip plane
-	float farDist   = dist * 10.0;
-	aspect                  = (float)w/(float)h;
-	
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	gluPerspective(screenFov, aspect, nearDist, farDist);
-	
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
-	gluLookAt(eyeX, eyeY, dist, eyeX, eyeY, 0.0, 0.0, 1.0, 0.0);
-	
-	
-	glScalef(1, -1, 1);           // invert Y axis so increasing Y goes down.
-	glTranslatef(0, -h, 0);       // shift origin up to upper-left corner.
-	
-    glViewport(0,0,texData.width, texData.height);
+	glViewport(0,0,ofGetWidth(),ofGetHeight());    
+    ofSetupScreen();
+    glScaled(ofGetWidth(), ofGetHeight(), 1);    
 	
 }
 
 void ofxFBOTexture::setupScreenForThem(){
-	//      glPopAttrib();
-	//      return;
-	
-    int w, h;
-	
-	w = ofGetWidth();
-	h = ofGetHeight();
-	
-	float halfFov, theTan, aspect;
-	
-//	float eyeX              = (float)w / 2.0;
-//	float eyeY              = (float)h / 2.0;
-	halfFov                 = PI * screenFov / 360.0;
-	theTan                  = tanf(halfFov);
-//	float dist              = eyeY / theTan;
-//	float nearDist			= dist / 10.0;  // near / far clip plane
-//	float farDist			= dist * 10.0;
-	aspect                  = (float)w/(float)h;
-	
-	
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
-	/*
-     glLoadIdentity();
-     gluPerspective(screenFov, aspect, nearDist, farDist);
-     
-     glMatrixMode(GL_MODELVIEW);
-     glLoadIdentity();
-     gluLookAt(eyeX, eyeY, dist, eyeX, eyeY, 0.0, 0.0, 1.0, 0.0);
-     
-     
-     glScalef(1, -1, 1);           // invert Y axis so increasing Y goes down.
-     glTranslatef(0, -h, 0);       // shift origin up to upper-left corner.
-     */
-	
-    glViewport(0,0,w, h);
+    int w = texData.width ;
+    int h = texData.height;	
+    
+    glViewport(0, 0, w, h);    
+    float halfFov, theTan, screenFov, as;
+    screenFov 		= 60;    
+    float eyeX 		= (float)w / 2.0;
+    float eyeY 		= (float)h / 2.0;
+    halfFov 		= PI * screenFov / 360.0;
+    theTan 			= tanf(halfFov);
+    float dist 		= eyeY / theTan;
+    float nearDist 	= dist / 10.0;	// near / far clip plane
+    float farDist 	= dist * 10.0;
+    as 			= (float)w/(float)h;    
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(screenFov, as, nearDist, farDist);
+    
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(eyeX, eyeY, dist, eyeX, eyeY, 0.0, 0.0, 1.0, 0.0);
+    
+    glScalef(1, -1, 2);           // invert Y axis so increasing Y goes down.		    
+    glTranslatef(0, -h, 0);       // shift origin up to upper-left corner.    
+    glScaled(w,h,1);    
 }
 
 void ofxFBOTexture::swapIn() {
