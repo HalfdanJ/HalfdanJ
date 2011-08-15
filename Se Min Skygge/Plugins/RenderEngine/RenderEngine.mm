@@ -88,7 +88,7 @@
 //------------------------------------------------------------------------------------------------------------------------
 
 -(void)setup{
-    midi = GetPlugin(Midi);
+    /*midi = GetPlugin(Midi);
     aspect = [[[GetPlugin(Keystoner) getSurface:@"Screen" viewNumber:0 projectorNumber:0] aspect] floatValue];
     
     
@@ -127,7 +127,7 @@
     
     //Midi bindings
     //[[[GetPlugin(Midi) midiData] objectAtIndex:[[self midiChannel] intValue]] addObserver:self forKeyPath:@"0" options:0 context:nil];
-    
+    */
     
 }
 
@@ -200,6 +200,7 @@
 //------------------------------------------------------------------------------------------------------------------------
 
 -(void)update:(NSDictionary *)drawingInformation{
+   /*
     if([autoPanCheckbox state]){
         [Prop(@"camPosX") setFloatValue:sin(CFAbsoluteTimeGetCurrent()/7.0*[autoPanSpeed floatValue])*0.5+0.5];
     }    
@@ -222,13 +223,14 @@
         cout<<"Update time: "<<ofGetElapsedTimeMillis()-timer<<endl;
     }
     timer= ofGetElapsedTimeMillis();
+    */
 }
 
 //------------------------------------------------------------------------------------------------------------------------
 
 
 -(void)controlDraw:(NSDictionary *)drawingInformation{
-    ofEnableAlphaBlending();
+   /* ofEnableAlphaBlending();
     ofBackground(0,0,0);
     glScaled(ofGetWidth(), ofGetHeight(), 1);
     ofSetColor(255,255,255,255);
@@ -305,7 +307,7 @@
         
     }glPopMatrix();
     
-    
+    */
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -338,37 +340,9 @@
 
 
 -(void)draw:(NSDictionary *)drawingInformation{
-    /*  [self renderFbo];
-     
-     
-     ofBackground(0,0,0);
-     glPushMatrix();
-     ofDisableAlphaBlending();
-     
-     colorCorrectShader->setShaderActive(YES);
-     colorCorrectShader->setUniformVariable1f((char*)"min", PropF(@"levelsMin") );
-     colorCorrectShader->setUniformVariable1f((char*)"max", PropF(@"levelsMax"));
-     
-     colorCorrectShader->setUniformVariable2f((char*)"start", 0.0, 0.0);
-     colorCorrectShader->setUniformVariable2f((char*)"middle",0.5, PropF(@"levelsMiddle"));    
-     colorCorrectShader->setUniformVariable2f((char*)"end", 1.0, 1.0);    
-     
-     [GetPlugin(Keystoner)  applySurface:@"Screen" projectorNumber:0 viewNumber:ViewNumber];
-     ofSetColor(255,255,255,255);
-     fboFront[pingpong]->draw(0,0,Aspect(@"Screen",0),1);
-     [GetPlugin(Keystoner)  popSurface];
-     
-     [GetPlugin(Keystoner)  applySurface:@"Screen" projectorNumber:1 viewNumber:ViewNumber];
-     ofSetColor(255,255,255,255);
-     fboBack[pingpong]->draw(0,0,Aspect(@"Screen",0),1);
-     [GetPlugin(Keystoner)  popSurface];    
-     glPopMatrix();   
-     colorCorrectShader->setShaderActive(NO);
-     
-     ofEnableAlphaBlending();
-     
-     */
-    
+
+   
+    /*
     glPushMatrix();
     
     //Back
@@ -490,7 +464,7 @@
     [GetPlugin(Keystoner)  popSurface];    
     
     glPopMatrix();
-    
+    */
     
     
 }

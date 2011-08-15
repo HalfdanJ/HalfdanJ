@@ -17,6 +17,8 @@ void shaderBlur::setup(int fboW, int fboH){
 	
 	fbo1.allocate(fboW, fboH);
 	fbo2.allocate(fboW, fboH);
+  //  fbo1.clear(0,0,0,1);
+  //  fbo2.clear(0,0,0,1);
 	
 	shaderH.setup("shaders/simpleBlurHorizontal");
 	shaderV.setup("shaders/simpleBlurVertical");
@@ -27,6 +29,7 @@ void shaderBlur::setup(int fboW, int fboH){
 
 //--------------------------------------------------------------
 void shaderBlur::beginRender(){
+    fbo1.clear(0,0,0,1);
 	fbo1.swapIn();
     fbo1.setupScreenForThem();
 	
@@ -44,7 +47,7 @@ void shaderBlur::endRender(){
 	if( 1 ){
         
 		for(int i = 0; i < noPasses; i++){
-			float blurPer =  blurDistance * ofMap(i, 0, noPasses, 1.0/noPasses, 1.0);
+			//float blurPer =  blurDistance * ofMap(i, 0, noPasses, 1.0/noPasses, 1.0);
 			
 			//first the horizontal shader 
 			shaderH.begin();

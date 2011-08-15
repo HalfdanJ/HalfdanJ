@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		581286A213F90C140066CACA /* curvesShader.frag in Sources */ = {isa = PBXBuildFile; fileRef = 581286A013F90C140066CACA /* curvesShader.frag */; };
+		581286A313F90C140066CACA /* curvesShader.vert in Sources */ = {isa = PBXBuildFile; fileRef = 581286A113F90C140066CACA /* curvesShader.vert */; };
 		581F9D1D13856DF90091B02B /* ObjectTreeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 581F9D1C13856DF90091B02B /* ObjectTreeViewController.mm */; };
 		5836E3D913F1548800725221 /* Fireflies.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5836E3D813F1548800725221 /* Fireflies.mm */; };
 		5836E3DC13F1556000725221 /* Firefly.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5836E3DA13F1556000725221 /* Firefly.cpp */; };
@@ -199,6 +201,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		581286A013F90C140066CACA /* curvesShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = curvesShader.frag; path = bin/data/curvesShader.frag; sourceTree = SOURCE_ROOT; };
+		581286A113F90C140066CACA /* curvesShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = curvesShader.vert; path = bin/data/curvesShader.vert; sourceTree = SOURCE_ROOT; };
 		581F9D1B13856DF90091B02B /* ObjectTreeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectTreeViewController.h; sourceTree = "<group>"; };
 		581F9D1C13856DF90091B02B /* ObjectTreeViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ObjectTreeViewController.mm; sourceTree = "<group>"; };
 		5836E3D713F1548800725221 /* Fireflies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fireflies.h; sourceTree = "<group>"; };
@@ -648,6 +652,8 @@
 		5876F141139FB3290051C56E /* Shadows */ = {
 			isa = PBXGroup;
 			children = (
+				581286A013F90C140066CACA /* curvesShader.frag */,
+				581286A113F90C140066CACA /* curvesShader.vert */,
 				5876F142139FB36D0051C56E /* Shadows.h */,
 				5876F143139FB36D0051C56E /* Shadows.mm */,
 				5876F145139FB3770051C56E /* Shadows.xib */,
@@ -2051,6 +2057,8 @@
 				58BC462D13F15A8500C7D760 /* ofxSimplex.cpp in Sources */,
 				58A48C1413F57623007C409D /* ofxShader.cpp in Sources */,
 				DD9ABEE813F85A8600E9254F /* shaderBlur.cpp in Sources */,
+				581286A213F90C140066CACA /* curvesShader.frag in Sources */,
+				581286A313F90C140066CACA /* curvesShader.vert in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

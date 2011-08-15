@@ -43,7 +43,7 @@ extern ofAppBaseWindow * window;
     [pluginManagerController addPlugin:[[Shadows alloc] init]];
     [pluginManagerController addPlugin:[[InteractiveWall alloc] init]];
     [pluginManagerController addPlugin:[[ShadowFog alloc] init]];
-    [pluginManagerController addPlugin:[[Fireflies alloc] init]];
+   // [pluginManagerController addPlugin:[[Fireflies alloc] init]];
 
 
 

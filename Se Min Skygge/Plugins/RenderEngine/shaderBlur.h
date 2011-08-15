@@ -20,7 +20,7 @@ class shaderBlur{
 		void endRender();
 		
 		void setBlurParams(int numPasses, float blurDist);
-		void draw(float x, float y, float w, float h, bool useShader);
+		void draw(float x, float y, float w, float h, bool useShader=false);
 				
 		ofxShader shaderH;
 		ofxShader shaderV;

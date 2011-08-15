@@ -24,17 +24,20 @@
         ofImage * lightFlashImage;
     ofxCvColorImage * output;;
     
+    ofxCvGrayscaleImage * bgCache;
 
 
     int bufferIndex;
     int bufferFill;
     bool pingpong;
     
-    ofxShader * shader;
+    ofxShader shader;
     ofxFBOTexture * motionblurFbo[2];
     shaderBlur * blur;
     shaderBlur * blurHist;
-    ofImage * rampImg;
+    ofImage rampImg;
+    
+    ofxFBOTexture * history[BUFFER_SIZE];
     
 }
 

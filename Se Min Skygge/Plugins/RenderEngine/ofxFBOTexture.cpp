@@ -392,12 +392,12 @@ void ofxFBOTexture::bindAsTexture(){
 
 void ofxFBOTexture::begin() {
 	swapIn();
-	setupScreenForMe();
+	setupScreenForThem();
 }
 
 void ofxFBOTexture::end() {
 	swapOut();
-	setupScreenForThem();
+	setupScreenForMe();
 }
 
 void *ofxFBOTexture::getPixels(GLuint x, GLuint y, GLsizei width, GLsizei height) {
