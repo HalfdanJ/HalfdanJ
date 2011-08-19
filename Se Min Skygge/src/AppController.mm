@@ -38,12 +38,12 @@ extern ofAppBaseWindow * window;
     
     [pluginManagerController addHeader:@"Plugins"];
 
- //   [pluginManagerController addPlugin:[[VideoPlayer alloc] init]];	
-   // [pluginManagerController addPlugin:[[RenderEngine alloc] init]];
+    [pluginManagerController addPlugin:[[VideoPlayer alloc] init]];	
+    [pluginManagerController addPlugin:[[RenderEngine alloc] init]];
     [pluginManagerController addPlugin:[[Shadows alloc] init]];
-  //  [pluginManagerController addPlugin:[[InteractiveWall alloc] init]];
+    [pluginManagerController addPlugin:[[InteractiveWall alloc] init]];
   //  [pluginManagerController addPlugin:[[ShadowFog alloc] init]];
-   // [pluginManagerController addPlugin:[[Fireflies alloc] init]];
+    [pluginManagerController addPlugin:[[Fireflies alloc] init]];
 
 
 
