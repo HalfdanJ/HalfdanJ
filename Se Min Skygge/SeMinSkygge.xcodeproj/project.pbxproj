@@ -41,6 +41,8 @@
 		58EA46C81384611300CCB078 /* colorCorrectShader.vert in Sources */ = {isa = PBXBuildFile; fileRef = 58EA46C61384611300CCB078 /* colorCorrectShader.vert */; };
 		58EA46C91384612400CCB078 /* colorCorrectShader.frag in Copy Files to Resources */ = {isa = PBXBuildFile; fileRef = 58EA46C51384611300CCB078 /* colorCorrectShader.frag */; };
 		58EA46CA1384612700CCB078 /* colorCorrectShader.vert in Copy Files to Resources */ = {isa = PBXBuildFile; fileRef = 58EA46C61384611300CCB078 /* colorCorrectShader.vert */; };
+		58F7490113FFEBE000DB3E7A /* Handshadows.mm in Sources */ = {isa = PBXBuildFile; fileRef = 58F748FF13FFEBE000DB3E7A /* Handshadows.mm */; };
+		58F7490313FFEEEF00DB3E7A /* Handshadows.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58F7490213FFEEEF00DB3E7A /* Handshadows.xib */; };
 		DD42F5FE1366BC9E0022FD52 /* RenderObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = DD42F5FD1366BC9E0022FD52 /* RenderObject.mm */; };
 		DD624C9A13AE24A8004EAB00 /* BlobClasses2d.mm in Sources */ = {isa = PBXBuildFile; fileRef = DD624C9113AE24A8004EAB00 /* BlobClasses2d.mm */; };
 		DD624C9B13AE24A8004EAB00 /* BlobTracker2d.mm in Sources */ = {isa = PBXBuildFile; fileRef = DD624C9313AE24A8004EAB00 /* BlobTracker2d.mm */; };
@@ -313,6 +315,10 @@
 		58DA915A139BE92D0006B665 /* KinectInstance.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = KinectInstance.mm; sourceTree = "<group>"; };
 		58EA46C51384611300CCB078 /* colorCorrectShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = colorCorrectShader.frag; sourceTree = "<group>"; };
 		58EA46C61384611300CCB078 /* colorCorrectShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = colorCorrectShader.vert; sourceTree = "<group>"; };
+		58F2B7641403C9DD00C1CAEE /* TextureGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureGrid.h; sourceTree = "<group>"; };
+		58F748FF13FFEBE000DB3E7A /* Handshadows.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Handshadows.mm; sourceTree = "<group>"; };
+		58F7490013FFEBE000DB3E7A /* Handshadows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Handshadows.h; sourceTree = "<group>"; };
+		58F7490213FFEEEF00DB3E7A /* Handshadows.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Handshadows.xib; sourceTree = "<group>"; };
 		DD42F5FC1366BC9E0022FD52 /* RenderObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderObject.h; sourceTree = "<group>"; };
 		DD42F5FD1366BC9E0022FD52 /* RenderObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RenderObject.mm; sourceTree = "<group>"; };
 		DD624C9013AE24A8004EAB00 /* BlobClasses2d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlobClasses2d.h; sourceTree = "<group>"; };
@@ -850,6 +856,7 @@
 				584501EB13FC44D900B6924C /* Shader */,
 				58B5597113A12A5400B4FB6C /* ofxQTKitMoviePlayer */,
 				58DA914B139BE6C30006B665 /* Filter.h */,
+				58F2B7641403C9DD00C1CAEE /* TextureGrid.h */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -863,6 +870,16 @@
 				58DA9157139BE8C00006B665 /* BlobTrackerInstance3d.mm */,
 			);
 			path = BlobTracker3d;
+			sourceTree = "<group>";
+		};
+		58F748FE13FFEB8000DB3E7A /* Handshadows */ = {
+			isa = PBXGroup;
+			children = (
+				58F748FF13FFEBE000DB3E7A /* Handshadows.mm */,
+				58F7490013FFEBE000DB3E7A /* Handshadows.h */,
+				58F7490213FFEEEF00DB3E7A /* Handshadows.xib */,
+			);
+			path = Handshadows;
 			sourceTree = "<group>";
 		};
 		DD624C8F13AE24A8004EAB00 /* BlobTracker2d */ = {
@@ -1776,6 +1793,7 @@
 		DDC8EA5D113809B100574926 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				58F748FE13FFEB8000DB3E7A /* Handshadows */,
 				5836E3D613F1548800725221 /* Fireflies */,
 				DDC3B80813AE3BD600F605A7 /* ShadowFog */,
 				58C4B83113AA597B007265DA /* InteractiveWall */,
@@ -1932,6 +1950,7 @@
 				DD624C9C13AE24A8004EAB00 /* BlobTracker2d.xib in Resources */,
 				DD624C9E13AE24A8004EAB00 /* BlobTrackerInstance2d.xib in Resources */,
 				DDC3B80713AE3A8C00F605A7 /* VideoPlayer.xib in Resources */,
+				58F7490313FFEEEF00DB3E7A /* Handshadows.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2059,6 +2078,7 @@
 				584501F213FC44D900B6924C /* ofxFBOTexture.cpp in Sources */,
 				584501F313FC44D900B6924C /* ofxShader.cpp in Sources */,
 				584501F413FC44D900B6924C /* shaderBlur.cpp in Sources */,
+				58F7490113FFEBE000DB3E7A /* Handshadows.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

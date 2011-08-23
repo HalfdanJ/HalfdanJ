@@ -10,6 +10,7 @@
 
 #import "Keystoner.h"
 #import "RenderEngine.h"
+#include "TextureGrid.h"
 
 @implementation Shadows
 
@@ -246,7 +247,7 @@
 }
 
 -(void)draw:(NSDictionary *)drawingInformation{
-    ofxPoint3f corners[4];
+    ofxPoint2f corners[4];
     for(int i=0;i<4;i++){
         corners[i] = [kinect surfaceCorner:i];
     }
@@ -278,14 +279,15 @@
                 shader.setUniform("inputGain",float(PropF(@"inputGain")*10.0));
             }
             
-            tex->bind();
-            glBegin(GL_QUADS);
-            glTexCoord2f(corners[0].x, corners[0].y);   glVertex2d(0, 0);
-            glTexCoord2f(corners[1].x, corners[1].y);   glVertex2d(1, 0);
-            glTexCoord2f(corners[2].x, corners[2].y);   glVertex2d(1, 1);
-            glTexCoord2f(corners[3].x, corners[3].y);   glVertex2d(0, 1);
-            glEnd();
-            tex->unbind();
+            ofxPoint2f poly[4];            
+            poly[0] = ofxPoint2f(0.0,0.0);
+            poly[1] = ofxPoint2f(1,0.0);
+            poly[2] = ofxPoint2f(1,1.0);
+            poly[3] = ofxPoint2f(0.0,1.0);      
+            
+            TextureGrid texGrid;
+            texGrid.drawTextureGrid(tex,  poly, corners, 10);
+     
             
             if(useShader){
                 shader.end();
@@ -404,7 +406,7 @@
                motionblurFbo[pingpong]->draw(0,0,Aspect(@"Screen",1),1);
                 
                 
-                int i = [self getCurrentBufferIndex];    
+               // int i = [self getCurrentBufferIndex];    
                 //cout<<"Draw "<<i<<endl;
                 //history[i]->draw(0,0,Aspect(@"Screen",1),1);
 
