@@ -1,6 +1,6 @@
 
 #import "Fireflies.h"
-
+#import "InteractiveWall.h"
 
 @implementation Fireflies
 
@@ -18,6 +18,10 @@
     
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0.0 maxValue:2] named:@"pushForce"];  
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0.0 maxValue:2] named:@"pushDist"];  
+    
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0.0 maxValue:2] named:@"wortexZone"];  
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0.0 maxValue:2] named:@"dampingZone"];  
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0.0 maxValue:1] named:@"trackingGravity"];  
 } 
 
 
@@ -113,7 +117,30 @@
         glPopMatrix();
         
         //    [GetPlugin(Keystoner)  popSurface];
+        
+        
+        if(PropB(@"drawDebug")){
+            ofSetColor(255,0,0);
+            InteractiveWall * wall = GetPlugin(InteractiveWall);
+            
+            vector<ofxPoint3f> p = [kinect getPointsInBoxXMin:0 xMax:Aspect(@"Screen",1) yMin:0 yMax:1 zMin:-1000 zMax:-[[[wall properties] valueForKey:@"screenDist"] floatValue] res:[[[wall properties] valueForKey:@"kinectRes"] floatValue] ];
+            
+            for(int i=0;i<p.size();i++){
+                
+                ofxPoint3f kinectP = [kinect convertWorldToKinect:[kinect convertSurfaceToWorld:p[i]]];        
+                ofxPoint2f warped = [kinect coordWarper]->transform(kinectP.x/640.0, kinectP.y/480.0);
+                
+                /*ofSetColor(255,0,0);
+                 ofRect(p[i].x,p[i].y,0.01,0.01);
+                 */
+                ofSetColor(0,255,0);
+                ofRect(warped.x*Aspect(@"Screen",1),warped.y,0.01,0.01);
+            }
+        }
+
     } PopSurface();
+    
+    
     
     
 }
