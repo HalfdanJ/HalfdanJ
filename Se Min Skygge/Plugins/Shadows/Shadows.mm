@@ -12,6 +12,7 @@
 #import "RenderEngine.h"
 
 @implementation Shadows
+@synthesize timeline;
 
 -(void)initPlugin{
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.0 minValue:0.0 maxValue:1.0] named:@"back"];
@@ -34,6 +35,8 @@
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:10] named:@"blurAm"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"motionBlurFade"];
     
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:10] named:@"timelineTime"];
+
     
     [self addProperty:[BoolProperty boolPropertyWithDefaultvalue:0.0] named:@"useOpenCV"];
     [self addProperty:[BoolProperty boolPropertyWithDefaultvalue:0.0] named:@"useShaders"];
@@ -45,9 +48,49 @@
     bufferFill = 0;
     
     [self assignMidiChannel:6]; 
+    
+    [self loadTimeline];
+
+    
+}
+
+-(void) loadTimeline{
+    NSString * path = [NSString stringWithCString:ofToDataPath("timeline.txt",true).c_str() encoding:NSUTF8StringEncoding];
+    [self setTimeline:[NSString stringWithContentsOfURL:[NSURL fileURLWithPath:path isDirectory:NO] encoding:NSUTF8StringEncoding error:nil]];
+
+    NSRange _start = [timeline rangeOfString:@"	Frame	seconds	"];
+    NSRange _stop = [timeline rangeOfString:@"End of Keyframe Data"];
+    
+    if(_start.location == NSNotFound || _stop.location == NSNotFound){
+        NSLog(@"\n\n\n=====================\n\nERROR: Timeline not correct! Start or stop not found\n\n\n");
+    }
+    
+    NSString * substring = [timeline substringWithRange:NSMakeRange(_start.location+_start.length, _stop.location-(_start.location+_start.length))];
+    [self setTimeline:substring];
+    
+    NSArray *listItems = [substring componentsSeparatedByString:@"	"];
+
+    int i=0;
+    for(NSString * str in listItems){
+        NSLog(@"%i %i %@",i,i%3,str);
+        if(i%3 == 1){
+            keyframe nKeyframe;
+            nKeyframe.time = [str intValue]/25.0;
+            keyframes.push_back(nKeyframe);
+        } else if(i%3 == 2){
+            keyframes[keyframes.size()-1].value = [str floatValue] - keyframes[keyframes.size()-1].time ;
+        }
+        i++;
+    }
+    
+    for(int i=0;i<keyframes.size();i++){
+        cout<<"keyframe "<<keyframes[i].time<<"-"<<keyframes[i].value<<endl;
+    }
+
 }
 
 -(void)setup{
+    
     tracker = [GetPlugin(BlobTracker2d) getInstance:0];
     kinect = [GetPlugin(Kinect) getInstance:0];
     surface = [GetPlugin(Keystoner) getSurface:@"Screen" viewNumber:0 projectorNumber:0];
@@ -159,6 +202,29 @@
     
 }
 
+-(float)valueForTime:(float)time{
+    keyframe l,r;
+    
+    l.time = -1;
+    r.time = -1;
+    
+    for(int i=0;i<keyframes.size();i++){
+        if(l.time == -1 || keyframes[i].time <= time)
+            l = keyframes[i];
+        if(r.time == -1 && keyframes[i].time >= time)
+            r = keyframes[i];
+    }
+    
+    if(l.time == -1 || r.time == -1){
+        cout<<"No timeline for time "<<time<<endl;
+        return 0;
+    } 
+    
+    float p = (time - l.time) / (r.time-l.time);
+    
+    return (1-p) * l.value + p*r.value;
+}
+
 -(void)controlDraw:(NSDictionary *)drawingInformation{
     if([[GetPlugin(Kinect) enabled] boolValue] && [kinect kinectConnected]){
         ofBackground(0, 0, 0);
@@ -221,7 +287,41 @@
             
             
         }glPopMatrix();
-        
+        }
+    
+        //Real timeline (!)
+        glPushMatrix();{
+            glTranslated(5, 180, 0);
+            
+            ofNoFill();
+            ofSetColor(150, 150, 150);
+            ofRect(0,0,310,70);
+            
+            if(keyframes.size() > 1){
+                glPushMatrix();
+                glTranslated(0,70,0);
+                
+                float d = keyframes[keyframes.size()-1].time - keyframes[0].time;
+                
+                glColor3d(0,0,255);
+                glBegin(GL_LINE_STRIP);
+                for(int i=0;i<keyframes.size();i++){
+                    glVertex2d(309.0 * keyframes[i].time/d, 70.0 * keyframes[i].value/10.0);
+                }
+                glEnd();
+
+                glPopMatrix();
+                
+                ofSetColor(0, 255, 0);
+                
+                float x = PropF(@"timelineTime")*309.0/d;
+                ofLine(x, 0, x, 70);
+                ofCircle(x, [self valueForTime:PropF(@"timelineTime")]*7.0+70, 4);
+                
+            }
+            
+                        
+        }glPopMatrix();
         
         
         /* PersistentBlob2d * pblob = [tracker getPBlob:0];
@@ -236,7 +336,7 @@
          }
          }*/
         
-    }
+   
 }
 
 -(void)draw:(NSDictionary *)drawingInformation{

@@ -9,6 +9,11 @@
 
 #define BUFFER_SIZE 500
 
+struct keyframe {
+    float time;
+    float value;
+};
+
 @interface Shadows : ofPlugin {
     BlobTrackerInstance2d * tracker;
     ofxCvGrayscaleImage * trackerImageRef;
@@ -36,7 +41,12 @@
     shaderBlur * blurHist;
     ofImage * rampImg;
     
+    NSString * timeline;
+    
+    vector<keyframe> keyframes;
 }
+@property (readwrite, assign) NSString * timeline;
 
 -(int) getCurrentBufferIndex;
+-(float) valueForTime:(float)time;
 @end
