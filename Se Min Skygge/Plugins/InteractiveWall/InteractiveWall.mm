@@ -96,6 +96,12 @@
     
     for(int i=0;i<bars.size();i++){
         bars[i].val = bars[i].filter.filter(PropF(@"topBars")*bars[i].goal*1000);
+        bars[i].val = bars[i].filter.filter(PropF(@"topBars")*bars[i].goal*1000);
+        bars2[i].val = bars2[i].filter.filter((1-PropF(@"bottomBars"))*1000 + PropF(@"bottomBars")*bars2[i].goal*1000);
+        bars2[i].val = bars2[i].filter.filter((1-PropF(@"bottomBars"))*1000 + PropF(@"bottomBars")*bars2[i].goal*1000);
+        bars[i].val = bars[i].filter.filter(PropF(@"topBars")*bars[i].goal*1000);
+        bars[i].val = bars[i].filter.filter(PropF(@"topBars")*bars[i].goal*1000);
+        bars2[i].val = bars2[i].filter.filter((1-PropF(@"bottomBars"))*1000 + PropF(@"bottomBars")*bars2[i].goal*1000);
         bars2[i].val = bars2[i].filter.filter((1-PropF(@"bottomBars"))*1000 + PropF(@"bottomBars")*bars2[i].goal*1000);
     }
     leftBar.val = leftBar.filter.filter(PropF(@"leftBars")*leftBar.goal*1000);

@@ -7,6 +7,7 @@
 #include "InteractiveWall.h"
 #include "ShadowFog.h"
 #include "Fireflies.h"
+#include "Handshadows.h"
 
 #include "Kinect.h"
 #include "BlobTracker2d.h"
