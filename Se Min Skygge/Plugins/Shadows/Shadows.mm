@@ -37,7 +37,7 @@
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:10] named:@"blurAm"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"motionBlurFade"];
     
-    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:10] named:@"timelineTime"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:400] named:@"timelineTime"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:10] named:@"inputGain"];
     
     [self addProperty:[BoolProperty boolPropertyWithDefaultvalue:NO] named:@"useOpenCV"];
@@ -164,8 +164,26 @@
     float timelineTime = PropF(@"timelineTime");
     float valueTime = [self valueForTime:timelineTime];
     if(timelineTime > 0 && valueTime != -1000){
-        float index = (-valueTime * ofGetFrameRate()) / BUFFER_SIZE;
-        [Prop(@"currentIndex") setFloatValue:1-index];
+        long long curTime = ofGetElapsedTimeMillis();
+        long long goalTime = curTime + valueTime * 1000.0;
+
+        for(int i=BUFFER_SIZE-1;i>=0;i--){
+            int j = (bufferIndex - BUFFER_SIZE) + i;
+            if(j < 0){
+                j += BUFFER_SIZE;
+            }
+         //144   cout<<j<<"   "<<historyTime[j]<<" < "<<goalTime<<endl;
+            if(historyTime[j] < goalTime){
+                [Prop(@"currentIndex") setFloatValue:(float)i/BUFFER_SIZE];
+                break;
+            }
+        }
+        /*
+        float index = (-valueTime * 30) / BUFFER_SIZE;
+        if(index >= 0){
+            [Prop(@"currentIndex") setFloatValue:1-index];
+            //cout<<index<<endl;
+        }*/
     }
     
     if(PropB(@"reloadShaders")){
@@ -255,7 +273,7 @@
 }
 
 -(void)controlDraw:(NSDictionary *)drawingInformation{
-    if([[GetPlugin(Kinect) enabled] boolValue] && [kinect kinectConnected]){
+    /*if([[GetPlugin(Kinect) enabled] boolValue] && [kinect kinectConnected]){
         ofBackground(0, 0, 0);
         ofEnableAlphaBlending();
         
@@ -316,7 +334,7 @@
             
             
         }glPopMatrix();
-    }
+    }*/
     
     //Real timeline (!)
     glPushMatrix();{
@@ -427,6 +445,8 @@
                 blur->draw(0,0,1,1);
             }history[bufferIndex]->swapOut();     
             history[bufferIndex]->setupScreenForMe();
+            
+            historyTime[bufferIndex] = ofGetElapsedTimeMillis();
         }
         glPopMatrix();
         

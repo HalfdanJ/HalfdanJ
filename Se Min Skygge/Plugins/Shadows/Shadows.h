@@ -43,6 +43,7 @@ struct keyframe {
     ofImage rampImg;
     
     ofxFBOTexture * history[BUFFER_SIZE];
+    long long historyTime[BUFFER_SIZE];
     
     NSString * timeline;
     
