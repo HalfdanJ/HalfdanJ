@@ -48,6 +48,8 @@ struct keyframe {
     NSString * timeline;
     
     vector<keyframe> keyframes;
+    
+    
 }
 @property (readwrite, assign) NSString * timeline;
 

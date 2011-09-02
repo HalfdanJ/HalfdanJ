@@ -35,8 +35,8 @@
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:-63/64.0 maxValue:64/64.0] named:@"objY"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:-63/6.0 maxValue:64/6.0] named:@"objZ"];
     
-    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"objPlay"];
-    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"objLoop"];
+    [self addProperty:[BoolProperty boolPropertyWithDefaultvalue:NO] named:@"objPlay"];
+    [self addProperty:[BoolProperty boolPropertyWithDefaultvalue:NO] named:@"objLoop"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:127] named:@"objChapterStart"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:127] named:@"objChapterStop"];
     
@@ -148,6 +148,16 @@
         [Prop(@"objZ") clearSmoothing];
         [Prop(@"objOpacity") clearSmoothing];
         
+        [Prop(@"objX") setFloatValue:[selectedObject posX]];
+        [Prop(@"objY") setFloatValue:[selectedObject posY]];
+        [Prop(@"objZ") setFloatValue:[selectedObject posZ]];
+        
+        [Prop(@"objOpacity") setFloatValue:([selectedObject opacity] * [selectedObject absoluteVisible])];
+        [Prop(@"objPlay") setBoolValue:[selectedObject play]];
+        [Prop(@"objLoop") setBoolValue:[selectedObject loop]];
+
+        [Prop(@"objChapterStart") setIntValue:[selectedObject chapterFrom]];
+        [Prop(@"objChapterStop") setIntValue:[selectedObject chapterTo]];
     }
     if(object == Prop(@"resetAll") && [object boolValue]){   
         [object setBoolValue:NO];

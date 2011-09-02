@@ -30,7 +30,10 @@
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"frontAlpha"];
     
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"flash"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"bg"];
+        [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"trackinOpacity"];
     
+
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"frontFakeShadow"];
     
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:1 maxValue:10] named:@"blurPass"];
@@ -525,15 +528,29 @@
                 [tracker grayBg]->getTextureReference().unbind();
                 
             } else {                
+                if(PropF(@"bg") > 0 && appliedProjector == 1){
+                    ofSetColor(255,255,255,PropF(@"bg")*255.0);
+                    ofRect(0,0,Aspect(@"Screen",1),1);
+                }
+                
                 if(appliedProjector == 0){
                     ofSetColor(255,255,255,PropF(@"frontAlpha")*255.0*powf(1- PropF(@"back"),1.0/2.2));                
                 } else {
                     ofSetColor(255,255,255,255.0*powf(PropF(@"back"),1.0/2.2));                
                 }
+                
+                glBlendFunc(GL_ZERO, GL_SRC_COLOR);     
                 lightImage->draw(0,0,Aspect(@"Screen",1),1);
                 //      ofRect(0,0,1,1);        
                 glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR);     
-                motionblurFbo[pingpong]->draw(0,0,Aspect(@"Screen",1),1);
+                
+                if(appliedProjector == 0){
+                } else {
+                    ofSetColor(PropF(@"trackinOpacity")*255.0,PropF(@"trackinOpacity")*255.0,PropF(@"trackinOpacity")*255.0,255.0*powf(PropF(@"back"),1.0/2.2));                
+                    motionblurFbo[pingpong]->draw(0,0,Aspect(@"Screen",1),1);
+                }
+
+                
                 
                 
                 // int i = [self getCurrentBufferIndex];    

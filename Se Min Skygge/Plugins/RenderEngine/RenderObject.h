@@ -81,6 +81,8 @@ enum RenderObjectType {
     BOOL ciFilterOutdated;
     BOOL ciFBOOutdated;
     
+    NSString * chapterOverview;
+    
     
     float depthBlurAmount;
     
@@ -117,6 +119,7 @@ enum RenderObjectType {
 @property (readwrite) int objId;
 @property (readwrite) int stackMode;
 
+@property (readwrite)  NSString * chapterOverview;
 
 @property (readwrite) BOOL blendmodeAdd;
 

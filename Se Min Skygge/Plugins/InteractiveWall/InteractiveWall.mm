@@ -6,7 +6,7 @@
 
 -(void)initPlugin{
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:10 minValue:1 maxValue:128] named:@"numBars"];
-    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.5 minValue:0 maxValue:1] named:@"speed"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:1 maxValue:10] named:@"speed"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"screenDist"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:49 minValue:0 maxValue:50] named:@"kinectRes"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:0.5] named:@"margin"];
@@ -93,16 +93,17 @@
     }
     
     
-    
-    for(int i=0;i<bars.size();i++){
-        bars[i].val = bars[i].filter.filter(PropF(@"topBars")*bars[i].goal*1000);
-        bars[i].val = bars[i].filter.filter(PropF(@"topBars")*bars[i].goal*1000);
-        bars2[i].val = bars2[i].filter.filter((1-PropF(@"bottomBars"))*1000 + PropF(@"bottomBars")*bars2[i].goal*1000);
-        bars2[i].val = bars2[i].filter.filter((1-PropF(@"bottomBars"))*1000 + PropF(@"bottomBars")*bars2[i].goal*1000);
-        bars[i].val = bars[i].filter.filter(PropF(@"topBars")*bars[i].goal*1000);
-        bars[i].val = bars[i].filter.filter(PropF(@"topBars")*bars[i].goal*1000);
-        bars2[i].val = bars2[i].filter.filter((1-PropF(@"bottomBars"))*1000 + PropF(@"bottomBars")*bars2[i].goal*1000);
-        bars2[i].val = bars2[i].filter.filter((1-PropF(@"bottomBars"))*1000 + PropF(@"bottomBars")*bars2[i].goal*1000);
+    for(int j=0;j<PropI(@"speed");j++){
+        for(int i=0;i<bars.size();i++){
+            bars[i].val = bars[i].filter.filter(PropF(@"topBars")*bars[i].goal*1000);
+            bars[i].val = bars[i].filter.filter(PropF(@"topBars")*bars[i].goal*1000);
+            bars2[i].val = bars2[i].filter.filter((1-PropF(@"bottomBars"))*1000 + PropF(@"bottomBars")*bars2[i].goal*1000);
+            bars2[i].val = bars2[i].filter.filter((1-PropF(@"bottomBars"))*1000 + PropF(@"bottomBars")*bars2[i].goal*1000);
+            bars[i].val = bars[i].filter.filter(PropF(@"topBars")*bars[i].goal*1000);
+            bars[i].val = bars[i].filter.filter(PropF(@"topBars")*bars[i].goal*1000);
+            bars2[i].val = bars2[i].filter.filter((1-PropF(@"bottomBars"))*1000 + PropF(@"bottomBars")*bars2[i].goal*1000);
+            bars2[i].val = bars2[i].filter.filter((1-PropF(@"bottomBars"))*1000 + PropF(@"bottomBars")*bars2[i].goal*1000);
+        }
     }
     leftBar.val = leftBar.filter.filter(PropF(@"leftBars")*leftBar.goal*1000);
     rightBar.val = rightBar.filter.filter((1-PropF(@"rightBars"))*1000*aspect + PropF(@"rightBars")*rightBar.goal*1000);

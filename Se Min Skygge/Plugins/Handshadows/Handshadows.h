@@ -11,6 +11,7 @@
 #include "Plugin.h"
 #include "Filter.h"
 #include "Kinect.h"
+#include "ofxFBOTexture.h"
 
 
 #define NUM_BOXES 3
@@ -22,7 +23,8 @@ struct Box {
 @interface Handshadows : ofPlugin{
     vector<Box> boxes;
     KinectInstance * kinect;
-
+    
+    ofxFBOTexture * fbo;
 }
 
 @end

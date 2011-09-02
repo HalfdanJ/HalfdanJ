@@ -61,7 +61,7 @@ const int fboBorder = 20;
 
 @implementation RenderObject
 @synthesize engine, name, subObjects, parent, assetString, assetInfo;
-@synthesize posX, posY, posZ, scale,rotationZ,depthBlurAmount, opacity, maskOnBack, autoFill, blendmodeAdd, visible, play, chapterTo, chapterFrom, objId, loop, stackMode, depth;
+@synthesize posX, posY, posZ, scale,rotationZ,depthBlurAmount, opacity, maskOnBack, autoFill, blendmodeAdd, visible, play, chapterTo, chapterFrom, objId, loop, stackMode, depth, chapterOverview;
 - (id)init
 {
     self = [super init];
@@ -735,6 +735,15 @@ const int fboBorder = 20;
                  , nil];
                  [videoAsset addChapters:chapters withAttributes:[NSDictionary dictionary] error:&error];
                  */
+                
+                //Chapter overview
+                NSMutableString * string = [NSMutableString string];
+                int i=0;
+                for(NSDictionary * dict in [videoAsset chapters]){
+                    [string appendFormat:@"%i: %@\n",i,[dict valueForKey:QTMovieChapterName]];
+                    i++;
+                }
+                [self setChapterOverview:string];
             }
         }
         

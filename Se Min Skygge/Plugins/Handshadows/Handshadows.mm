@@ -15,8 +15,8 @@
 
 -(void)initPlugin{
     for(int i=0;i<NUM_BOXES;i++){
-        [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:[NSString stringWithFormat:@"box%iPosLeft",i]];
-        [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:[NSString stringWithFormat:@"box%iPosRight",i]];
+        [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1.9] named:[NSString stringWithFormat:@"box%iPosLeft",i]];
+        [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1.9] named:[NSString stringWithFormat:@"box%iPosRight",i]];
         [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:[NSString stringWithFormat:@"box%iPosBottom",i]];
         [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:[NSString stringWithFormat:@"box%iPosTop",i]];
         
@@ -40,7 +40,9 @@
     
     kinect = [GetPlugin(Kinect) getInstance:1];
     [self assignMidiChannel:12]; 
-    
+        
+    fbo = new ofxFBOTexture();
+    fbo->allocate(1024, 540);
 }
 
 -(void)update:(NSDictionary *)drawingInformation{
@@ -135,19 +137,30 @@
 
 -(void)draw:(NSDictionary *)drawingInformation{
     ofFill();
-    ApplySurfaceForProjector(@"Screen",1){
+    ofEnableAlphaBlending();
+    
+    fbo->begin();
+    ofSetColor(0,0,0);
+    ofRect(0,0,1,1);
+    float w = Aspect(@"Screen",1);
         for(int i=0;i<NUM_BOXES;i++){
             ofSetColor(255,255,255);
             
-            float l = boxes[i].sides[3].value();
+            float l = boxes[i].sides[3].value()/w;
             float t = boxes[i].sides[0].value();
-            float r = boxes[i].sides[1].value();
+            float r = boxes[i].sides[1].value()/w;
             float b = boxes[i].sides[2].value();
             
             if(l < r && t < b){
                 ofRect(l,t,r-l,b-t);
             }
         }
+    
+    fbo->end();
+    
+    ApplySurfaceForProjector(@"Screen",1){
+        glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ZERO);
+        fbo->draw(0,0,Aspect(@"Screen",1), 1);
         
         if(PropB(@"drawDebug")){
             ofSetColor(255,0,0);

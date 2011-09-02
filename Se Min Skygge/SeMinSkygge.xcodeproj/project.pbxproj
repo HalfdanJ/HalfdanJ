@@ -15,6 +15,7 @@
 		584501F213FC44D900B6924C /* ofxFBOTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 584501EC13FC44D900B6924C /* ofxFBOTexture.cpp */; };
 		584501F313FC44D900B6924C /* ofxShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 584501EE13FC44D900B6924C /* ofxShader.cpp */; };
 		584501F413FC44D900B6924C /* shaderBlur.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 584501F013FC44D900B6924C /* shaderBlur.cpp */; };
+		585103D5140E6D9400930BC5 /* Tapet.mm in Sources */ = {isa = PBXBuildFile; fileRef = 585103D4140E6D9400930BC5 /* Tapet.mm */; };
 		5876F144139FB36D0051C56E /* Shadows.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5876F143139FB36D0051C56E /* Shadows.mm */; };
 		5876F146139FB3770051C56E /* Shadows.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5876F145139FB3770051C56E /* Shadows.xib */; };
 		58A40E321387065000EC0A6A /* BeamSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A40E311387065000EC0A6A /* BeamSync.m */; };
@@ -42,7 +43,6 @@
 		58EA46C91384612400CCB078 /* colorCorrectShader.frag in Copy Files to Resources */ = {isa = PBXBuildFile; fileRef = 58EA46C51384611300CCB078 /* colorCorrectShader.frag */; };
 		58EA46CA1384612700CCB078 /* colorCorrectShader.vert in Copy Files to Resources */ = {isa = PBXBuildFile; fileRef = 58EA46C61384611300CCB078 /* colorCorrectShader.vert */; };
 		58F7490113FFEBE000DB3E7A /* Handshadows.mm in Sources */ = {isa = PBXBuildFile; fileRef = 58F748FF13FFEBE000DB3E7A /* Handshadows.mm */; };
-		58F7490313FFEEEF00DB3E7A /* Handshadows.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58F7490213FFEEEF00DB3E7A /* Handshadows.xib */; };
 		DD42F5FE1366BC9E0022FD52 /* RenderObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = DD42F5FD1366BC9E0022FD52 /* RenderObject.mm */; };
 		DD624C9A13AE24A8004EAB00 /* BlobClasses2d.mm in Sources */ = {isa = PBXBuildFile; fileRef = DD624C9113AE24A8004EAB00 /* BlobClasses2d.mm */; };
 		DD624C9B13AE24A8004EAB00 /* BlobTracker2d.mm in Sources */ = {isa = PBXBuildFile; fileRef = DD624C9313AE24A8004EAB00 /* BlobTracker2d.mm */; };
@@ -217,6 +217,8 @@
 		584501EF13FC44D900B6924C /* ofxShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxShader.h; sourceTree = "<group>"; };
 		584501F013FC44D900B6924C /* shaderBlur.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shaderBlur.cpp; sourceTree = "<group>"; };
 		584501F113FC44D900B6924C /* shaderBlur.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shaderBlur.h; sourceTree = "<group>"; };
+		585103D3140E6D9400930BC5 /* Tapet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tapet.h; sourceTree = "<group>"; };
+		585103D4140E6D9400930BC5 /* Tapet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Tapet.mm; sourceTree = "<group>"; };
 		5876F142139FB36D0051C56E /* Shadows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shadows.h; sourceTree = "<group>"; };
 		5876F143139FB36D0051C56E /* Shadows.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Shadows.mm; sourceTree = "<group>"; };
 		5876F145139FB3770051C56E /* Shadows.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Shadows.xib; sourceTree = "<group>"; };
@@ -318,7 +320,6 @@
 		58F2B7641403C9DD00C1CAEE /* TextureGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureGrid.h; sourceTree = "<group>"; };
 		58F748FF13FFEBE000DB3E7A /* Handshadows.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Handshadows.mm; sourceTree = "<group>"; };
 		58F7490013FFEBE000DB3E7A /* Handshadows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Handshadows.h; sourceTree = "<group>"; };
-		58F7490213FFEEEF00DB3E7A /* Handshadows.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Handshadows.xib; sourceTree = "<group>"; };
 		DD42F5FC1366BC9E0022FD52 /* RenderObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderObject.h; sourceTree = "<group>"; };
 		DD42F5FD1366BC9E0022FD52 /* RenderObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RenderObject.mm; sourceTree = "<group>"; };
 		DD624C9013AE24A8004EAB00 /* BlobClasses2d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlobClasses2d.h; sourceTree = "<group>"; };
@@ -668,6 +669,15 @@
 			path = Shader;
 			sourceTree = "<group>";
 		};
+		585103D2140E6D8800930BC5 /* Tapet */ = {
+			isa = PBXGroup;
+			children = (
+				585103D3140E6D9400930BC5 /* Tapet.h */,
+				585103D4140E6D9400930BC5 /* Tapet.mm */,
+			);
+			path = Tapet;
+			sourceTree = "<group>";
+		};
 		5876F141139FB3290051C56E /* Shadows */ = {
 			isa = PBXGroup;
 			children = (
@@ -877,7 +887,6 @@
 			children = (
 				58F748FF13FFEBE000DB3E7A /* Handshadows.mm */,
 				58F7490013FFEBE000DB3E7A /* Handshadows.h */,
-				58F7490213FFEEEF00DB3E7A /* Handshadows.xib */,
 			);
 			path = Handshadows;
 			sourceTree = "<group>";
@@ -1793,6 +1802,7 @@
 		DDC8EA5D113809B100574926 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				585103D2140E6D8800930BC5 /* Tapet */,
 				58F748FE13FFEB8000DB3E7A /* Handshadows */,
 				5836E3D613F1548800725221 /* Fireflies */,
 				DDC3B80813AE3BD600F605A7 /* ShadowFog */,
@@ -1950,7 +1960,6 @@
 				DD624C9C13AE24A8004EAB00 /* BlobTracker2d.xib in Resources */,
 				DD624C9E13AE24A8004EAB00 /* BlobTrackerInstance2d.xib in Resources */,
 				DDC3B80713AE3A8C00F605A7 /* VideoPlayer.xib in Resources */,
-				58F7490313FFEEEF00DB3E7A /* Handshadows.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2079,6 +2088,7 @@
 				584501F313FC44D900B6924C /* ofxShader.cpp in Sources */,
 				584501F413FC44D900B6924C /* shaderBlur.cpp in Sources */,
 				58F7490113FFEBE000DB3E7A /* Handshadows.mm in Sources */,
+				585103D5140E6D9400930BC5 /* Tapet.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
