@@ -13,6 +13,7 @@
 @interface Tapet : ofPlugin{
     ofImage * tapetImage;
     ofImage * patImage;
+    ofImage * maskImage;
 }
 
 @end

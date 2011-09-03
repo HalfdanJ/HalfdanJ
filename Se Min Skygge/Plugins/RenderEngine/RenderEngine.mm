@@ -153,6 +153,7 @@
         [Prop(@"objZ") setFloatValue:[selectedObject posZ]];
         
         [Prop(@"objOpacity") setFloatValue:([selectedObject opacity] * [selectedObject absoluteVisible])];
+        playSetFlag = YES;
         [Prop(@"objPlay") setBoolValue:[selectedObject play]];
         [Prop(@"objLoop") setBoolValue:[selectedObject loop]];
 
@@ -182,8 +183,10 @@
         if(object == Prop(@"objZ")){            
             [selectedObject setPosZ:[object floatValue]];
         }
-        if(object == Prop(@"objPlay")){            
-            [selectedObject setPlay:[object boolValue]];
+        if(object == Prop(@"objPlay")){ 
+            if(!playSetFlag)
+                [selectedObject setPlay:[object boolValue]];
+            playSetFlag = NO;
         }
         if(object == Prop(@"objLoop")){            
             [selectedObject setLoop:[object boolValue]];

@@ -46,6 +46,7 @@ enum UpdateFlags {
     float aspect;
     
     RenderObject * selectedObject;
+    bool playSetFlag;
 }
 
 @property (retain) NSMutableArray * objectsArray;

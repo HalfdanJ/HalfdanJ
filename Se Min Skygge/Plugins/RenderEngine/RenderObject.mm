@@ -1033,6 +1033,7 @@ const int fboBorder = 20;
 
 
 -(void)setPlay:(BOOL)_play{
+    bool change = (_play != play);
     play = _play;
     if(play){
         dispatch_async(dispatch_get_main_queue(), ^{
