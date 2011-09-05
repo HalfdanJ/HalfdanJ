@@ -45,6 +45,8 @@
     
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"switchProjector"];
 
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1.0 minValue:0 maxValue:1] named:@"masterAlphaFront"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1.0 minValue:0 maxValue:1] named:@"masterAlphaBack"];
     
     [Prop(@"objX") setMidiSmoothing:0.90];
     [Prop(@"objY") setMidiSmoothing:0.9];
@@ -376,7 +378,7 @@
             }
             
             if([obj backAlpha]*(PropF(@"switchProjector")) > 0){
-                [obj drawWithAlpha:[obj backAlpha]*(PropF(@"switchProjector")) front:NO];
+                [obj drawWithAlpha:PropF(@"masterAlphaBack")*[obj backAlpha]*(PropF(@"switchProjector")) front:NO];
             } else if([obj maskBack]) {
                 [obj drawMaskWithAlpha:1.0];
             }
@@ -386,7 +388,7 @@
             
             if([obj absoluteVisible]){
                 if([obj frontAlpha]*(1-PropF(@"switchProjector")) > 0){
-                    [obj drawWithAlpha:[obj frontAlpha]*(1-PropF(@"switchProjector")) front:YES];
+                    [obj drawWithAlpha:PropF(@"masterAlphaBack")*[obj frontAlpha]*(1-PropF(@"switchProjector")) front:YES];
                 }
             }
             glPopMatrix();
@@ -442,7 +444,7 @@
         
         if([obj absoluteVisible]){
             if([obj frontAlpha]*PropF(@"switchProjector") > 0){
-                [obj drawWithAlpha:[obj frontAlpha]*PropF(@"switchProjector") front:YES];
+                [obj drawWithAlpha:PropF(@"masterAlphaFront")*[obj frontAlpha]*PropF(@"switchProjector") front:YES];
             }
         }
         glPopMatrix();
@@ -456,7 +458,7 @@
             }
             
             if([obj backAlpha] * (1-PropF(@"switchProjector")) > 0){
-                [obj drawWithAlpha:[obj backAlpha]* (1-PropF(@"switchProjector")) front:NO];
+                [obj drawWithAlpha:PropF(@"masterAlphaFront")*[obj backAlpha]* (1-PropF(@"switchProjector")) front:NO];
             } else if([obj maskBack]) {
                 [obj drawMaskWithAlpha:1.0];
             }

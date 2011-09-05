@@ -14,6 +14,11 @@
 @implementation Handshadows
 
 -(void)initPlugin{
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1.0] named:@"marginTop"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1.0] named:@"marginRight"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1.0] named:@"marginLeft"];
+    
+    
     for(int i=0;i<NUM_BOXES;i++){
         [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1.9] named:[NSString stringWithFormat:@"box%iPosLeft",i]];
         [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1.9] named:[NSString stringWithFormat:@"box%iPosRight",i]];
@@ -81,9 +86,9 @@
     }
     
     xMin *= aspect;
-    yMin *= aspect;
+   // yMin *= aspect;
     xMax *= aspect;
-    yMax *= aspect;
+   // yMax *= aspect;
     
     int modes[4];
     
@@ -97,11 +102,11 @@
         
         //Grow
         if(modes[0] == 1 && boxes[j].sides[0].value() > yMin && fabs(boxes[j].sides[0].value() - yMin) < PropF(@"maxDist")){
-            [Prop(([NSString stringWithFormat:@"box%iPosTop",j])) setFloatValue:yMin];
+            [Prop(([NSString stringWithFormat:@"box%iPosTop",j])) setFloatValue:yMin-PropF(@"marginTop")];
             //boxes[j].sides[0].filter(yMin);     
         }
         if(modes[1] == 1 && boxes[j].sides[1].value() < xMax && fabs(boxes[j].sides[1].value() - xMax) < PropF(@"maxDist")){
-            [Prop(([NSString stringWithFormat:@"box%iPosRight",j])) setFloatValue:xMax];
+            [Prop(([NSString stringWithFormat:@"box%iPosRight",j])) setFloatValue:xMax+PropF(@"marginRight")];
             //boxes[j].sides[1].filter(xMax);     
         }
         if(modes[2] == 1 && boxes[j].sides[2].value() < yMax && fabs(boxes[j].sides[2].value() - yMax) < PropF(@"maxDist")){
@@ -109,17 +114,17 @@
             //boxes[j].sides[2].filter(yMax);     
         }
         if(modes[3] == 1 && boxes[j].sides[3].value() > xMin && fabs(boxes[j].sides[3].value() - xMin) < PropF(@"maxDist")){
-            [Prop(([NSString stringWithFormat:@"box%iPosLeft",j])) setFloatValue:xMin];
+            [Prop(([NSString stringWithFormat:@"box%iPosLeft",j])) setFloatValue:xMin-PropF(@"marginLeft")];
             //boxes[j].sides[3].filter(xMin);     
         }
         
         //Snap
         if(modes[0] == 2  && fabs(boxes[j].sides[0].value() - yMin) < PropF(@"maxDist")){
-            [Prop(([NSString stringWithFormat:@"box%iPosTop",j])) setFloatValue:yMin];
+            [Prop(([NSString stringWithFormat:@"box%iPosTop",j])) setFloatValue:yMin-PropF(@"marginTop")];
             //boxes[j].sides[0].filter(yMin);     
         }
         if(modes[1] == 2 && fabs(boxes[j].sides[1].value() - xMax) < PropF(@"maxDist")){
-            [Prop(([NSString stringWithFormat:@"box%iPosRight",j])) setFloatValue:xMax];
+            [Prop(([NSString stringWithFormat:@"box%iPosRight",j])) setFloatValue:xMax+PropF(@"marginRight")];
             //boxes[j].sides[1].filter(xMax);     
         }
         if(modes[2] == 2 && fabs(boxes[j].sides[2].value() - yMax) < PropF(@"maxDist")){
@@ -127,7 +132,7 @@
             //boxes[j].sides[2].filter(yMax);     
         }
         if(modes[3] == 2 && fabs(boxes[j].sides[3].value() - xMin) < PropF(@"maxDist")){
-            [Prop(([NSString stringWithFormat:@"box%iPosLeft",j])) setFloatValue:xMin];
+            [Prop(([NSString stringWithFormat:@"box%iPosLeft",j])) setFloatValue:xMin-PropF(@"marginLeft")];
             //boxes[j].sides[3].filter(xMin);     
         }        
     }

@@ -43,6 +43,9 @@
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:400] named:@"timelineTime"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:10] named:@"inputGain"];
     
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.0 minValue:0.0 maxValue:1] named:@"mask"];
+
+    
     [self addProperty:[BoolProperty boolPropertyWithDefaultvalue:NO] named:@"useOpenCV"];
     [self addProperty:[BoolProperty boolPropertyWithDefaultvalue:NO] named:@"useShaders"];
     
@@ -104,8 +107,8 @@
     surface = [GetPlugin(Keystoner) getSurface:@"Screen" viewNumber:0 projectorNumber:0];
     
     for(int i=0;i<BUFFER_SIZE;i++){
-        buffer[i] = new ofxCvGrayscaleImage();
-        buffer[i]->allocate(1024, 768);
+        //buffer[i] = new ofxCvGrayscaleImage();
+        //buffer[i]->allocate(640, 480);
         
         history[i] = new ofxFBOTexture();
         history[i]->allocate(640, 480);
@@ -266,7 +269,7 @@
     }
     
     if(l.time == -1 || r.time == -1){
-        cout<<"No timeline for time "<<time<<endl;
+   //     cout<<"No timeline for time "<<time<<endl;
         return -1000;
     } 
     
@@ -423,11 +426,17 @@
             if(useShader){
                 shader.end();
             }
+            
+            ofSetColor(0,0,0);
+            ofRect(1-PropF(@"mask"),0,1,1);
+            
             glPopMatrix();
             if(PropB(@"debug")){
                 ofSetColor(255, 0, 0);
                 ofEllipse(0.3,0.3,0.2,0.2);
             }
+            ofSetColor(255,255,255);
+
         }  blur->endRender();
         ofEnableAlphaBlending();
         
@@ -540,8 +549,8 @@
                 }
                 
                 glBlendFunc(GL_ZERO, GL_SRC_COLOR);     
-                lightImage->draw(0,0,Aspect(@"Screen",1),1);
-                //      ofRect(0,0,1,1);        
+                //lightImage->draw(0,0,Aspect(@"Screen",1),1);
+                ofRect(0,0,Aspect(@"Screen",1),1);        
                 glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR);     
                 
                 if(appliedProjector == 0){

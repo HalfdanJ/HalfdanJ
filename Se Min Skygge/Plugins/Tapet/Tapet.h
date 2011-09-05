@@ -9,11 +9,15 @@
 #pragma once
 
 #include "Plugin.h"
+#include "ofxShader.h"
 
 @interface Tapet : ofPlugin{
     ofImage * tapetImage;
     ofImage * patImage;
     ofImage * maskImage;
+    ofxShader shader;
+    ofImage rampImg;
+
 }
 
 @end
