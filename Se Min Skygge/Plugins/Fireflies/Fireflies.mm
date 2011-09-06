@@ -49,6 +49,39 @@
     
     numFlies = PropI(@"number");
     
+    
+    float aspect = Aspect(@"Screen",1);
+    InteractiveWall * wall = GetPlugin(InteractiveWall);
+    
+    vector<ofxPoint3f> p = [kinect getPointsInBoxXMin:0.1 xMax:Aspect(@"Screen",1)-0.1 yMin:0.1 yMax:0.9 zMin:-1000 zMax:-[[[wall properties] valueForKey:@"screenDist"] floatValue] res:[[[wall properties] valueForKey:@"kinectRes"] floatValue] ];
+    
+    float midZone = 0;
+    float avgX = 0;
+    
+    for(int i=0;i<p.size();i++){
+        ofxPoint3f kinectP = [kinect convertWorldToKinect:[kinect convertSurfaceToWorld:p[i]]];        
+        ofxPoint2f warped = [kinect coordWarper]->transform(kinectP.x/640.0, kinectP.y/480.0);
+        
+        avgX += warped.x;
+        
+        if(warped.x > 0.3 && warped.x < 0.7){
+            midZone ++;
+        }
+    }
+    
+    avgX /=  p.size();
+    midZone /= p.size();
+    
+/*    if(PropF(@"wortexZone") > 0){
+        wortexForce += midZone * PropF(@"wortexZone");
+    }*/
+    
+    
+    if(PropF(@"dampingZone") > 0){
+        damping -= midZone * PropF(@"dampingZone");
+    }
+    
+    
     while(fireflies.size() < numFlies){
         Firefly newFly;
         newFly.pos = ofxVec3f(ofRandom(-1.0, 1.0),ofRandom(-1.0, 1.0),ofRandom(-1.0, 1.0));
@@ -98,7 +131,9 @@
         }
         
         for(int i=0;i<fireflies.size();i++){
-            fireflies[i].update(1.0/ofGetFrameRate(), frameNum);
+            ofxVec2f center1 = ofxVec2f(avgX, 0) - ofxVec2f(-aspect/2, 0);
+            ofxVec2f center =  center1 * PropF(@"trackingGravity") + ofxVec2f(aspect / 2,0.5);
+            fireflies[i].update(1.0/ofGetFrameRate(), frameNum, center);
         }
         
     }
@@ -110,7 +145,7 @@
         //[GetPlugin(Keystoner)  applySurface:@"Screen" projectorNumber:1 viewNumber:ViewNumber];
         
         glPushMatrix();
-        glTranslated(Aspect(@"Screen",0)*0.5, 0.5, 0.0);
+      //  glTranslated(Aspect(@"Screen",0)*0.5, 0.5, 0.0);
         for(int i=0;i<fireflies.size();i++){
             fireflies[i].draw(1-appliedProjector);
         }

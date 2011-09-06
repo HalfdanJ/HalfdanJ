@@ -8,7 +8,7 @@ class Firefly {
 public:
     Firefly();
     
-    void update(float step, int frameNum);
+    void update(float step, int frameNum,  ofxVec2f center);
     void draw(bool front);
     
     

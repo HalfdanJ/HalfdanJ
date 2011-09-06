@@ -60,17 +60,17 @@
         }
     }
     
-    float aspect = Aspect(@"Screen",1);
-    
-    InteractiveWall * wall = GetPlugin(InteractiveWall);
-    
-    vector<ofxPoint3f> p = [kinect getPointsInBoxXMin:0.1 xMax:Aspect(@"Screen",1)-0.1 yMin:0.1 yMax:0.9 zMin:-1000 zMax:-[[[wall properties] valueForKey:@"screenDist"] floatValue] res:[[[wall properties] valueForKey:@"kinectRes"] floatValue] ];
-    
+      
     float xMin = -1;
     float xMax = -1;
     float yMin = -1;
     float yMax = -1;
     
+    float aspect = Aspect(@"Screen",1);
+    InteractiveWall * wall = GetPlugin(InteractiveWall);
+    
+    vector<ofxPoint3f> p = [kinect getPointsInBoxXMin:0.1 xMax:Aspect(@"Screen",1)-0.1 yMin:0.1 yMax:0.9 zMin:-1000 zMax:-[[[wall properties] valueForKey:@"screenDist"] floatValue] res:[[[wall properties] valueForKey:@"kinectRes"] floatValue] ];
+  
     for(int i=0;i<p.size();i++){
         ofxPoint3f kinectP = [kinect convertWorldToKinect:[kinect convertSurfaceToWorld:p[i]]];        
         ofxPoint2f warped = [kinect coordWarper]->transform(kinectP.x/640.0, kinectP.y/480.0);
@@ -101,11 +101,11 @@
         
         
         //Grow
-        if(modes[0] == 1 && boxes[j].sides[0].value() > yMin && fabs(boxes[j].sides[0].value() - yMin) < PropF(@"maxDist")){
+        if(modes[0] == 1 && boxes[j].sides[0].value() > yMin-PropF(@"marginTop") && fabs(boxes[j].sides[0].value() - yMin) < PropF(@"maxDist")){
             [Prop(([NSString stringWithFormat:@"box%iPosTop",j])) setFloatValue:yMin-PropF(@"marginTop")];
             //boxes[j].sides[0].filter(yMin);     
         }
-        if(modes[1] == 1 && boxes[j].sides[1].value() < xMax && fabs(boxes[j].sides[1].value() - xMax) < PropF(@"maxDist")){
+        if(modes[1] == 1 && boxes[j].sides[1].value() < xMax+PropF(@"marginRight") && fabs(boxes[j].sides[1].value() - xMax) < PropF(@"maxDist")){
             [Prop(([NSString stringWithFormat:@"box%iPosRight",j])) setFloatValue:xMax+PropF(@"marginRight")];
             //boxes[j].sides[1].filter(xMax);     
         }
@@ -113,7 +113,7 @@
             [Prop(([NSString stringWithFormat:@"box%iPosBottom",j])) setFloatValue:yMax];
             //boxes[j].sides[2].filter(yMax);     
         }
-        if(modes[3] == 1 && boxes[j].sides[3].value() > xMin && fabs(boxes[j].sides[3].value() - xMin) < PropF(@"maxDist")){
+        if(modes[3] == 1 && boxes[j].sides[3].value() > xMin-PropF(@"marginLeft") && fabs(boxes[j].sides[3].value() - xMin) < PropF(@"maxDist")){
             [Prop(([NSString stringWithFormat:@"box%iPosLeft",j])) setFloatValue:xMin-PropF(@"marginLeft")];
             //boxes[j].sides[3].filter(xMin);     
         }

@@ -5,7 +5,7 @@ Firefly::Firefly(){
 
 }
 
-void Firefly::update(float step, int frameNum){
+void Firefly::update(float step, int frameNum, ofxVec2f center){
     //
     // Perlin
     //
@@ -20,7 +20,7 @@ void Firefly::update(float step, int frameNum){
     //
     // Center gravity
     //
-    a += -pos * *gravityForce*0.01;
+    a += -(center - pos) * *gravityForce*0.01;
     
     
     //

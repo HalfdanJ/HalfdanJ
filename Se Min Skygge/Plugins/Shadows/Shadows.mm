@@ -428,7 +428,7 @@
             }
             
             ofSetColor(0,0,0);
-            ofRect(1-PropF(@"mask"),0,1,1);
+            ofRect(0,0,PropF(@"mask"),1);
             
             glPopMatrix();
             if(PropB(@"debug")){
