@@ -22,6 +22,10 @@
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0.0 maxValue:2] named:@"wortexZone"];  
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0.0 maxValue:2] named:@"dampingZone"];  
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0.0 maxValue:1] named:@"trackingGravity"];  
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0.0 maxValue:1] named:@"opacity"];  
+
+    [self addProperty:[BoolProperty boolPropertyWithDefaultvalue:NO] named:@"drawDebug"];  
+
 } 
 
 
@@ -69,8 +73,14 @@
         }
     }
     
-    avgX /=  p.size();
-    midZone /= p.size();
+    if(p.size() > 0){
+    
+        avgX /=  p.size();
+        avgX *= aspect;
+        midZone /= p.size();
+        
+        cout<<"AvgX: "<<avgX<<"   midzone: "<<midZone<<endl;
+    }
     
 /*    if(PropF(@"wortexZone") > 0){
         wortexForce += midZone * PropF(@"wortexZone");
@@ -78,7 +88,9 @@
     
     
     if(PropF(@"dampingZone") > 0){
+        cout<<"Damping before: "<<damping;
         damping -= midZone * PropF(@"dampingZone");
+        cout<<"   Damping after: "<<damping<<endl;
     }
     
     
@@ -131,7 +143,7 @@
         }
         
         for(int i=0;i<fireflies.size();i++){
-            ofxVec2f center1 = ofxVec2f(avgX, 0) - ofxVec2f(-aspect/2, 0);
+            ofxVec2f center1 = ofxVec2f(avgX, 0)-ofxVec2f(aspect/2, 0);
             ofxVec2f center =  center1 * PropF(@"trackingGravity") + ofxVec2f(aspect / 2,0.5);
             fireflies[i].update(1.0/ofGetFrameRate(), frameNum, center);
         }
@@ -147,7 +159,7 @@
         glPushMatrix();
       //  glTranslated(Aspect(@"Screen",0)*0.5, 0.5, 0.0);
         for(int i=0;i<fireflies.size();i++){
-            fireflies[i].draw(1-appliedProjector);
+            fireflies[i].draw(1-appliedProjector, PropF(@"opacity"));
         }
         glPopMatrix();
         

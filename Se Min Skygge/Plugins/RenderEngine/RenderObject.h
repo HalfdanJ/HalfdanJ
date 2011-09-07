@@ -87,6 +87,8 @@ enum RenderObjectType {
     float depthBlurAmount;
     
     RenderObjectType objectType;
+    
+    bool firstFrameAfterPlay;
 }
 
 @property (retain) NSString * name;

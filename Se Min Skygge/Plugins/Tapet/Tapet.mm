@@ -41,15 +41,18 @@
     NSString * path = [NSString stringWithFormat:@"%@/Tapet/TapetPlain.png",[GetPlugin(RenderEngine) assetDir]];
     NSString * path2 = [NSString stringWithFormat:@"%@/Tapet/Patinering.png",[GetPlugin(RenderEngine) assetDir]];
     NSString * path3 = [NSString stringWithFormat:@"%@/Tapet/TapetMask.png",[GetPlugin(RenderEngine) assetDir]];
+    NSString * path4 = [NSString stringWithFormat:@"%@/Tapet/TapetMaskInv.png",[GetPlugin(RenderEngine) assetDir]];
 
     tapetImage = new ofImage();
     patImage = new ofImage();
     maskImage = new ofImage();
+    maskImageInv = new ofImage();
 
     tapetImage->loadImage([path cStringUsingEncoding:NSUTF8StringEncoding]);
     patImage->loadImage([path2 cStringUsingEncoding:NSUTF8StringEncoding]);
     maskImage->loadImage([path3 cStringUsingEncoding:NSUTF8StringEncoding]);
-    
+    maskImageInv->loadImage([path4 cStringUsingEncoding:NSUTF8StringEncoding]);
+
     shader.setup("contrastShader");
 
 }
@@ -127,9 +130,9 @@
 
             float mask = PropF(@"maskBack");
             if(mask > 0){
-                glBlendFunc(GL_ZERO, GL_SRC_COLOR);
+                glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR);
                 ofSetColor(mask*r,mask*g,mask*b);
-                maskImage->draw(0,0,Aspect(@"Screen",1),1);
+                maskImageInv->draw(0,0,Aspect(@"Screen",1),1);
             }
 
         }

@@ -149,44 +149,48 @@ const int fboBorder = 20;
 
 -(void) drawObject{
     
-    int flags = [engine updateFlags];
-
-    
-    if(flags & USE_BORDERED_FBO){
-        glScaled(1.0/([self pixelsWide]+2*fboBorder),1.0/([self pixelsHigh]+2*fboBorder),1); 
-        glTranslated(-fboBorder, -fboBorder, 0);
-        glScaled(([self pixelsWide]+4*fboBorder),([self pixelsHigh]+4*fboBorder),1);
-    }
-    
-    if(flags & USE_CI_FBO){
+    if((objectType == VIDEO && !firstFrameAfterPlay) || objectType != VIDEO){
+        cout<<"Playing "<<endl;
+        //        firstFrameAfterPlay = NO;
+        int flags = [engine updateFlags];
+        
+        
         if(flags & USE_BORDERED_FBO){
-            [self drawTexture:fbo->texData.textureID size:NSMakeRect(0,0,[self pixelsWide]+2*fboBorder, [self pixelsHigh]+2*fboBorder)];        
-        } else {
-            if(fbo){
-                CGRect rect = filteredRect;
-                
-                glScaled(1.0/([self pixelsWide]),1.0/([self pixelsHigh]),1); 
-                glTranslated(rect.origin.x, rect.origin.y,0);
-                glScaled(rect.size.width, rect.size.height, 1);
-                
-                [self drawTexture:fbo->texData.textureID size:NSMakeRect(0,0,rect.size.width, rect.size.height)];                    
-            }
+            glScaled(1.0/([self pixelsWide]+2*fboBorder),1.0/([self pixelsHigh]+2*fboBorder),1); 
+            glTranslated(-fboBorder, -fboBorder, 0);
+            glScaled(([self pixelsWide]+4*fboBorder),([self pixelsHigh]+4*fboBorder),1);
         }
-    } else if(flags & USE_CIIMAGE){
-        glScaled(1.0/[ciImage extent].size.width, 1.0/[ciImage extent].size.height, 1);     
-        [[engine ciContext] drawImage:outputImage 
-                              atPoint:CGPointMake(0,0) // use integer coordinates to avoid interpolation
-                             fromRect:[outputImage extent]];
-    }
-    else if(flags & USE_BORDERED_FBO){   
-        [self drawTexture:borderFbo->texData.textureID size:NSMakeRect(0,0,[self pixelsWide]+2*fboBorder, [self pixelsHigh]+2*fboBorder)];        
-    } else if(flags & USE_ASSET_TEXTURE){
-        [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])];
-    } else {
-        ofSetColor(200,255,255,200);
-        ofRect(0,0,1,1);
-    }
-    
+        
+        if(flags & USE_CI_FBO){
+            if(flags & USE_BORDERED_FBO){
+                [self drawTexture:fbo->texData.textureID size:NSMakeRect(0,0,[self pixelsWide]+2*fboBorder, [self pixelsHigh]+2*fboBorder)];        
+            } else {
+                if(fbo){
+                    CGRect rect = filteredRect;
+                    
+                    glScaled(1.0/([self pixelsWide]),1.0/([self pixelsHigh]),1); 
+                    glTranslated(rect.origin.x, rect.origin.y,0);
+                    glScaled(rect.size.width, rect.size.height, 1);
+                    
+                    [self drawTexture:fbo->texData.textureID size:NSMakeRect(0,0,rect.size.width, rect.size.height)];                    
+                }
+            }
+        } else if(flags & USE_CIIMAGE){
+            glScaled(1.0/[ciImage extent].size.width, 1.0/[ciImage extent].size.height, 1);     
+            [[engine ciContext] drawImage:outputImage 
+                                  atPoint:CGPointMake(0,0) // use integer coordinates to avoid interpolation
+                                 fromRect:[outputImage extent]];
+        }
+        else if(flags & USE_BORDERED_FBO){   
+            [self drawTexture:borderFbo->texData.textureID size:NSMakeRect(0,0,[self pixelsWide]+2*fboBorder, [self pixelsHigh]+2*fboBorder)];        
+        } else if(flags & USE_ASSET_TEXTURE){
+            [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])];
+        } else {
+            ofSetColor(200,255,255,200);
+            ofRect(0,0,1,1);
+        }
+        
+    } 
     
     //        fbo->draw(0,0,[self aspect],1);    
 }
@@ -210,26 +214,26 @@ const int fboBorder = 20;
                         [self drawTexture:assetTexture size:NSMakeRect(0,[self pixelsHigh],[self pixelsWide], [self pixelsHigh])]; 
                     break;
                 case 2: //Front + back + alpha
-                
+                    
                     if(front){
                         glBlendFuncSeparate(GL_ZERO,GL_SRC_COLOR, GL_SRC_COLOR,GL_ZERO);        
-                    
+                        
                         [self drawTexture:assetTexture size:NSMakeRect(0,2*[self pixelsHigh],[self pixelsWide], [self pixelsHigh])];
                         glBlendFuncSeparate(GL_SRC_ALPHA,GL_DST_ALPHA, GL_ONE,GL_ZERO);        
-
+                        
                         [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])]; 
                     }else{
                         glBlendFuncSeparate(GL_ZERO, GL_SRC_COLOR,GL_SRC_COLOR,GL_ZERO);  //Draw black in the mask      
-
+                        
                         [self drawTexture:assetTexture size:NSMakeRect(0,2*[self pixelsHigh],[self pixelsWide], [self pixelsHigh])];
-
+                        
                         glBlendFuncSeparate(GL_SRC_ALPHA,GL_DST_ALPHA, GL_ONE, GL_ZERO);        
-
+                        
                         [self drawTexture:assetTexture size:NSMakeRect(0,[self pixelsHigh],[self pixelsWide], [self pixelsHigh])]; 
                         ofEnableAlphaBlending();
                     }
                     break;
-
+                    
                 case 3: //Front + back + frontalpha
                     
                     if(front){
@@ -237,7 +241,7 @@ const int fboBorder = 20;
                         
                         [self drawTexture:assetTexture size:NSMakeRect(0,2*[self pixelsHigh],[self pixelsWide], [self pixelsHigh])];
                         glBlendFuncSeparate(GL_DST_ALPHA,GL_DST_COLOR, GL_SRC_ALPHA,GL_DST_ALPHA);        
-                    
+                        
                         [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])]; 
                     } else {
                         [self drawTexture:assetTexture size:NSMakeRect(0,[self pixelsHigh],[self pixelsWide], [self pixelsHigh])]; 
@@ -268,23 +272,23 @@ const int fboBorder = 20;
                 case 1: //Front + back
                     break;
                 case 2: //Front + back + alpha
-                        glBlendFuncSeparate(GL_ZERO,GL_SRC_COLOR, GL_SRC_COLOR,GL_ZERO);        
-                        
-                        [self drawTexture:assetTexture size:NSMakeRect(0,2*[self pixelsHigh],[self pixelsWide], [self pixelsHigh])];
-/*                        glBlendFuncSeparate(GL_DST_ALPHA,GL_DST_COLOR, GL_SRC_ALPHA,GL_DST_ALPHA);        
-                        
-                        [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])]; */
-
+                    glBlendFuncSeparate(GL_ZERO,GL_SRC_COLOR, GL_SRC_COLOR,GL_ZERO);        
+                    
+                    [self drawTexture:assetTexture size:NSMakeRect(0,2*[self pixelsHigh],[self pixelsWide], [self pixelsHigh])];
+                    /*                        glBlendFuncSeparate(GL_DST_ALPHA,GL_DST_COLOR, GL_SRC_ALPHA,GL_DST_ALPHA);        
+                     
+                     [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])]; */
+                    
                     break;
                     
                 case 3: //Front + back + frontalpha
                     
-                        glBlendFuncSeparate(GL_ZERO,GL_SRC_COLOR, GL_SRC_COLOR,GL_ZERO);        
-                        
-                        [self drawTexture:assetTexture size:NSMakeRect(0,2*[self pixelsHigh],[self pixelsWide], [self pixelsHigh])];
-                     /*   glBlendFuncSeparate(GL_DST_ALPHA,GL_DST_COLOR, GL_SRC_ALPHA,GL_DST_ALPHA);        
-                        
-                        [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])]; */
+                    glBlendFuncSeparate(GL_ZERO,GL_SRC_COLOR, GL_SRC_COLOR,GL_ZERO);        
+                    
+                    [self drawTexture:assetTexture size:NSMakeRect(0,2*[self pixelsHigh],[self pixelsWide], [self pixelsHigh])];
+                    /*   glBlendFuncSeparate(GL_DST_ALPHA,GL_DST_COLOR, GL_SRC_ALPHA,GL_DST_ALPHA);        
+                     
+                     [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])]; */
                     break;
                 default:
                     break;
@@ -292,7 +296,7 @@ const int fboBorder = 20;
         }    
         
     }glPopMatrix();
- }
+}
 
 //------------------------------------------------------------------------------------------------------------------------
 
@@ -352,16 +356,22 @@ const int fboBorder = 20;
 
 
 -(void) drawTexture:(GLuint)tex size:(NSRect)size{
-    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
-    glEnable( GL_TEXTURE_RECTANGLE_EXT );
-    glBindTexture( GL_TEXTURE_RECTANGLE_EXT, tex );    
-    glBegin(GL_QUADS);
-    glTexCoord2f(size.origin.x, size.origin.y); glVertex3f(0,0,0);
-    glTexCoord2f(size.origin.x+size.size.width, size.origin.y); glVertex3f(1,0,0);
-    glTexCoord2f(size.origin.x+size.size.width, size.origin.y+size.size.height);glVertex3f(1,1,0);
-    glTexCoord2f(size.origin.x, size.origin.y+size.size.height); glVertex3f(0,1,0);
-    glEnd();    
-    glDisable(GL_TEXTURE_RECTANGLE_EXT);         
+    if((objectType == VIDEO && !firstFrameAfterPlay) || objectType != VIDEO){
+        
+        glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
+        glEnable( GL_TEXTURE_RECTANGLE_EXT );
+        glBindTexture( GL_TEXTURE_RECTANGLE_EXT, tex );    
+        glBegin(GL_QUADS);
+        glTexCoord2f(size.origin.x, size.origin.y); glVertex3f(0,0,0);
+        glTexCoord2f(size.origin.x+size.size.width, size.origin.y); glVertex3f(1,0,0);
+        glTexCoord2f(size.origin.x+size.size.width, size.origin.y+size.size.height);glVertex3f(1,1,0);
+        glTexCoord2f(size.origin.x, size.origin.y+size.size.height); glVertex3f(0,1,0);
+        glEnd();    
+        glDisable(GL_TEXTURE_RECTANGLE_EXT);    
+    } else if(firstFrameAfterPlay){
+/*        firstFrameAfterPlay = NO;
+        cout<<"First frame jump and set to NO"<<endl;*/
+    }
 }
 
 ////------------------------------------------------------------------------------------------------------------------------
@@ -579,7 +589,7 @@ const int fboBorder = 20;
             });
             
             
-           QTVisualContextTask(qtContext);
+            QTVisualContextTask(qtContext);
             const CVTimeStamp * outputTime;
             [[drawingInformation objectForKey:@"outputTime"] getValue:&outputTime];	
             if (qtContext != NULL && QTVisualContextIsNewImageAvailable(qtContext, outputTime)) {
@@ -588,6 +598,9 @@ const int fboBorder = 20;
                     currentVideoFrame = NULL;
                 }
                 QTVisualContextCopyImageForTime(qtContext, NULL, outputTime, &currentVideoFrame);
+                if(firstFrameAfterPlay){
+                    firstFrameAfterPlay = NO;
+                }
                 assetTextureOutdated = YES;
             }
         }
@@ -817,7 +830,7 @@ const int fboBorder = 20;
     if(stackMode >= 2){
         ret /= 3;
     }
-
+    
     return ret;
 }
 
@@ -1038,6 +1051,7 @@ const int fboBorder = 20;
     if(play){
         dispatch_async(dispatch_get_main_queue(), ^{
             if(videoAsset){
+                firstFrameAfterPlay = YES;
                 if(chapterFrom != 0 && [videoAsset chapterCount] >= chapterFrom){
                     [videoAsset setCurrentTime:[videoAsset startTimeOfChapter:chapterFrom]];
                 } else {
@@ -1052,6 +1066,8 @@ const int fboBorder = 20;
     if(!play){
         dispatch_async(dispatch_get_main_queue(), ^{
             if(videoAsset){
+                firstFrameAfterPlay = YES;
+
                 [videoAsset setRate:0.0];
             }
         });

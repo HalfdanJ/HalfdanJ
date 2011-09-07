@@ -9,7 +9,7 @@ public:
     Firefly();
     
     void update(float step, int frameNum,  ofxVec2f center);
-    void draw(bool front);
+    void draw(bool front, float alpha);
     
     
     ofxVec3f pos;

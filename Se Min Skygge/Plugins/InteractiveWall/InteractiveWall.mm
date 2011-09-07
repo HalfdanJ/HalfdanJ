@@ -21,13 +21,19 @@
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0 maxValue:1] named:@"backgroundr"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0 maxValue:1] named:@"backgroundg"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0 maxValue:1] named:@"backgroundb"];
+    
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0 maxValue:1] named:@"3dlines"];
     
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"portal"];
-    
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0 maxValue:1] named:@"alpha"];
+
     [self addProperty:[BoolProperty boolPropertyWithDefaultvalue:NO] named:@"reset"];
     [self addProperty:[BoolProperty boolPropertyWithDefaultvalue:NO] named:@"drawDebug"];
     
+    
+    [Prop(@"backgroundr") setMidiSmoothing:0.9];
+    [Prop(@"backgroundg") setMidiSmoothing:0.9];
+    [Prop(@"backgroundb") setMidiSmoothing:0.9];
 }
 
 
@@ -51,12 +57,21 @@
         bars2.clear();
     }
     
-    if(bars.size() < PropI(@"numBars")){
+    while(bars.size() < PropI(@"numBars")){
         bar newBar;
         newBar.val = 0;
         newBar.filter.setStartValue(0);        
         bars.push_back(newBar);
         bars2.push_back(newBar);
+        
+        bars[bars.size()-1].goal = 1-PropF(@"portal");
+        bars2[bars.size()-1].goal = PropF(@"portal");
+
+        for(int i=0;i<100;i++){
+            bars[bars.size()-1].val = bars[bars.size()-1].filter.filter(PropF(@"topBars")*bars[bars.size()-1].goal*1000);
+            bars2[bars.size()-1].val = bars2[bars.size()-1].filter.filter((1-PropF(@"bottomBars"))*1000 + PropF(@"bottomBars")*bars2[bars.size()-1].goal*1000);
+        }
+
     }
     while(bars.size() > PropI(@"numBars")){
         bars.pop_back();
@@ -119,11 +134,11 @@
     
     ApplySurface(@"Screen");{
         if(appliedProjector == 0){
-            ofSetColor(255*PropF(@"backgroundr"),255*PropF(@"backgroundg"),255*PropF(@"backgroundb"),255);
+            ofSetColor(255*PropF(@"backgroundr"),255*PropF(@"backgroundg"),255*PropF(@"backgroundb"),PropF(@"alpha")*255.0);
             ofRect(0,0,aspect,1);
         }
         if(appliedProjector == 1){
-            ofSetColor(255,255,255,255);
+            ofSetColor(255,255,255,PropF(@"alpha")*255.);
             ofRect(0,0,aspect,1);
             
             
@@ -131,7 +146,7 @@
             
             for(int i=0;i<num;i++){
                 for(int j=0;j<PropI(@"depth");j++){
-                    ofSetColor(0, 0, 0, 255.0*(float)(j+1)/PropI(@"depth"));
+                    ofSetColor(0, 0, 0, PropF(@"alpha")*255.0*(float)(j+1)/PropI(@"depth"));
                     float h = bars[i].val/1000.0;                    
                     //  h = h*(float)(j+1)/PropI(@"depth") + 1-(float)(j+1)/PropI(@"depth");                    
                     

@@ -15,6 +15,8 @@
     ofImage * tapetImage;
     ofImage * patImage;
     ofImage * maskImage;
+    ofImage * maskImageInv;
+
     ofxShader shader;
     ofImage rampImg;
 

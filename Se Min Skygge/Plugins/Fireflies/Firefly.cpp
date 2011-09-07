@@ -20,13 +20,14 @@ void Firefly::update(float step, int frameNum, ofxVec2f center){
     //
     // Center gravity
     //
-    a += -(center - pos) * *gravityForce*0.01;
+    ofxVec3f center3 = ofxVec3f(center.x, center.y,0);
+    a += (center3 - pos) * *gravityForce*0.01;
     
     
     //
     // Wortex force
     //
-    ofxVec2f v1 = ofxVec2f(-pos.z, pos.x).normalize();
+    ofxVec2f v1 = ofxVec2f(-(pos.z-center3.z), pos.x-center3.x).normalize();
     ofxVec3f v2 = ofxVec3f(v1.x, 0, v1.y);
     a += v2 * *wortexForce;
     
@@ -40,13 +41,14 @@ void Firefly::update(float step, int frameNum, ofxVec2f center){
     opacity = noise->noiseuf((float)(frameNum+2000)/((1-*opacitySpeed)*10.0), i*10.0) * *opacityNoise + (1-  *opacityNoise);
 }
 
-void Firefly::draw(bool front){
+void Firefly::draw(bool front, float alpha){
     float aa = pos.z*5;
     if(!front){
         aa = -pos.z*5;
     }
     aa = ofClamp(aa, 0, 1);
     aa *= opacity;
+    aa *= alpha;
     
     ofSetColor(255,255,255,aa*255.0);
     glBlendFunc(GL_ONE, GL_ONE);

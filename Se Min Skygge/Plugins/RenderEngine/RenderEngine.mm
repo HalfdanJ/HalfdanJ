@@ -233,10 +233,10 @@
         }
     }
     
-    
+    /*
     if(ofGetElapsedTimeMillis()-timer > 2){
         cout<<"Update time: "<<ofGetElapsedTimeMillis()-timer<<endl;
-    }
+    }*/
     timer= ofGetElapsedTimeMillis();
     
 }
