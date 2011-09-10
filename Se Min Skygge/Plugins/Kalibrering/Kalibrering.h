@@ -10,8 +10,10 @@
 
 #include "Plugin.h"
 
+#import "ProjectorCalibrator.h"
+
 @interface Kalibrering : ofPlugin{
-    
+    ProjectorCalibrator * projCalib[2];   
 }
 
 @end

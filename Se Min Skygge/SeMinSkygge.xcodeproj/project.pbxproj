@@ -32,6 +32,9 @@
 		58D23F7C1386BD66002E994A /* ofxTrackedUser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58D23F211386BD65002E994A /* ofxTrackedUser.cpp */; };
 		58D23F7D1386BD66002E994A /* ofxUserGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58D23F231386BD65002E994A /* ofxUserGenerator.cpp */; };
 		58D23FB41386CCA0002E994A /* ofxIRGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58D23FB21386CCA0002E994A /* ofxIRGenerator.cpp */; };
+		58D67689141BCD990048DD93 /* Kalibrering.mm in Sources */ = {isa = PBXBuildFile; fileRef = 58D67688141BCD990048DD93 /* Kalibrering.mm */; };
+		58D6768B141BEA950048DD93 /* Kalibrering.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58D6768A141BEA950048DD93 /* Kalibrering.xib */; };
+		58D6768E141BEB300048DD93 /* ProjectorCalibrator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 58D6768D141BEB300048DD93 /* ProjectorCalibrator.mm */; };
 		58DA9146139BE6B70006B665 /* handle.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DA9140139BE6B70006B665 /* handle.png */; };
 		58DA9147139BE6B70006B665 /* Kinect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 58DA9142139BE6B70006B665 /* Kinect.mm */; };
 		58DA9148139BE6B70006B665 /* Kinect.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58DA9143139BE6B70006B665 /* Kinect.xib */; };
@@ -304,6 +307,11 @@
 		58D23F241386BD65002E994A /* ofxUserGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUserGenerator.h; sourceTree = "<group>"; };
 		58D23FB21386CCA0002E994A /* ofxIRGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxIRGenerator.cpp; sourceTree = "<group>"; };
 		58D23FB31386CCA0002E994A /* ofxIRGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxIRGenerator.h; sourceTree = "<group>"; };
+		58D67687141BCD990048DD93 /* Kalibrering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kalibrering.h; sourceTree = "<group>"; };
+		58D67688141BCD990048DD93 /* Kalibrering.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Kalibrering.mm; sourceTree = "<group>"; };
+		58D6768A141BEA950048DD93 /* Kalibrering.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Kalibrering.xib; sourceTree = "<group>"; };
+		58D6768C141BEB300048DD93 /* ProjectorCalibrator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectorCalibrator.h; sourceTree = "<group>"; };
+		58D6768D141BEB300048DD93 /* ProjectorCalibrator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ProjectorCalibrator.mm; sourceTree = "<group>"; };
 		58DA9140139BE6B70006B665 /* handle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = handle.png; sourceTree = "<group>"; };
 		58DA9141139BE6B70006B665 /* Kinect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kinect.h; sourceTree = "<group>"; };
 		58DA9142139BE6B70006B665 /* Kinect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Kinect.mm; sourceTree = "<group>"; };
@@ -845,6 +853,18 @@
 				58D23F241386BD65002E994A /* ofxUserGenerator.h */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		58D67686141BCD990048DD93 /* Kalibrering */ = {
+			isa = PBXGroup;
+			children = (
+				58D67687141BCD990048DD93 /* Kalibrering.h */,
+				58D67688141BCD990048DD93 /* Kalibrering.mm */,
+				58D6768A141BEA950048DD93 /* Kalibrering.xib */,
+				58D6768C141BEB300048DD93 /* ProjectorCalibrator.h */,
+				58D6768D141BEB300048DD93 /* ProjectorCalibrator.mm */,
+			);
+			path = Kalibrering;
 			sourceTree = "<group>";
 		};
 		58DA913F139BE6B70006B665 /* Kinect */ = {
@@ -1802,6 +1822,7 @@
 		DDC8EA5D113809B100574926 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				58D67686141BCD990048DD93 /* Kalibrering */,
 				585103D2140E6D8800930BC5 /* Tapet */,
 				58F748FE13FFEB8000DB3E7A /* Handshadows */,
 				5836E3D613F1548800725221 /* Fireflies */,
@@ -1960,6 +1981,7 @@
 				DD624C9C13AE24A8004EAB00 /* BlobTracker2d.xib in Resources */,
 				DD624C9E13AE24A8004EAB00 /* BlobTrackerInstance2d.xib in Resources */,
 				DDC3B80713AE3A8C00F605A7 /* VideoPlayer.xib in Resources */,
+				58D6768B141BEA950048DD93 /* Kalibrering.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2089,6 +2111,8 @@
 				584501F413FC44D900B6924C /* shaderBlur.cpp in Sources */,
 				58F7490113FFEBE000DB3E7A /* Handshadows.mm in Sources */,
 				585103D5140E6D9400930BC5 /* Tapet.mm in Sources */,
+				58D67689141BCD990048DD93 /* Kalibrering.mm in Sources */,
+				58D6768E141BEB300048DD93 /* ProjectorCalibrator.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

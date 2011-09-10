@@ -17,17 +17,25 @@
 }
 
 -(void)setup{
-
+     Kinect * kinect = GetPlugin(Kinect);
+    
+    projCalib[0] = [[ProjectorCalibrator alloc] init];
+//    [projCalib[0] setSurface:Surface(@"Screen",0)];
+    [projCalib[0] setKinect:[kinect getInstance:0]];
+    
 }
 
 -(void)update:(NSDictionary *)drawingInformation{
-
+    [projCalib[0] update:drawingInformation];
 }
 
+-(void)controlDraw:(NSDictionary *)drawingInformation{
+    [projCalib[0] controlDraw:drawingInformation];
+} 
+
 -(void)draw:(NSDictionary *)drawingInformation{
- //   Kinect * kinect = GetPlugin(Kinect);
+    ofSetColor(255,255,255);
     
-   // [[kinect getInstance:0] getColorGenerator]->draw(0,0,1,1);
     
 }
 

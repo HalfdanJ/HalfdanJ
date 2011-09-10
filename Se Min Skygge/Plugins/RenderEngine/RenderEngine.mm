@@ -353,6 +353,16 @@
 
 //------------------------------------------------------------------------------------------------------------------------
 
+-(float)switchProjector:(bool)inv{
+    float a = 0.9479;
+    float b = 0.0521;
+    float gamma = 2.4000;
+    float x = PropF(@"switchProjector");
+    if(inv)
+        x = 1-x;
+    
+    return 1-powf((a*(1-x)+b),gamma);
+}
 
 -(void)draw:(NSDictionary *)drawingInformation{
 
@@ -377,8 +387,8 @@
                 glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA, GL_ONE,GL_ONE);        
             }
             
-            if([obj backAlpha]*(PropF(@"switchProjector")) > 0){
-                [obj drawWithAlpha:PropF(@"masterAlphaBack")*[obj backAlpha]*(PropF(@"switchProjector")) front:NO];
+            if([obj backAlpha]*[self switchProjector:NO] > 0){
+                [obj drawWithAlpha:PropF(@"masterAlphaBack")*[obj backAlpha]*[self switchProjector:NO] front:NO];
             } else if([obj maskBack]) {
                 [obj drawMaskWithAlpha:1.0];
             }
@@ -387,8 +397,8 @@
             glPushMatrix();
             
             if([obj absoluteVisible]){
-                if([obj frontAlpha]*(1-PropF(@"switchProjector")) > 0){
-                    [obj drawWithAlpha:PropF(@"masterAlphaBack")*[obj frontAlpha]*(1-PropF(@"switchProjector")) front:YES];
+                if([obj frontAlpha]*[self switchProjector:YES] > 0){
+                    [obj drawWithAlpha:PropF(@"masterAlphaBack")*[obj frontAlpha]*[self switchProjector:YES] front:YES];
                 }
             }
             glPopMatrix();
@@ -443,8 +453,8 @@
         glPushMatrix();
         
         if([obj absoluteVisible]){
-            if([obj frontAlpha]*PropF(@"switchProjector") > 0){
-                [obj drawWithAlpha:PropF(@"masterAlphaFront")*[obj frontAlpha]*PropF(@"switchProjector") front:YES];
+            if([obj frontAlpha]*[self switchProjector:NO] > 0){
+                [obj drawWithAlpha:PropF(@"masterAlphaFront")*[obj frontAlpha]*[self switchProjector:NO] front:YES];
             }
         }
         glPopMatrix();
@@ -457,8 +467,8 @@
                 glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA, GL_ONE,GL_ONE);        
             }
             
-            if([obj backAlpha] * (1-PropF(@"switchProjector")) > 0){
-                [obj drawWithAlpha:PropF(@"masterAlphaFront")*[obj backAlpha]* (1-PropF(@"switchProjector")) front:NO];
+            if([obj backAlpha] * [self switchProjector:YES] > 0){
+                [obj drawWithAlpha:PropF(@"masterAlphaFront")*[obj backAlpha]* [self switchProjector:YES] front:NO];
             } else if([obj maskBack]) {
                 [obj drawMaskWithAlpha:1.0];
             }

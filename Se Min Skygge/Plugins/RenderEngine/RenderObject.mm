@@ -216,25 +216,34 @@ const int fboBorder = 20;
                 case 2: //Front + back + alpha
                     
                     if(front){
-                        glBlendFuncSeparate(GL_ZERO,GL_SRC_COLOR, GL_SRC_COLOR,GL_ZERO);        
-                        
+                        glBlendFuncSeparate(GL_ZERO,GL_ONE_MINUS_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR ,GL_ZERO);        
+                        glColor3f((float)alpha*[self opacity],(float)alpha*[self opacity],(float)alpha*[self opacity]);   
+
                         [self drawTexture:assetTexture size:NSMakeRect(0,2*[self pixelsHigh],[self pixelsWide], [self pixelsHigh])];
-                        glBlendFuncSeparate(GL_SRC_ALPHA,GL_DST_ALPHA, GL_ONE,GL_ZERO);        
                         
+                        
+                    
+                        glBlendFuncSeparate(GL_ONE,GL_ONE, GL_ONE,GL_ONE);        
+
+                       // glColor4f(255,255,255,(float)alpha*[self opacity]);   
+
                         [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])]; 
+                        ofEnableAlphaBlending();
+
                     }else{
-                        glBlendFuncSeparate(GL_ZERO, GL_SRC_COLOR,GL_SRC_COLOR,GL_ZERO);  //Draw black in the mask      
-                        
+                        glBlendFuncSeparate(GL_ZERO,GL_ONE_MINUS_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR ,GL_ZERO);        
+                        glColor3f((float)alpha*[self opacity],(float)alpha*[self opacity],(float)alpha*[self opacity]);   
+
                         [self drawTexture:assetTexture size:NSMakeRect(0,2*[self pixelsHigh],[self pixelsWide], [self pixelsHigh])];
                         
-                        glBlendFuncSeparate(GL_SRC_ALPHA,GL_DST_ALPHA, GL_ONE, GL_ZERO);        
+                        glBlendFuncSeparate(GL_ONE,GL_ONE, GL_ONE,GL_ONE);        
                         
                         [self drawTexture:assetTexture size:NSMakeRect(0,[self pixelsHigh],[self pixelsWide], [self pixelsHigh])]; 
                         ofEnableAlphaBlending();
                     }
                     break;
                     
-                case 3: //Front + back + frontalpha
+                case 3: //Front + back +    pha
                     
                     if(front){
                         glBlendFuncSeparate(GL_ZERO,GL_SRC_COLOR, GL_SRC_COLOR,GL_ZERO);        
@@ -246,6 +255,13 @@ const int fboBorder = 20;
                     } else {
                         [self drawTexture:assetTexture size:NSMakeRect(0,[self pixelsHigh],[self pixelsWide], [self pixelsHigh])]; 
                     }
+                    break;
+                    
+                case 4: //Front + back + alphacheat
+                    if(front)
+                        [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])]; 
+                    else
+                        [self drawTexture:assetTexture size:NSMakeRect(0,[self pixelsHigh],[self pixelsWide], [self pixelsHigh])]; 
                     break;
                 default:
                     break;
@@ -272,9 +288,9 @@ const int fboBorder = 20;
                 case 1: //Front + back
                     break;
                 case 2: //Front + back + alpha
-                    glBlendFuncSeparate(GL_ZERO,GL_SRC_COLOR, GL_SRC_COLOR,GL_ZERO);        
+               //     glBlendFuncSeparate(GL_ZERO,GL_SRC_COLOR, GL_SRC_COLOR,GL_ZERO);        
                     
-                    [self drawTexture:assetTexture size:NSMakeRect(0,2*[self pixelsHigh],[self pixelsWide], [self pixelsHigh])];
+                //    [self drawTexture:assetTexture size:NSMakeRect(0,2*[self pixelsHigh],[self pixelsWide], [self pixelsHigh])];
                     /*                        glBlendFuncSeparate(GL_DST_ALPHA,GL_DST_COLOR, GL_SRC_ALPHA,GL_DST_ALPHA);        
                      
                      [self drawTexture:assetTexture size:NSMakeRect(0,0,[self pixelsWide], [self pixelsHigh])]; */
@@ -1051,7 +1067,9 @@ const int fboBorder = 20;
     if(play){
         dispatch_async(dispatch_get_main_queue(), ^{
             if(videoAsset){
-                firstFrameAfterPlay = YES;
+                if(change)
+                    firstFrameAfterPlay = YES;
+                
                 if(chapterFrom != 0 && [videoAsset chapterCount] >= chapterFrom){
                     [videoAsset setCurrentTime:[videoAsset startTimeOfChapter:chapterFrom]];
                 } else {
@@ -1066,7 +1084,6 @@ const int fboBorder = 20;
     if(!play){
         dispatch_async(dispatch_get_main_queue(), ^{
             if(videoAsset){
-                firstFrameAfterPlay = YES;
 
                 [videoAsset setRate:0.0];
             }

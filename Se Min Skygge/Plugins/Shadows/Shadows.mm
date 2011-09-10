@@ -31,9 +31,9 @@
     
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"flash"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"bg"];
-        [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"trackinOpacity"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"trackinOpacity"];
     
-
+    
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:1] named:@"frontFakeShadow"];
     
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:1 maxValue:10] named:@"blurPass"];
@@ -44,7 +44,7 @@
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0 minValue:0 maxValue:10] named:@"inputGain"];
     
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.0 minValue:0.0 maxValue:1] named:@"mask"];
-
+    
     
     [self addProperty:[BoolProperty boolPropertyWithDefaultvalue:NO] named:@"useOpenCV"];
     [self addProperty:[BoolProperty boolPropertyWithDefaultvalue:NO] named:@"useShaders"];
@@ -165,31 +165,35 @@
 -(void)update:(NSDictionary *)drawingInformation{
     if(PropB(@"midiMTC")){
         [Prop(@"timelineTime") setFloatValue:[GetPlugin(Midi) getMTCSeconds]];
-    }
-    
-    float timelineTime = PropF(@"timelineTime");
-    float valueTime = [self valueForTime:timelineTime];
-    if(timelineTime > 0 && valueTime != -1000){
-        long long curTime = ofGetElapsedTimeMillis();
-        long long goalTime = curTime + valueTime * 1000.0;
-
-        for(int i=BUFFER_SIZE-1;i>=0;i--){
-            int j = (bufferIndex - BUFFER_SIZE) + i;
-            if(j < 0){
-                j += BUFFER_SIZE;
+        
+        
+        float timelineTime = PropF(@"timelineTime");
+        float valueTime = [self valueForTime:timelineTime];
+        if(timelineTime > 0 && valueTime != -1000){
+            long long curTime = ofGetElapsedTimeMillis();
+            long long goalTime = curTime + valueTime * 1000.0;
+            
+            for(int i=BUFFER_SIZE-1;i>=0;i--){
+                int j = (bufferIndex - BUFFER_SIZE) + i;
+                if(j < 0){
+                    j += BUFFER_SIZE;
+                }
+               // cout<<valueTime<<endl;
+            //    cout<<j<<"   "<<historyTime[j]<<" < "<<goalTime<<endl;
+                if(historyTime[j] < goalTime){
+                  //  [Prop(@"currentIndex") setFloatValue:(float)i/BUFFER_SIZE];
+                    float c = PropF(@"currentIndex");
+                    [Prop(@"currentIndex") setFloatValue:c*0.95+((float)i/BUFFER_SIZE)*0.05];
+                    break;
+                }
             }
-         //144   cout<<j<<"   "<<historyTime[j]<<" < "<<goalTime<<endl;
-            if(historyTime[j] < goalTime){
-                [Prop(@"currentIndex") setFloatValue:(float)i/BUFFER_SIZE];
-                break;
-            }
+            /*
+             float index = (-valueTime * 30) / BUFFER_SIZE;
+             if(index >= 0){
+             [Prop(@"currentIndex") setFloatValue:1-index];
+             //cout<<index<<endl;
+             }*/
         }
-        /*
-        float index = (-valueTime * 30) / BUFFER_SIZE;
-        if(index >= 0){
-            [Prop(@"currentIndex") setFloatValue:1-index];
-            //cout<<index<<endl;
-        }*/
     }
     
     if(PropB(@"reloadShaders")){
@@ -269,7 +273,7 @@
     }
     
     if(l.time == -1 || r.time == -1){
-   //     cout<<"No timeline for time "<<time<<endl;
+        //     cout<<"No timeline for time "<<time<<endl;
         return -1000;
     } 
     
@@ -280,67 +284,67 @@
 
 -(void)controlDraw:(NSDictionary *)drawingInformation{
     /*if([[GetPlugin(Kinect) enabled] boolValue] && [kinect kinectConnected]){
-        ofBackground(0, 0, 0);
-        ofEnableAlphaBlending();
-        
-        ofxPoint3f corners[4];
-        corners[0] = [kinect convertSurfaceToWorld:ofxPoint3f(0,0,0)];
-        corners[1] = [kinect convertSurfaceToWorld:ofxPoint3f([kinect surfaceAspect],0,0)];
-        corners[2] = [kinect convertSurfaceToWorld:ofxPoint3f([kinect surfaceAspect],1,0)];
-        corners[3] = [kinect convertSurfaceToWorld:ofxPoint3f(0,1,0)];
-        for(int i=0;i<4;i++){
-            corners[i] = [kinect convertWorldToKinect:ofxPoint3f(corners[i])];
-        }
-        
-        float scaleX = (1024.0/640);
-        float scaleY = (768.0/480);
-        
-        int i = [self getCurrentBufferIndex];    
-        ofSetColor(255,255,255);
-        grayOutputImage->getTextureReference().bind();
-        glBegin(GL_QUADS);
-        glTexCoord2f(corners[0].x*scaleX, corners[0].y*scaleY);   glVertex2d(0, 0);
-        glTexCoord2f(corners[1].x*scaleX, corners[1].y*scaleY);   glVertex2d(320, 0);
-        glTexCoord2f(corners[2].x*scaleX, corners[2].y*scaleY);   glVertex2d(320, 240);
-        glTexCoord2f(corners[3].x*scaleX, corners[3].y*scaleY);   glVertex2d(0, 240);
-        glEnd();
-        grayOutputImage->getTextureReference().unbind();
-        
-        
-        ofSetColor(255,255,255,80);
-        history[bufferIndex]->bind();
-        glBegin(GL_QUADS);
-        glTexCoord2f(corners[0].x, corners[0].y);   glVertex2d(0, 0);
-        glTexCoord2f(corners[1].x, corners[1].y);   glVertex2d(320, 0);
-        glTexCoord2f(corners[2].x, corners[2].y);   glVertex2d(320, 240);
-        glTexCoord2f(corners[3].x, corners[3].y);   glVertex2d(0, 240);
-        glEnd();
-        history[bufferIndex]->unbind();
-        
-        
-        
-        //Timeline
-        
-        glPushMatrix();{
-            glTranslated(5, 250, 0);
-            
-            ofNoFill();
-            ofSetColor(150, 150, 150);
-            ofRect(0,0,310,20);
-            
-            //Fill
-            ofFill();
-            ofSetColor(100,100,150);
-            ofRect(309-309.0*((float)bufferFill/BUFFER_SIZE)+1,0,309.0*((float)bufferFill/BUFFER_SIZE),19);
-            
-            //Current index
-            ofFill();
-            ofSetColor(255,255,255,100);
-            ofRect(PropF(@"currentIndex")*310.0,-5,3,30);
-            
-            
-        }glPopMatrix();
-    }*/
+     ofBackground(0, 0, 0);
+     ofEnableAlphaBlending();
+     
+     ofxPoint3f corners[4];
+     corners[0] = [kinect convertSurfaceToWorld:ofxPoint3f(0,0,0)];
+     corners[1] = [kinect convertSurfaceToWorld:ofxPoint3f([kinect surfaceAspect],0,0)];
+     corners[2] = [kinect convertSurfaceToWorld:ofxPoint3f([kinect surfaceAspect],1,0)];
+     corners[3] = [kinect convertSurfaceToWorld:ofxPoint3f(0,1,0)];
+     for(int i=0;i<4;i++){
+     corners[i] = [kinect convertWorldToKinect:ofxPoint3f(corners[i])];
+     }
+     
+     float scaleX = (1024.0/640);
+     float scaleY = (768.0/480);
+     
+     int i = [self getCurrentBufferIndex];    
+     ofSetColor(255,255,255);
+     grayOutputImage->getTextureReference().bind();
+     glBegin(GL_QUADS);
+     glTexCoord2f(corners[0].x*scaleX, corners[0].y*scaleY);   glVertex2d(0, 0);
+     glTexCoord2f(corners[1].x*scaleX, corners[1].y*scaleY);   glVertex2d(320, 0);
+     glTexCoord2f(corners[2].x*scaleX, corners[2].y*scaleY);   glVertex2d(320, 240);
+     glTexCoord2f(corners[3].x*scaleX, corners[3].y*scaleY);   glVertex2d(0, 240);
+     glEnd();
+     grayOutputImage->getTextureReference().unbind();
+     
+     
+     ofSetColor(255,255,255,80);
+     history[bufferIndex]->bind();
+     glBegin(GL_QUADS);
+     glTexCoord2f(corners[0].x, corners[0].y);   glVertex2d(0, 0);
+     glTexCoord2f(corners[1].x, corners[1].y);   glVertex2d(320, 0);
+     glTexCoord2f(corners[2].x, corners[2].y);   glVertex2d(320, 240);
+     glTexCoord2f(corners[3].x, corners[3].y);   glVertex2d(0, 240);
+     glEnd();
+     history[bufferIndex]->unbind();
+     
+     
+     
+     //Timeline
+     
+     glPushMatrix();{
+     glTranslated(5, 250, 0);
+     
+     ofNoFill();
+     ofSetColor(150, 150, 150);
+     ofRect(0,0,310,20);
+     
+     //Fill
+     ofFill();
+     ofSetColor(100,100,150);
+     ofRect(309-309.0*((float)bufferFill/BUFFER_SIZE)+1,0,309.0*((float)bufferFill/BUFFER_SIZE),19);
+     
+     //Current index
+     ofFill();
+     ofSetColor(255,255,255,100);
+     ofRect(PropF(@"currentIndex")*310.0,-5,3,30);
+     
+     
+     }glPopMatrix();
+     }*/
     
     //Real timeline (!)
     glPushMatrix();{
@@ -377,7 +381,7 @@
     }glPopMatrix();
     
     
-
+    
 }
 
 -(void)draw:(NSDictionary *)drawingInformation{
@@ -393,6 +397,7 @@
     
     
     if(!PropB(@"useOpenCV")) {    
+        [kinect getIRGenerator]->generateTexture();
         ofTexture * tex = [kinect getIRGenerator]->getTexture();
         
         //Blur input
@@ -436,7 +441,7 @@
                 ofEllipse(0.3,0.3,0.2,0.2);
             }
             ofSetColor(255,255,255);
-
+            
         }  blur->endRender();
         ofEnableAlphaBlending();
         
@@ -558,7 +563,7 @@
                     ofSetColor(PropF(@"trackinOpacity")*255.0,PropF(@"trackinOpacity")*255.0,PropF(@"trackinOpacity")*255.0,255.0*powf(PropF(@"back"),1.0/2.2));                
                     motionblurFbo[pingpong]->draw(0,0,Aspect(@"Screen",1),1);
                 }
-
+                
                 
                 
                 
