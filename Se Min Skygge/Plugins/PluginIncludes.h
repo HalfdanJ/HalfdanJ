@@ -9,6 +9,7 @@
 #include "Fireflies.h"
 #include "Handshadows.h"
 #include "Tapet.h"
+#include "Kalibrering.h"
 
 #include "Kinect.h"
 #include "BlobTracker2d.h"

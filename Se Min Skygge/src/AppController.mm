@@ -47,6 +47,8 @@ extern ofAppBaseWindow * window;
     //[pluginManagerController addPlugin:[[ShadowFog alloc] init]];
     [pluginManagerController addPlugin:[[Fireflies alloc] init]];
     [pluginManagerController addPlugin:[[Tapet alloc] init]];
+    
+[pluginManagerController addPlugin:[[Kalibrering alloc] init]];
 /**/
 
 
