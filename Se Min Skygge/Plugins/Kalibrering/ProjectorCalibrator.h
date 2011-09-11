@@ -12,9 +12,27 @@
 #import "Keystoner.h"
 #import "Kinect.h"
 
+@interface ProjectorAlignment : NSObject {
+}
+
+-(void)update:(NSDictionary *)drawingInformation;
+-(void)draw:(NSDictionary *)drawingInformation;
+
+@end
+
+
+
+
+
+
 @interface ProjectorCalibrator : NSObject{
     KeystoneSurface * surface;
     KinectInstance * kinect;
+    
+    int corner;
+    
+    NSRect rect;
+    bool widthHeightSwitcher;
 } 
 
 @property (readwrite, assign) KeystoneSurface * surface;

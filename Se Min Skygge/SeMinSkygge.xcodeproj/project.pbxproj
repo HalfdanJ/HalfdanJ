@@ -74,6 +74,7 @@
 		DD7B14BF11A3CF38000D9775 /* ofxQuaternion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD7B14A811A3CF38000D9775 /* ofxQuaternion.cpp */; };
 		DD7B158611A3CFD7000D9775 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7B158511A3CFD7000D9775 /* QTKit.framework */; };
 		DD7B158811A3CFDE000D9775 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7B158711A3CFDE000D9775 /* CoreMIDI.framework */; };
+		DD8D3F42141D374C0034559C /* KinectCalibrator.mm in Sources */ = {isa = PBXBuildFile; fileRef = DD8D3F41141D374C0034559C /* KinectCalibrator.mm */; };
 		DD947746135F6B2D0027F1CC /* RenderEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = DD947744135F6B2D0027F1CC /* RenderEngine.mm */; };
 		DD947747135F6B2D0027F1CC /* RenderEngine.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD947745135F6B2D0027F1CC /* RenderEngine.xib */; };
 		DD9ABFAD1341E1F20059D4EC /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD9ABFAC1341E1F20059D4EC /* ScriptingBridge.framework */; };
@@ -414,6 +415,8 @@
 		DD7B14AD11A3CF38000D9775 /* ofxVectorMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVectorMath.h; sourceTree = "<group>"; };
 		DD7B158511A3CFD7000D9775 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		DD7B158711A3CFDE000D9775 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = /System/Library/Frameworks/CoreMIDI.framework; sourceTree = "<absolute>"; };
+		DD8D3F40141D374C0034559C /* KinectCalibrator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KinectCalibrator.h; sourceTree = "<group>"; };
+		DD8D3F41141D374C0034559C /* KinectCalibrator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = KinectCalibrator.mm; sourceTree = "<group>"; };
 		DD947743135F6B2D0027F1CC /* RenderEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderEngine.h; sourceTree = "<group>"; };
 		DD947744135F6B2D0027F1CC /* RenderEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RenderEngine.mm; sourceTree = "<group>"; };
 		DD947745135F6B2D0027F1CC /* RenderEngine.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RenderEngine.xib; sourceTree = "<group>"; };
@@ -863,6 +866,8 @@
 				58D6768A141BEA950048DD93 /* Kalibrering.xib */,
 				58D6768C141BEB300048DD93 /* ProjectorCalibrator.h */,
 				58D6768D141BEB300048DD93 /* ProjectorCalibrator.mm */,
+				DD8D3F40141D374C0034559C /* KinectCalibrator.h */,
+				DD8D3F41141D374C0034559C /* KinectCalibrator.mm */,
 			);
 			path = Kalibrering;
 			sourceTree = "<group>";
@@ -2113,6 +2118,7 @@
 				585103D5140E6D9400930BC5 /* Tapet.mm in Sources */,
 				58D67689141BCD990048DD93 /* Kalibrering.mm in Sources */,
 				58D6768E141BEB300048DD93 /* ProjectorCalibrator.mm in Sources */,
+				DD8D3F42141D374C0034559C /* KinectCalibrator.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
