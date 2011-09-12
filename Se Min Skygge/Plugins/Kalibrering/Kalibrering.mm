@@ -9,7 +9,6 @@
 
 #import "Kalibrering.h"
 #import "ProjectorCalibrator.h"
-#import "KinectCalibrator.h"
 
 @implementation Kalibrering
 
@@ -21,32 +20,60 @@
 }
 
 -(void)setup{
-    Kinect * kinect = GetPlugin(Kinect);
     
-    //0
-    [calibrators addObject:[[ProjectorAlignment alloc] init]];
+  //  [Prop(@"Enabled") setBoolValue:NO];
+ //   [Prop(@"calibratorIndex") setIntValue:0];    
     
-    //1
-    KinectAlignment * kinectAlignment = [[KinectAlignment alloc] init];
-    [kinectAlignment setKinect:[kinect getInstance:0]];    
-    [calibrators addObject:kinectAlignment];
-    
-    //2
-    kinectAlignment = [[KinectAlignment alloc] init];
-    [kinectAlignment setKinect:[kinect getInstance:1]];    
-    [calibrators addObject:kinectAlignment];
-    
-    
-    //3
-    ProjectorCalibrator * projectorCalibrator = [[ProjectorCalibrator alloc] init];
-    [projectorCalibrator setKinect:[kinect getInstance:0]];    
-    [projectorCalibrator setSurface:[GetPlugin(Keystoner) getSurface:@"Screen" viewNumber:0 projectorNumber:0]];
-    [calibrators addObject:projectorCalibrator];
-    
-    
+
+    firstRun = NO;
 }
 
 -(void)update:(NSDictionary *)drawingInformation{
+    if(!firstRun){
+        Kinect * kinect = GetPlugin(Kinect);
+        kinect1 = [kinect getInstance:0];
+        kinect2 = [kinect getInstance:1];
+        
+        context = new ofxOpenNIContext();
+        context->setup();
+        
+        image1 = new ofxImageGenerator();
+        image1->deviceInfoChar =  [[kinect1 deviceChar] cStringUsingEncoding:NSUTF8StringEncoding];
+        image1->setup(context);
+        
+        image2 = new ofxImageGenerator();
+        image2->deviceInfoChar =  [[kinect2 deviceChar] cStringUsingEncoding:NSUTF8StringEncoding];
+        image2->setup(context);
+    
+        
+        
+        //0
+        [calibrators addObject:[[ProjectorAlignment alloc] init]];
+        
+        //1
+        KinectAlignment * kinectAlignment = [[KinectAlignment alloc] init];
+        [kinectAlignment setImage:image1];            
+        [calibrators addObject:kinectAlignment];
+        
+        //2
+        kinectAlignment = [[KinectAlignment alloc] init];
+        [kinectAlignment setImage:image2];            
+        [calibrators addObject:kinectAlignment];
+        
+        //3
+        ProjectorCalibrator * projectorCalibrator = [[ProjectorCalibrator alloc] init];
+        [projectorCalibrator setImage:image2];    
+        [projectorCalibrator setSurface:[GetPlugin(Keystoner) getSurface:@"Screen" viewNumber:0 projectorNumber:0]];
+        [calibrators addObject:projectorCalibrator];
+        
+        
+        
+        firstRun = YES;    
+    }
+    
+    context->update();
+    
+    
     if(PropB(@"go")){
         [Prop(@"go") setBoolValue:NO];
         

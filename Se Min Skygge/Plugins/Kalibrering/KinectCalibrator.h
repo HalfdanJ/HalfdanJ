@@ -10,14 +10,17 @@
 #import "Kinect.h"
 
 @interface KinectAlignment : NSObject{
-    KinectInstance * kinect;
     ofTrueTypeFont * font;
+    
+    ofxImageGenerator * image;
+    
 }
-@property (readwrite, assign) KinectInstance * kinect;
+@property ofxImageGenerator * image;
 
 -(void)update:(NSDictionary *)drawingInformation;
 -(void)controlDraw:(NSDictionary *)drawingInformation;
 -(void)draw:(NSDictionary *)drawingInformation;
+
 @end
 
 

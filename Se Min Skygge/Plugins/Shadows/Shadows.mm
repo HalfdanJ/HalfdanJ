@@ -178,12 +178,16 @@
                 if(j < 0){
                     j += BUFFER_SIZE;
                 }
-               // cout<<valueTime<<endl;
-            //    cout<<j<<"   "<<historyTime[j]<<" < "<<goalTime<<endl;
+                // cout<<valueTime<<endl;
+                //    cout<<j<<"   "<<historyTime[j]<<" < "<<goalTime<<endl;
                 if(historyTime[j] < goalTime){
-                  //  [Prop(@"currentIndex") setFloatValue:(float)i/BUFFER_SIZE];
-                    float c = PropF(@"currentIndex");
-                    [Prop(@"currentIndex") setFloatValue:c*0.95+((float)i/BUFFER_SIZE)*0.05];
+                    if(fabs([Prop(@"currentIndex") floatValue] - (float)i/BUFFER_SIZE) < 0.1){
+                        float c = PropF(@"currentIndex");
+                        [Prop(@"currentIndex") setFloatValue:c*0.95+((float)i/BUFFER_SIZE)*0.05];                        
+                    } else {
+                        [Prop(@"currentIndex") setFloatValue:(float)i/BUFFER_SIZE];                        
+                    }
+                    
                     break;
                 }
             }

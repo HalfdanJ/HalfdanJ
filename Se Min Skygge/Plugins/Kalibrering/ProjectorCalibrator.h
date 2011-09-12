@@ -11,6 +11,8 @@
 #include "Plugin.h"
 #import "Keystoner.h"
 #import "Kinect.h"
+#import "ofxOpenCv.h"
+
 
 @interface ProjectorAlignment : NSObject {
 }
@@ -27,18 +29,28 @@
 
 @interface ProjectorCalibrator : NSObject{
     KeystoneSurface * surface;
-    KinectInstance * kinect;
-    
+    ofxImageGenerator * image;
+    ofxCvColorImage * bg;
+    ofxCvColorImage * diff;
+    ofxCvColorImage * now;
+
+    ofxPoint2f corners[4];
     int corner;
+    int step;
     
     NSRect rect;
     bool widthHeightSwitcher;
+    
+    long timer;
+    
+    int bgNoise;
 } 
 
 @property (readwrite, assign) KeystoneSurface * surface;
-@property (readwrite, assign) KinectInstance * kinect;
+@property (readwrite, assign) ofxImageGenerator * image;
 
 -(void)update:(NSDictionary *)drawingInformation;
 -(void)controlDraw:(NSDictionary *)drawingInformation;
-
+-(void)draw:(NSDictionary *)drawingInformation;
+-(void) go;
 @end
