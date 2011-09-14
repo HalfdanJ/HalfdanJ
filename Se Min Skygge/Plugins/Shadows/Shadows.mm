@@ -181,10 +181,12 @@
                 // cout<<valueTime<<endl;
                 //    cout<<j<<"   "<<historyTime[j]<<" < "<<goalTime<<endl;
                 if(historyTime[j] < goalTime){
+                    cout<<fabs([Prop(@"currentIndex") floatValue] - (float)i/BUFFER_SIZE)<<endl;
                     if(fabs([Prop(@"currentIndex") floatValue] - (float)i/BUFFER_SIZE) < 0.1){
                         float c = PropF(@"currentIndex");
                         [Prop(@"currentIndex") setFloatValue:c*0.95+((float)i/BUFFER_SIZE)*0.05];                        
                     } else {
+                        cout<<"Jump"<<endl;
                         [Prop(@"currentIndex") setFloatValue:(float)i/BUFFER_SIZE];                        
                     }
                     

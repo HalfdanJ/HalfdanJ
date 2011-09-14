@@ -34,6 +34,8 @@
         [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1 minValue:0 maxValue:1] named:@"maxDist"];
         [self addProperty:[BoolProperty boolPropertyWithDefaultvalue:NO] named:@"drawDebug"];
         
+        [self addProperty:[BoolProperty boolPropertyWithDefaultvalue:NO] named:@"draw"];
+        
     }
 }
 
@@ -45,7 +47,7 @@
     
     kinect = [GetPlugin(Kinect) getInstance:1];
     [self assignMidiChannel:12]; 
-        
+    
     fbo = new ofxFBOTexture();
     fbo->allocate(1024, 540);
 }
@@ -60,7 +62,7 @@
         }
     }
     
-      
+    
     float xMin = -1;
     float xMax = -1;
     float yMin = -1;
@@ -70,7 +72,7 @@
     InteractiveWall * wall = GetPlugin(InteractiveWall);
     
     vector<ofxPoint3f> p = [kinect getPointsInBoxXMin:0.1 xMax:Aspect(@"Screen",1)-0.1 yMin:0.1 yMax:0.9 zMin:-1000 zMax:-[[[wall properties] valueForKey:@"screenDist"] floatValue] res:[[[wall properties] valueForKey:@"kinectRes"] floatValue] ];
-  
+    
     for(int i=0;i<p.size();i++){
         ofxPoint3f kinectP = [kinect convertWorldToKinect:[kinect convertSurfaceToWorld:p[i]]];        
         ofxPoint2f warped = [kinect coordWarper]->transform(kinectP.x/640.0, kinectP.y/480.0);
@@ -86,9 +88,9 @@
     }
     
     xMin *= aspect;
-   // yMin *= aspect;
+    // yMin *= aspect;
     xMax *= aspect;
-   // yMax *= aspect;
+    // yMax *= aspect;
     
     int modes[4];
     
@@ -148,45 +150,47 @@
     ofSetColor(0,0,0);
     ofRect(0,0,1,1);
     float w = Aspect(@"Screen",1);
-        for(int i=0;i<NUM_BOXES;i++){
-            ofSetColor(255,255,255);
-            
-            float l = boxes[i].sides[3].value()/w;
-            float t = boxes[i].sides[0].value();
-            float r = boxes[i].sides[1].value()/w;
-            float b = boxes[i].sides[2].value();
-            
-            if(l < r && t < b){
-                ofRect(l,t,r-l,b-t);
-            }
+    for(int i=0;i<NUM_BOXES;i++){
+        ofSetColor(255,255,255);
+        
+        float l = boxes[i].sides[3].value()/w;
+        float t = boxes[i].sides[0].value();
+        float r = boxes[i].sides[1].value()/w;
+        float b = boxes[i].sides[2].value();
+        
+        if(l < r && t < b){
+            ofRect(l,t,r-l,b-t);
         }
+    }
     
     fbo->end();
     
-    ApplySurfaceForProjector(@"Screen",1){
-        glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ZERO);
-        fbo->draw(0,0,Aspect(@"Screen",1), 1);
-        
-        if(PropB(@"drawDebug")){
-            ofSetColor(255,0,0);
-            InteractiveWall * wall = GetPlugin(InteractiveWall);
+    if(PropB(@"draw")){
+        ApplySurfaceForProjector(@"Screen",1){
+            glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ZERO);
+            fbo->draw(0,0,Aspect(@"Screen",1), 1);
             
-            vector<ofxPoint3f> p = [kinect getPointsInBoxXMin:0 xMax:Aspect(@"Screen",1) yMin:0 yMax:1 zMin:-1000 zMax:-[[[wall properties] valueForKey:@"screenDist"] floatValue] res:[[[wall properties] valueForKey:@"kinectRes"] floatValue] ];
-            
-            for(int i=0;i<p.size();i++){
+            if(PropB(@"drawDebug")){
+                ofSetColor(255,0,0);
+                InteractiveWall * wall = GetPlugin(InteractiveWall);
                 
-                ofxPoint3f kinectP = [kinect convertWorldToKinect:[kinect convertSurfaceToWorld:p[i]]];        
-                ofxPoint2f warped = [kinect coordWarper]->transform(kinectP.x/640.0, kinectP.y/480.0);
+                vector<ofxPoint3f> p = [kinect getPointsInBoxXMin:0 xMax:Aspect(@"Screen",1) yMin:0 yMax:1 zMin:-1000 zMax:-[[[wall properties] valueForKey:@"screenDist"] floatValue] res:[[[wall properties] valueForKey:@"kinectRes"] floatValue] ];
                 
-                /*ofSetColor(255,0,0);
-                 ofRect(p[i].x,p[i].y,0.01,0.01);
-                 */
-                ofSetColor(0,255,0);
-                ofRect(warped.x*Aspect(@"Screen",1),warped.y,0.01,0.01);
+                for(int i=0;i<p.size();i++){
+                    
+                    ofxPoint3f kinectP = [kinect convertWorldToKinect:[kinect convertSurfaceToWorld:p[i]]];        
+                    ofxPoint2f warped = [kinect coordWarper]->transform(kinectP.x/640.0, kinectP.y/480.0);
+                    
+                    /*ofSetColor(255,0,0);
+                     ofRect(p[i].x,p[i].y,0.01,0.01);
+                     */
+                    ofSetColor(0,255,0);
+                    ofRect(warped.x*Aspect(@"Screen",1),warped.y,0.01,0.01);
+                }
             }
-        }
-        
-    }PopSurfaceForProjector();
+            
+        }PopSurfaceForProjector();
+    }
 }
 
 @end

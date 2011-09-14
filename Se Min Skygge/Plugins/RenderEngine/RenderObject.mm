@@ -1071,7 +1071,13 @@ const int fboBorder = 20;
                     firstFrameAfterPlay = YES;
                 
                 if(chapterFrom != 0 && [videoAsset chapterCount] >= chapterFrom){
+                    QTTime diff =  QTTimeDecrement([videoAsset currentTime], [videoAsset startTimeOfChapter:chapterFrom]);
+                    cout<<(float)fabs(diff.timeValue) <<endl;
+                    if(fabs(diff.timeValue) < 30){
+                        firstFrameAfterPlay = NO;
+                    }
                     [videoAsset setCurrentTime:[videoAsset startTimeOfChapter:chapterFrom]];
+
                 } else {
                     [videoAsset setCurrentTime:QTMakeTime(0, 0)];
                     

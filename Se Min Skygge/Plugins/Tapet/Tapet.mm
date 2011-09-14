@@ -21,6 +21,8 @@
     
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.0 minValue:0.0 maxValue:1.0] named:@"maskFront"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.0 minValue:0.0 maxValue:1.0] named:@"maskBack"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.0 minValue:0.0 maxValue:1.0] named:@"maskFront2"];
+    [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.0 minValue:0.0 maxValue:1.0] named:@"maskBack2"];
     
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.0 minValue:0.0 maxValue:1.0] named:@"whiteFront"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.0 minValue:0.0 maxValue:1.0] named:@"whiteBack"];
@@ -28,13 +30,18 @@
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.0 minValue:0.0 maxValue:1.0] named:@"tintR"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.0 minValue:0.0 maxValue:1.0] named:@"tintG"];
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.0 minValue:0.0 maxValue:1.0] named:@"tintB"];
-
+    
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:1.0 minValue:0.0 maxValue:4.0] named:@"contrast"];
     
     [self addProperty:[NumberProperty sliderPropertyWithDefaultvalue:0.0 minValue:-1.0 maxValue:1.0] named:@"brightness"];
-
+    
     [self addProperty:[BoolProperty boolPropertyWithDefaultvalue:NO] named:@"blend"];    
     [self assignMidiChannel:8];
+    
+    [Prop(@"whiteBack") setMidiSmoothing:0.9];
+    [Prop(@"tapetFront") setMidiSmoothing:0.9];
+    [Prop(@"tapetBack") setMidiSmoothing:0.9];
+
 }
 
 -(void)setup{
@@ -42,19 +49,24 @@
     NSString * path2 = [NSString stringWithFormat:@"%@/Tapet/Patinering.png",[GetPlugin(RenderEngine) assetDir]];
     NSString * path3 = [NSString stringWithFormat:@"%@/Tapet/TapetMask.png",[GetPlugin(RenderEngine) assetDir]];
     NSString * path4 = [NSString stringWithFormat:@"%@/Tapet/TapetMaskInv.png",[GetPlugin(RenderEngine) assetDir]];
-
+    NSString * path5 = [NSString stringWithFormat:@"%@/Tapet/TapetMaskSmall.png",[GetPlugin(RenderEngine) assetDir]];
+    NSString * path6 = [NSString stringWithFormat:@"%@/Tapet/TapetMaskSmallInv.png",[GetPlugin(RenderEngine) assetDir]];
+    
     tapetImage = new ofImage();
     patImage = new ofImage();
     maskImage = new ofImage();
     maskImageInv = new ofImage();
-
+    maskImage2 = new ofImage();
+    maskImageInv2 = new ofImage();
+    
     tapetImage->loadImage([path cStringUsingEncoding:NSUTF8StringEncoding]);
     patImage->loadImage([path2 cStringUsingEncoding:NSUTF8StringEncoding]);
     maskImage->loadImage([path3 cStringUsingEncoding:NSUTF8StringEncoding]);
     maskImageInv->loadImage([path4 cStringUsingEncoding:NSUTF8StringEncoding]);
-
+    maskImage2->loadImage([path5 cStringUsingEncoding:NSUTF8StringEncoding]);
+    maskImageInv2->loadImage([path6 cStringUsingEncoding:NSUTF8StringEncoding]);
+    
     shader.setup("contrastShader");
-
 }
 
 -(void)update:(NSDictionary *)drawingInformation{
@@ -75,10 +87,10 @@
             shader.setUniform("contrast",float(PropF(@"contrast")));
             shader.setUniform("brightness",float(PropF(@"brightness")));
             shader.setUniform("alpha",float(PropF(@"tapetFront")));
-
+            
             ofSetColor(r,g,b,255.0*PropF(@"tapetFront"));
             tapetImage->draw(0,0,Aspect(@"Screen",1),1);
-
+            
             shader.end();
             
             ofSetColor(r,g,b,255.0*PropF(@"patFront"));
@@ -96,6 +108,15 @@
                 ofSetColor(mask*r,mask*g,mask*b);
                 maskImage->draw(0,0,Aspect(@"Screen",1),1);
             }
+            
+            
+            mask = PropF(@"maskFront2");
+            if(mask > 0){
+                glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR);
+                ofSetColor(mask*r,mask*g,mask*b);
+                maskImage2->draw(0,0,Aspect(@"Screen",1),1);
+            }
+
         } else {
             ofEnableAlphaBlending();
             
@@ -104,7 +125,7 @@
                 ofSetColor(255,255,255,white*255.0);
                 ofRect(0,0,Aspect(@"Screen",1),1);
             }
-
+            
             if(PropB(@"blend")){
                 glBlendFunc(GL_DST_COLOR, GL_ZERO);
             }
@@ -114,7 +135,7 @@
             shader.setUniform("alpha",float(PropF(@"tapetBack")));
             
             if(PropB(@"blend")){
-                                ofSetColor(r*PropF(@"tapetBack"),g*PropF(@"tapetBack"),b*PropF(@"tapetBack"));
+                ofSetColor(r*PropF(@"tapetBack"),g*PropF(@"tapetBack"),b*PropF(@"tapetBack"));
             } else {
                 ofSetColor(r,g,b,255.0*PropF(@"tapetBack"));
             }
@@ -125,9 +146,9 @@
             
             ofSetColor(r,g,b,255.0*PropF(@"patBack"));
             patImage->draw(0,0,Aspect(@"Screen",1),1);  
-
-      
-
+            
+            
+            
             float mask = PropF(@"maskBack");
             if(mask > 0){
                 glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR);
@@ -135,6 +156,13 @@
                 maskImageInv->draw(0,0,Aspect(@"Screen",1),1);
             }
 
+            float mask2 = PropF(@"maskBack2");
+            if(mask2 > 0){
+                glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR);
+                ofSetColor(mask2*r,mask2*g,mask2*b);
+                maskImageInv2->draw(0,0,Aspect(@"Screen",1),1);
+            }
+            
         }
         
     } PopSurface();
