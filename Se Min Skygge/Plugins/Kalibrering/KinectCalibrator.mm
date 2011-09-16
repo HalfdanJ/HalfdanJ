@@ -8,8 +8,8 @@
 
 #import "KinectCalibrator.h"
 
-@implementation KinectAlignment
-@synthesize image;
+@implementation KinectTest
+@synthesize image1, image2, proj;
 
 - (id)init
 {
@@ -24,45 +24,47 @@
 
 
 -(void)update:(NSDictionary *)drawingInformation{
+   }
 
-   // image1.update();
-/*    if([otherKinect irEnabled]){
-        [otherKinect setIrEnabled:NO];
+-(void)controlDraw:(NSDictionary *)drawingInformation{
+    image1->draw(0,0,320*0.5,240);
+    image2->draw(320*0.5,0,320*0.5,240);
+}
+
+-(void)draw:(NSDictionary *)drawingInformation{
+    image1->draw(0.5*proj,0,0.25,1);
+    image2->draw(0.5*proj+0.25,0,0.25,1);
+}
+
+
+
+@end
+
+
+@implementation KinectAlignment
+@synthesize image, proj;
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        font = new ofTrueTypeFont();
+        font->loadFont("Helvetica.dfont",20, true, true);    
     }
-    else if(![kinect irEnabled] || ![kinect colorEnabled]){
-        [kinect setColorEnabled:YES];
+    
+    return self;
+}
 
-        [kinect setIrEnabled:YES];
-    }*/
+
+-(void)update:(NSDictionary *)drawingInformation{
 }
 
 -(void)controlDraw:(NSDictionary *)drawingInformation{
     image->draw(0,0,320,240);
-
-/*    if([kinect kinectConnected]){
-
-        [kinect getColorGenerator]->draw(0,0,ofGetWidth(),ofGetHeight());
-    } else if([kinect irEnabled]){
-        ofSetColor(0,0,0);
-        font->drawString("Opretter forbindelse...",10,30);
-    }   else {
-        ofSetColor(0,0,0);
-        font->drawString("Ingen forbindelse til kinect!",10,30);
-    }*/
 }
 
 -(void)draw:(NSDictionary *)drawingInformation{
-   /* if([kinect kinectConnected]){        
-        [kinect getColorGenerator]->draw(0,0,0.5,1);
-    } else if([kinect irEnabled]){
-        ofSetColor(255,255,255);
-        glScaled(1.0/2048, 1.0/768,1);
-        font->drawString("Opretter forbindelse...",300,300);
-    }   else {
-        ofSetColor(255,255,255);
-        glScaled(1.0/2048, 1.0/768,1);
-        font->drawString("Ingen forbindelse til kinect!",10,30);
-    }*/
+    image->draw((0.5*proj)+0.1,0.3,0.3,0.4);
 }
 
 

@@ -8,6 +8,35 @@
 
 #import "ProjectorCalibrator.h"
 
+
+@implementation ProjectorTest
+
+-(void)draw:(NSDictionary *)drawingInformation{
+    ofFill();    
+
+    for(int i=0;i<2;i++){
+        float w = 0.5/4.0;
+
+        ofSetColor(255,255,255);
+        ofRect(0,0,w,ofGetHeight());
+
+        ofSetColor(255,0,0);
+        ofRect(w,0,w,ofGetHeight());
+
+        ofSetColor(0,255,0);
+        ofRect(w*2,0,w,ofGetHeight());
+
+        ofSetColor(0,0,255);
+        ofRect(w*3,0,w,ofGetHeight());
+
+        glTranslated(0.5,0,0);
+        
+    }
+}
+
+
+@end
+
 @implementation ProjectorAlignment
 
 -(void)draw:(NSDictionary *)drawingInformation{
@@ -19,7 +48,7 @@
 
 @end
 
-@implementation ProjectorCalibrator
+@implementation ProjectorAutoCalibrator
 @synthesize image, surface;
 
 - (id)init

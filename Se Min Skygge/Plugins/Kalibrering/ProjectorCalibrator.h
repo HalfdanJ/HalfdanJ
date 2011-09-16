@@ -14,6 +14,17 @@
 #import "ofxOpenCv.h"
 
 
+
+@interface ProjectorTest : NSObject {
+}
+
+-(void)update:(NSDictionary *)drawingInformation;
+-(void)draw:(NSDictionary *)drawingInformation;
+
+@end
+
+
+
 @interface ProjectorAlignment : NSObject {
 }
 
@@ -27,7 +38,7 @@
 
 
 
-@interface ProjectorCalibrator : NSObject{
+@interface ProjectorAutoCalibrator : NSObject{
     KeystoneSurface * surface;
     ofxImageGenerator * image;
     ofxCvColorImage * bg;

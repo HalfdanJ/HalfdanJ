@@ -10,6 +10,7 @@
 
 #include "Plugin.h"
 #import "KinectCalibrator.h"
+#import "Tests.h"
 
 
 

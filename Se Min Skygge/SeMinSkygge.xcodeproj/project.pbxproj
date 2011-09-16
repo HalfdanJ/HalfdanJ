@@ -10,6 +10,7 @@
 		581286A213F90C140066CACA /* curvesShader.frag in Sources */ = {isa = PBXBuildFile; fileRef = 581286A013F90C140066CACA /* curvesShader.frag */; };
 		581286A313F90C140066CACA /* curvesShader.vert in Sources */ = {isa = PBXBuildFile; fileRef = 581286A113F90C140066CACA /* curvesShader.vert */; };
 		581F9D1D13856DF90091B02B /* ObjectTreeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 581F9D1C13856DF90091B02B /* ObjectTreeViewController.mm */; };
+		58243F201422ABED00EBA2AA /* Tests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 58243F1F1422ABED00EBA2AA /* Tests.mm */; };
 		5836E3D913F1548800725221 /* Fireflies.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5836E3D813F1548800725221 /* Fireflies.mm */; };
 		5836E3DC13F1556000725221 /* Firefly.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5836E3DA13F1556000725221 /* Firefly.cpp */; };
 		584501F213FC44D900B6924C /* ofxFBOTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 584501EC13FC44D900B6924C /* ofxFBOTexture.cpp */; };
@@ -211,6 +212,8 @@
 		581286A113F90C140066CACA /* curvesShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = curvesShader.vert; path = bin/data/curvesShader.vert; sourceTree = SOURCE_ROOT; };
 		581F9D1B13856DF90091B02B /* ObjectTreeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectTreeViewController.h; sourceTree = "<group>"; };
 		581F9D1C13856DF90091B02B /* ObjectTreeViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ObjectTreeViewController.mm; sourceTree = "<group>"; };
+		58243F1E1422ABED00EBA2AA /* Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tests.h; sourceTree = "<group>"; };
+		58243F1F1422ABED00EBA2AA /* Tests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Tests.mm; sourceTree = "<group>"; };
 		5836E3D713F1548800725221 /* Fireflies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fireflies.h; sourceTree = "<group>"; };
 		5836E3D813F1548800725221 /* Fireflies.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Fireflies.mm; sourceTree = "<group>"; };
 		5836E3DA13F1556000725221 /* Firefly.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Firefly.cpp; sourceTree = "<group>"; };
@@ -863,6 +866,8 @@
 			children = (
 				58D67687141BCD990048DD93 /* Kalibrering.h */,
 				58D67688141BCD990048DD93 /* Kalibrering.mm */,
+				58243F1E1422ABED00EBA2AA /* Tests.h */,
+				58243F1F1422ABED00EBA2AA /* Tests.mm */,
 				58D6768A141BEA950048DD93 /* Kalibrering.xib */,
 				58D6768C141BEB300048DD93 /* ProjectorCalibrator.h */,
 				58D6768D141BEB300048DD93 /* ProjectorCalibrator.mm */,
@@ -2119,6 +2124,7 @@
 				58D67689141BCD990048DD93 /* Kalibrering.mm in Sources */,
 				58D6768E141BEB300048DD93 /* ProjectorCalibrator.mm in Sources */,
 				DD8D3F42141D374C0034559C /* KinectCalibrator.mm in Sources */,
+				58243F201422ABED00EBA2AA /* Tests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

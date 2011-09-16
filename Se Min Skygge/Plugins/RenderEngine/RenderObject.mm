@@ -586,7 +586,7 @@ const int fboBorder = 20;
                     
                     if(currentChapter != sendMidiChapter){
                         sendMidiChapter = currentChapter;
-                        [[engine midi] sendValue:currentChapter forNote:objId onChannel:1];
+                    //    [[engine midi] sendValue:currentChapter forNote:objId onChannel:1];
                     }
                     play = YES;
                 }

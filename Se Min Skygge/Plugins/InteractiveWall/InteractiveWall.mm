@@ -86,12 +86,13 @@
     leftBar.goal = 0;
     rightBar.goal = aspect;    
     
-    vector<ofxPoint3f> p = [kinect getPointsInBoxXMin:0 xMax:Aspect(@"Screen",1) yMin:0 yMax:1 zMin:-1000 zMax:-PropF(@"screenDist") res:PropF(@"kinectRes")];
+    vector<ofxPoint3f> p = [kinect getPointsInBoxXMin:0 xMax:Aspect(@"Screen",1) yMin:0 yMax:0.95 zMin:-1000 zMax:-PropF(@"screenDist") res:PropF(@"kinectRes")];
     for(int i=0;i<p.size();i++){
         ofxPoint3f kinectP = [kinect convertWorldToKinect:[kinect convertSurfaceToWorld:p[i]]];        
         ofxPoint2f warped = [kinect coordWarper]->transform(kinectP.x/640.0, kinectP.y/480.0);
         
         int j = floor(warped.x * num);
+        if(j < bars.size()){
         if(bars[j].goal > warped.y-PropF(@"margin")){
             bars[j].goal = warped.y-PropF(@"margin");
         }
@@ -104,6 +105,7 @@
         }
         if(rightBar.goal < warped.x+PropF(@"margin")){
             rightBar.goal = warped.x+PropF(@"margin");
+        }
         }
     }
     
